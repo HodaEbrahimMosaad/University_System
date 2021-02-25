@@ -1,0 +1,100 @@
+﻿@model List<StudentCoursesVM>
+ 
+@{
+    ViewData["Title"] = "getActiveStudents";
+
+}
+
+<h1>getActiveStudents</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>Email</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>User name</th>
+            <th>Assign Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @item.student.Email
+            </td>
+            <td>
+                @item.student.Fname
+            </td>
+            <td>
+                @item.student.Lname
+            </td>
+            <td>
+                @item.student.UserName
+
+            </td>
+
+            <td>
+                @{ var cousrsList = new SelectList(@item.coursesToAssign, "ID", "Name"); }
+
+                <select onchange="assignStudetCourse(this,'@item.student.Id')" asp-items=@cousrsList class="single-select">
+                </select>
+            </td>
+            <td>
+                @{ var cousrsListRemoved = new SelectList(@item.coursesToRemove, "ID", "Name"); }
+
+                <select onchange="RemoveStudetCourse(this,'@item.student.Id')" asp-items=@cousrsListRemoved class="single-select">
+                </select>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+  
+    function assignStudetCourse(value, stdID) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("AssignCourseToStudent", "Admin")',
+            contentType: "application/json; charset=utf-8",
+            data: { stdID: stdID, CrsID: value.value },
+            dataType: "json",
+            success: function (Data) {
+                if (Data) {
+                    alert('added  Successfuly ', stdID.crsId);
+
+                    location.href = "https://localhost:44369/Admin/getActiveStudents"
+                }
+                else alert("not assigned", value.value);
+            },
+            error: function () { alert('A error'); }
+        });
+    }
+
+    function RemoveStudetCourse(value, stdID) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("RemoveCourseToStudent", "Admin")',
+            contentType: "application/json; charset=utf-8",
+            data: { stdID: stdID, CrsID: value.value },
+            dataType: "json",
+            success: function (Data) {
+                if (Data) {
+                    alert('removed  Successfuly ', stdID.crsId);
+
+                    location.href = "https://localhost:44369/Admin/getActiveStudents"
+                }
+                else alert("not removd", value.value);
+            },
+            error: function () { alert('A error'); }
+        });
+    }
+
+
+
+</script>
+   

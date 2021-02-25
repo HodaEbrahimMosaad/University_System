@@ -1,0 +1,107 @@
+﻿@model List<InstructorCourseVM>
+
+@{
+    ViewData["Title"] = "getActiveStudents";
+
+}
+
+<h1>getActiveStudents</h1>
+
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>Email</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>User name</th>
+            <th>Assign Courses</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.instructor.Email
+                </td>
+                <td>
+                    @item.instructor.Fname
+                </td>
+                <td>
+                    @item.instructor.Lname
+                </td>
+                <td>
+                    @item.instructor.UserName
+
+                </td>
+
+                <td>
+                    @{ SelectList cousrsList = default;
+                        if(@item.coursesToAssign!=null)
+                            cousrsList= new SelectList(@item.coursesToAssign, "ID", "Name");
+                        }
+
+                    <select onchange="assignInstructorCourse(this,'@item.instructor.Id')"  asp-items=@cousrsList class="single-select form-control">
+                    </select>
+                </td>
+                <td>
+                    @{
+                        SelectList cousrsListRemoved = default;
+                        if (@item.coursesToRemove!= null)
+                            cousrsListRemoved = new SelectList(@item.coursesToRemove, "ID", "Name");
+                        }
+
+                    <select onchange="RemoveInstructorCourse(this,'@item.instructor.Id')" asp-items=@cousrsListRemoved class="single-select">
+                    </select>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+
+    function assignInstructorCourse(value, insID) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("AssignCourseToInstructor", "Admin")',
+            contentType: "application/json; charset=utf-8",
+            data: { InsID: insID, CrsID: value.value },
+            dataType: "json",
+            success: function (Data) {
+                if (Data) {
+                    alert('added  Successfuly ');
+
+                    location.href = "https://localhost:44369/Admin/getActiveInstructor"
+                }
+                else alert("not assigned", value.value);
+            },
+            error: function () { alert('A error'); }
+        });
+    }
+
+    function RemoveInstructorCourse(value, insID) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("RemoveCourseToInstructor", "Admin")',
+            contentType: "application/json; charset=utf-8",
+            data: { insID: insID, CrsID: value.value },
+            dataType: "json",
+            success: function (Data) {
+                if (Data) {
+                    alert('removed  Successfuly ');
+
+                    location.href = "https://localhost:44369/Admin/getActiveInstructor"
+                }
+                else alert("not removd", value.value);
+            },
+            error: function () { alert('A error'); }
+        });
+    }
+
+
+
+</script>
+

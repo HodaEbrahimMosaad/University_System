@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<ul class="navbar-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+
+                Hello
+                @{
+                    var _user = await UserManager.FindByNameAsync(User.Identity.Name);
+                    var name = _user.Fname + " " + _user.Lname;
+                }
+                @name !
+
+                @{ var img =_user.Email+"/" +  @_user.ImgName;}
+                <img asp-append-version="true" width="40px" height="40px" style="border-radius: 50%;" src="@("Images/" + img)" />
+
+
+            </a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link ">Logout</button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link " asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </li>
+    }
+</ul>

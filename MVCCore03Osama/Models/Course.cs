@@ -34,7 +34,7 @@ namespace MVCCore03Osama.Models
         public virtual Instructor instructor { get; set; }
         public virtual ICollection<StudentCourse> StdCrs { get; set; }
         public virtual ICollection<Lecture> Lectures { set; get; }
-        public virtual ICollection<Material> Materials { set; get; }
+        
        
 
     }

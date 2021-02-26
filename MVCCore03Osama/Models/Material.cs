@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,10 +32,10 @@ namespace MVCCore03Osama.Models
         ErrorMessage = "Description should be minimum 3 characters and a maximum of 400 characters")]
         [DataType(DataType.Text)]
         public string Description { set; get; }
-        //[ForeignKey("Course")]
-        //public int CourseId { set; get; }
+        [ForeignKey("Course")]
+        public int LectureID { set; get; }
 
-        //public virtual Course course { get; set; }
+        public virtual Lecture Lecture { get; set; }
 
     }
 }

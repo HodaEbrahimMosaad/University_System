@@ -1,0 +1,33 @@
+﻿@model string
+
+<div class="btn-group" role="group" aria-label="Basic example">
+    <button onclick="getDetails('@Model')"  data-toggle="modal" data-target="#detailmodal" class="btn btn-success"><i class="fa fa-eye"></i></button>
+    <a asp-action="Edit" asp-route-id="@Model" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+    <a asp-action="Delete" asp-route-id="@Model" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+</div>
+
+
+<div class="modal fade" id="detailmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                FName: <span id="fname"></span>
+                <br />
+                LName: <span id="lname"></span>
+                <br />
+                Email: <span id="email"></span>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

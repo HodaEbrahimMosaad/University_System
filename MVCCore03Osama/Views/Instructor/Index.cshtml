@@ -1,0 +1,88 @@
+﻿@model List<Instructor>
+@{
+    ViewData["Title"] = "getActiveStudents";
+}
+
+<h1>All Instructors</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>@Html.DisplayNameFor(m => Model[0].Fname)</th>
+            <th>@Html.DisplayNameFor(m => Model[0].Lname)</th>
+            <th>@Html.DisplayNameFor(m => Model[0].Email)</th>
+            <th>@Html.DisplayNameFor(m => Model[0].PhoneNumber)</th>
+            <th>Courses</th>
+            <th>Actiion</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Fname
+                </td>
+                <td>
+                    @item.Lname
+                </td>
+                <td>
+                    @item.Email
+                </td>
+                <td>
+                    @item.PhoneNumber
+
+                </td>
+
+                
+                <td>
+                    @{ SelectList cousrsList = default;
+
+                        var crss = (List<Course>)ViewBag.FK_Course;
+                        var res = crss.Where(c => c.InstructorId == item.Id).ToList();
+                        if (res != null)
+                        {
+                            cousrsList = new SelectList(res, "ID", "Name");
+                        }
+                    }
+
+                    <select asp-items=@cousrsList class="single-select form-control">
+                    </select>
+                </td>
+                <td>
+                    <partial name="BtnGroup" model="@item.Id" />
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function getDetails(Insid) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("Detail", "Instructor")',
+            contentType: "json",
+            data: { id: Insid},
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                var inst = JSON.parse(Data);
+
+                if (Data) {
+                    document.getElementById('fname').innerHTML = inst.Fname;
+                    document.getElementById('lname').innerHTML = inst.Lname;
+                    document.getElementById('email').innerHTML = inst.Email;
+                    //alert('Loaded  Successfuly ');
+
+                    //location.href = "https://localhost:44369/Instructor"
+                }
+                else alert("not removd", value.value);
+            },
+            error: function () { alert('A error'); }
+        });
+    }
+</script>
+
+

@@ -20,6 +20,29 @@ namespace MVCCore03Osama.Service
             db = applicationDbContext;
             userManager = _userManager;
         }
+        public async Task<Instructor> GetDetails(string id) {
+            var instructors = await userManager.Users.Where
+               (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+            var instructor = instructors.SingleOrDefault(t => t.Id == id);
+            var serializedParent = JsonConvert.SerializeObject(instructor);
+            var ins = JsonConvert.DeserializeObject<Instructor>(serializedParent);
+            return ins;
+        }
+
+        public async Task<List<Instructor>> GetAll()
+        {
+            var instructors = await userManager.Users.Where
+               (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+
+            List<Instructor> AllInstructors = new List<Instructor>();
+            for (int i = 0; i < instructors?.Count(); i++)
+            {
+                var serializedParent = JsonConvert.SerializeObject(instructors[i]);
+                AllInstructors.Add(JsonConvert.DeserializeObject<Instructor>(serializedParent));
+            }
+            return AllInstructors;
+        }
+
         public async Task<List<InstructorCourseVM>> getAllActiveInstructors()
         {
 

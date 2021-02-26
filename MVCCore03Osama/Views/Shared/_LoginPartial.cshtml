@@ -13,7 +13,7 @@
                     var _user = await UserManager.FindByNameAsync(User.Identity.Name);
                     var name = _user.Fname + " " + _user.Lname;
                 }
-                @name !
+                @name ** @_user.Id !
 
                 @{ var img =_user.Email+"/" +  @_user.ImgName;}
                 <img asp-append-version="true" width="40px" height="40px" style="border-radius: 50%;" src="@("Images/" + img)" />

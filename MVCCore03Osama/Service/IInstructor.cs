@@ -11,6 +11,9 @@ namespace MVCCore03Osama.Service
 {
     public interface IInstructor
     {
+
+        public Task<List<Instructor>> GetAll();
+        public Task<Instructor> GetDetails(string id);
         public Task<List<InstructorCourseVM>> getAllActiveInstructors();
         public bool regesterInstructorInCourse(string InsId, int courseId);
         public bool removeInstructorFromCourse(string InsId, int courseId);

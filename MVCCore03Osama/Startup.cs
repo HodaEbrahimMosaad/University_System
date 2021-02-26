@@ -77,9 +77,13 @@ namespace MVCCore03Osama
 
             app.UseEndpoints(endpoints =>
             {
+                //endpoints.MapControllerRoute(
+                //    name: "areaRoute",
+                //    pattern: "{area=User}/{controller=Posts}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                //endpoints.MapAreaControllerRoute("areaRoute", "User", "{area=User}/{controller=Posts}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

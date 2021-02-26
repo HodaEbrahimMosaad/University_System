@@ -32,7 +32,7 @@ namespace MVCCore03Osama.Models
         ErrorMessage = "Description should be minimum 3 characters and a maximum of 400 characters")]
         [DataType(DataType.Text)]
         public string Description { set; get; }
-        [ForeignKey("Course")]
+        [ForeignKey("Lecture")]
         public int LectureID { set; get; }
 
         public virtual Lecture Lecture { get; set; }

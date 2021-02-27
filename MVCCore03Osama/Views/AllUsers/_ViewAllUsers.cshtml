@@ -1,0 +1,95 @@
+﻿@model IEnumerable<MVCCore03Osama.Models.ApplicationUser>
+
+<table class="table">
+    <thead>
+        <tr>
+
+            <th>
+                FullName
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserRole)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Fname)
+                @Html.DisplayFor(modelItem => item.Lname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserRole)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                <select class="form-control" name="selectStatus" id="selectStatus" onchange="ChangeStatus(this, '@item.Id')">
+                    
+                    <option value="1">Pending</option>
+                    <option value="0">Active</option>
+                    <option value="2">Blocked</option>
+                </select>
+            </td>
+            <td>
+
+                <button class="btn btn-sm btn-primary">
+                    <a onclick="showInPopup('@Url.Action("Details","AllUsers", new { id = item.Id }, Context.Request.Scheme)', 'Details')">Details</a>
+                </button> |
+                <button class="btn btn-sm btn-success">
+                    <a onclick="showInPopup('@Url.Action("Approve","AllUsers", new { id = item.Id }, Context.Request.Scheme)', 'Approve')">Approve</a>
+                </button> |
+
+                <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "Delete", new { id = item.Id }) </button>
+
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<script>
+    function ChangeStatus(value, userID) {
+        //alert(value.value + userID);
+        if (confirm('Are you sure You want to change status ?')) {
+            try {
+                $.ajax({
+
+                    type: 'GET',
+                    url: '@Url.Action("ChangeStatus", "AllUsers")',
+                    data: { id: userID, status: value.value },
+                    contentType: "application/json",
+                    dataType:"json",
+                    //processData: false,
+                    success: function (res) {
+                        alert(value.value + userID);
+                        $('#ViewAll').html(res.html);
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            } catch (ex) {
+                console.log(ex)
+            }
+        }
+        //prevent default form submit event
+        return false;
+
+    }
+
+</script>

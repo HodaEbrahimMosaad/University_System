@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVCCore03Osama.Migrations
 {
-    public partial class firstt : Migration
+    public partial class esraa : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -184,29 +184,6 @@ namespace MVCCore03Osama.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "posts",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    ApplicationUserId = table.Column<int>(type: "int", nullable: false),
-                    postOwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_posts", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_posts_AspNetUsers_postOwnerId",
-                        column: x => x.postOwnerId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "lectures",
                 columns: table => new
                 {
@@ -232,28 +209,6 @@ namespace MVCCore03Osama.Migrations
                         principalTable: "courses",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "materials",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Path = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
-                    CourseID = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_materials", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_materials_courses_CourseID",
-                        column: x => x.CourseID,
-                        principalTable: "courses",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -284,6 +239,58 @@ namespace MVCCore03Osama.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "materials",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Path = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(400)", maxLength: 400, nullable: false),
+                    LectureID = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_materials", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_materials_lectures_LectureID",
+                        column: x => x.LectureID,
+                        principalTable: "lectures",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "posts",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    ApplicationUserId = table.Column<int>(type: "int", nullable: false),
+                    postOwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    LectureID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_posts", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_posts_AspNetUsers_postOwnerId",
+                        column: x => x.postOwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_posts_lectures_LectureID",
+                        column: x => x.LectureID,
+                        principalTable: "lectures",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "comments",
                 columns: table => new
                 {
@@ -291,14 +298,14 @@ namespace MVCCore03Osama.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    PostId = table.Column<int>(type: "int", nullable: false)
+                    PostID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_comments", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_comments_posts_PostId",
-                        column: x => x.PostId,
+                        name: "FK_comments_posts_PostID",
+                        column: x => x.PostID,
                         principalTable: "posts",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
@@ -344,9 +351,9 @@ namespace MVCCore03Osama.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_comments_PostId",
+                name: "IX_comments_PostID",
                 table: "comments",
-                column: "PostId");
+                column: "PostID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_courses_InstructorId",
@@ -364,9 +371,14 @@ namespace MVCCore03Osama.Migrations
                 column: "InstructorId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_materials_CourseID",
+                name: "IX_materials_LectureID",
                 table: "materials",
-                column: "CourseID");
+                column: "LectureID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_posts_LectureID",
+                table: "posts",
+                column: "LectureID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_posts_postOwnerId",
@@ -405,9 +417,6 @@ namespace MVCCore03Osama.Migrations
                 name: "comments");
 
             migrationBuilder.DropTable(
-                name: "lectures");
-
-            migrationBuilder.DropTable(
                 name: "materials");
 
             migrationBuilder.DropTable(
@@ -418,6 +427,9 @@ namespace MVCCore03Osama.Migrations
 
             migrationBuilder.DropTable(
                 name: "posts");
+
+            migrationBuilder.DropTable(
+                name: "lectures");
 
             migrationBuilder.DropTable(
                 name: "courses");

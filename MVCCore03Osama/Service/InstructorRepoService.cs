@@ -20,6 +20,86 @@ namespace MVCCore03Osama.Service
             db = applicationDbContext;
             userManager = _userManager;
         }
+
+        public async Task<Instructor> Edit(string id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            var instructors = await userManager.Users.Where
+                    (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+            var instructor = instructors.SingleOrDefault(t => t.Id == id);
+            if (instructor == null)
+            {
+                return null;
+            }
+            var serializedParent = JsonConvert.SerializeObject(instructor);
+            var ins = JsonConvert.DeserializeObject<Instructor>(serializedParent);
+            return ins;
+        }
+
+        public async Task<bool> DeleteInstructor(string id)
+        {
+            try
+            {
+                var instructors = await userManager.Users.Where
+                    (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+                var instructor = instructors.SingleOrDefault(t => t.Id == id);
+                if (instructor != null)
+                {
+                    instructor.status = Status.Blocked;
+                    db.Users.Update(instructor);
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public async Task<bool> UpdateInstructor(string id, Instructor _instructor)
+        {
+            if (id != _instructor.Id)
+            {
+                return false;
+            }
+            try
+            {
+                var instructors = await userManager.Users.Where
+                    (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+                var instructor = instructors.SingleOrDefault(t => t.Id == id);
+                if (instructor != null)
+                {
+                    instructor.Fname = _instructor.Fname;
+                    instructor.Lname = _instructor.Lname;
+                    instructor.Email = _instructor.Email;
+                    instructor.UserName = _instructor.UserName;
+                    instructor.PhoneNumber = _instructor.PhoneNumber;
+                    instructor.Bio = _instructor.Bio;
+                    db.Users.Update(instructor);
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                db.Users.Update(_instructor);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public async Task<Instructor> GetDetails(string id) {
             var instructors = await userManager.Users.Where
                (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();

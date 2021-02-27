@@ -58,7 +58,6 @@ namespace MVCCore03Osama.Email
             {
                 // log exception
             }*/
-            return false;
         }
     }
 }

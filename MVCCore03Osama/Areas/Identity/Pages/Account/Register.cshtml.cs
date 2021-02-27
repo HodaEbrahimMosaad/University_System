@@ -112,21 +112,24 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 string wwwrootPath = webHostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
-                string extention = Path.GetExtension(Input.ImageFile.FileName);
-                fileName = fileName + DateTime.Now.ToString("yymmssfff") + extention;
                 string email_path = Path.Combine(wwwrootPath + "/Images/", Input.Email);
                 if (!Directory.Exists(email_path))
                 {
                     Directory.CreateDirectory(email_path);
                 }
-
-                string path = Path.Combine(wwwrootPath + "/Images/" + Input.Email  + "/"+ fileName);
-                using(var fileStream  = new FileStream(path, FileMode.Create))
+                string fileName = "def.jfif";
+                if (Input.ImageFile != null)
                 {
-                    await Input.ImageFile.CopyToAsync(fileStream);
+                    fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
+                    string extention = Path.GetExtension(Input.ImageFile.FileName);
+                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extention;
+                    string path = Path.Combine(wwwrootPath + "/Images/" + Input.Email + "/" + fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await Input.ImageFile.CopyToAsync(fileStream);
+                    }
                 }
-
+                
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,

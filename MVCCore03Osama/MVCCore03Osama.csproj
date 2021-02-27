@@ -24,7 +24,4 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
     <PackageReference Include="System.Runtime.Serialization.Json" Version="4.3.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\Images\" />
-  </ItemGroup>
 </Project>

@@ -4,11 +4,16 @@
 }
 
 <h1>All Instructors</h1>
+<div id="noti" class="alert" style="display:none">
+    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+    <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+</div>
 
-<table class="table">
+<table class="table" id="insContent">
     <thead>
         <tr>
 
+            <th></th>
             <th>@Html.DisplayNameFor(m => Model[0].Fname)</th>
             <th>@Html.DisplayNameFor(m => Model[0].Lname)</th>
             <th>@Html.DisplayNameFor(m => Model[0].Email)</th>
@@ -21,6 +26,17 @@
         @foreach (var item in Model)
         {
             <tr>
+                <td>
+                    @{string img = "def.jfif";
+                        if (item.ImgName != "def.jfif")
+                        {
+                            img = item.Email + "/" + item.ImgName;
+
+                        }
+                        <img asp-append-version="true" width="40" height="40" style="border-radius: 50%;" src=@("~/Images/" + img) />
+                    }
+
+                </td>
                 <td>
                     @item.Fname
                 </td>
@@ -81,6 +97,25 @@
                 else alert("not removd", value.value);
             },
             error: function () { alert('A error'); }
+        });
+    }
+
+    function deleteIns(Insid) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("Delete", "Instructor")',
+            contentType: "json",
+            data: { id: Insid},
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                $('#insContent').load(document.URL + ' #insContent');
+
+                document.getElementById("noti").style.display="block";
+                setTimeout(function () { document.getElementById("noti").style.display = "none"}, 3000);
+                
+            },
+            error: function (e) { console.log(e) }
         });
     }
 </script>

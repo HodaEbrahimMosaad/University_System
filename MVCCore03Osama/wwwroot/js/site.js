@@ -4,12 +4,19 @@
 // Write your JavaScript code.
 $(function () {
     
-    $("#loaderbody").addClass('hide');
+    //$("#loaderbody").addClass('hide');
+
+    //$(document).bind('ajaxStart', function () {
+    //    $("#loaderbody").removeClass('hide');
+    //}).bind('ajaxStop', function () {
+    //    $("#loaderbody").addClass('hide');
+    //});
+    $("#theme-loader").addClass('hide');
 
     $(document).bind('ajaxStart', function () {
-        $("#loaderbody").removeClass('hide');
+        $("#theme-loader").removeClass('hide');
     }).bind('ajaxStop', function () {
-        $("#loaderbody").addClass('hide');
+        $("#theme-loader").addClass('hide');
     });
 });
 

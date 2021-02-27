@@ -50,65 +50,72 @@
                     <input class="form-control mr-sm-2" type="text" placeholder="Search">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                 </form>*@
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
-                        </li>
-                        @if (SignInManager.IsSignedIn(User))
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link " asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                    </li>
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        if (User.IsInRole("Admin"))
                         {
-                            if (User.IsInRole("Admin"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="AdminHome" title="Admin">Admin Profile</a>
-                                </li>
-
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Users</a>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" asp-action="">Manage Students</a>
-                                        <a class="dropdown-item" href="#">Another action</a>
-                                        <a class="dropdown-item" href="#">Something else here</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Separated link</a>
-                                    </div>
-                                </li>
-                            }
-                            if (User.IsInRole("Student"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="StudentHome" title="Student">Student Profile</a>
-                                </li>
-                            }
-                            if (User.IsInRole("Instructor"))
-                            {
-                                <li class="nav-item">
-                                    <a class="nav-link" asp-action="InstructorHome" title="Instructor">Instructor Profile</a>
-                                </li>
-                            }
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="AdminHome" title="Admin">Admin Profile</a>
+                            </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Users</a>
                                 <div class="dropdown-menu">
-
-                                    <a class="dropdown-item" asp-action="getActiveStudents" asp-controller="Admin">Manage Student's Courses</a>
-                                    <a class="dropdown-item" asp-action="getActiveInstructor" asp-controller="Admin">Manage Instructor's Courses</a>
-                                    <a class="dropdown-item" asp-action="allStudents" asp-controller="Students">Manage Students</a>
-
+                                    <a class="dropdown-item" asp-action="">Manage Students</a>
+                                    <a class="dropdown-item" href="#">Another action</a>
                                     <a class="dropdown-item" href="#">Something else here</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="#">Separated link</a>
                                 </div>
                             </li>
                         }
+                        if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="StudentHome" title="Student">Student Profile</a>
+                            </li>
+                        }
+                        if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="InstructorHome" title="Instructor">Instructor Profile</a>
+                            </li>
+                        }
+
+                        if (User.IsInRole("Instructor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-action="Index" asp-controller="Instructor" title="Instructor">Instructor</a>
+                            </li>
+                        }
+
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                            <div class="dropdown-menu">
+
+                                <a class="dropdown-item" asp-action="getActiveStudents" asp-controller="Admin">Manage Student's Courses</a>
+                                <a class="dropdown-item" asp-action="getActiveInstructor" asp-controller="Admin">Manage Instructor's Courses</a>
+                                <a class="dropdown-item" asp-action="allStudents" asp-controller="Students">Manage Students</a>
+
+                                <a class="dropdown-item" href="#">Something else here</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#">Separated link</a>
+                            </div>
+                        </li>
+                    }
 
 
-                    </ul>
+                </ul>
 
 
                 </div>

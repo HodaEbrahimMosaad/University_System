@@ -5,8 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using MVCCore03Osama.Service;
 using MVCCore03Osama.Models;
+using Microsoft.AspNetCore.Authorization;
+
 namespace MVCCore03Osama.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class StudentsController : Controller
     {
         private readonly IStudent student;
@@ -60,9 +64,8 @@ namespace MVCCore03Osama.Controllers
             return View();
         }
         [HttpGet]
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
-           
             return View();
         }
         [HttpPost]

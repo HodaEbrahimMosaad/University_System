@@ -61,8 +61,8 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required(ErrorMessage = "FName name is required")]
-            [StringLength(20, MinimumLength = 5,
-            ErrorMessage = "FName should be minimum 5 characters and a maximum of 20 characters")]
+            [StringLength(20, MinimumLength = 3,
+            ErrorMessage = "FName should be minimum 3 characters and a maximum of 20 characters")]
             [DataType(DataType.Text)]
             public string Fname { get; set; }
 
@@ -71,8 +71,8 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             public Role UserRole { set; get; }
 
             [Required(ErrorMessage = "LName name is required")]
-            [StringLength(20, MinimumLength = 5,
-            ErrorMessage = "LName should be minimum 5 characters and a maximum of 20 characters")]
+            [StringLength(20, MinimumLength = 3,
+            ErrorMessage = "LName should be minimum 3 characters and a maximum of 20 characters")]
             [DataType(DataType.Text)]
             public string Lname { get; set; }
 
@@ -96,6 +96,12 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required(ErrorMessage = "Degree name is required")]
+            [StringLength(100, MinimumLength = 3,
+            ErrorMessage = "Degree name should be minimum 3 characters and a maximum of 100 characters")]
+            [DataType(DataType.Text)]
+            public string Degree { get; set; }
 
         }
 

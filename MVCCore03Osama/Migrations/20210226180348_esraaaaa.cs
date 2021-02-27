@@ -2,7 +2,7 @@
 
 namespace MVCCore03Osama.Migrations
 {
-    public partial class f : Migration
+    public partial class esraaaaa : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

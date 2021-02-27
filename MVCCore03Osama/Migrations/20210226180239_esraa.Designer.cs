@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCCore03Osama.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210226123608_materials_postsUnderLecture")]
-    partial class materials_postsUnderLecture
+    [Migration("20210226180239_esraa")]
+    partial class esraa
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

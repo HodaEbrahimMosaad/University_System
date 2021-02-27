@@ -25,7 +25,7 @@ namespace MVCCore03Osama.Models
 
         [Required]
         [ForeignKey("Post")]
-        public int PostId { set; get; }
-        public virtual Post post { set; get; }
+        public int PostID { set; get; }
+        public virtual Post Post { set; get; }
     }
 }

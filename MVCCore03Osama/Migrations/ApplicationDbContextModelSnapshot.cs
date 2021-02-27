@@ -127,12 +127,12 @@ namespace MVCCore03Osama.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("PostId")
+                    b.Property<int>("PostID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PostId");
+                    b.HasIndex("PostID");
 
                     b.ToTable("comments");
                 });
@@ -205,13 +205,13 @@ namespace MVCCore03Osama.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CourseID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(400)
                         .HasColumnType("nvarchar(400)");
+
+                    b.Property<int>("LectureID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -225,7 +225,7 @@ namespace MVCCore03Osama.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("CourseID");
+                    b.HasIndex("LectureID");
 
                     b.ToTable("materials");
                 });
@@ -248,6 +248,9 @@ namespace MVCCore03Osama.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int?>("LectureID")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -257,6 +260,8 @@ namespace MVCCore03Osama.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("LectureID");
 
                     b.HasIndex("postOwnerId");
 
@@ -443,13 +448,13 @@ namespace MVCCore03Osama.Migrations
 
             modelBuilder.Entity("MVCCore03Osama.Models.Comment", b =>
                 {
-                    b.HasOne("MVCCore03Osama.Models.Post", "post")
+                    b.HasOne("MVCCore03Osama.Models.Post", "Post")
                         .WithMany("Comments")
-                        .HasForeignKey("PostId")
+                        .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("post");
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Course", b =>
@@ -482,13 +487,21 @@ namespace MVCCore03Osama.Migrations
 
             modelBuilder.Entity("MVCCore03Osama.Models.Material", b =>
                 {
-                    b.HasOne("MVCCore03Osama.Models.Course", null)
+                    b.HasOne("MVCCore03Osama.Models.Lecture", "Lecture")
                         .WithMany("Materials")
-                        .HasForeignKey("CourseID");
+                        .HasForeignKey("LectureID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lecture");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Post", b =>
                 {
+                    b.HasOne("MVCCore03Osama.Models.Lecture", null)
+                        .WithMany("Posts")
+                        .HasForeignKey("LectureID");
+
                     b.HasOne("MVCCore03Osama.Models.ApplicationUser", "postOwner")
                         .WithMany()
                         .HasForeignKey("postOwnerId");
@@ -568,9 +581,14 @@ namespace MVCCore03Osama.Migrations
                 {
                     b.Navigation("Lectures");
 
+                    b.Navigation("StdCrs");
+                });
+
+            modelBuilder.Entity("MVCCore03Osama.Models.Lecture", b =>
+                {
                     b.Navigation("Materials");
 
-                    b.Navigation("StdCrs");
+                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Post", b =>

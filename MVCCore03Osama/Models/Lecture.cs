@@ -32,5 +32,8 @@ namespace MVCCore03Osama.Models
         public int CourseId { set; get; }
 
         public virtual Course Course { set; get; }
+
+        public virtual ICollection<Material> Materials { set; get; }
+        public virtual ICollection<Post> Posts { set; get; }
     }
 }

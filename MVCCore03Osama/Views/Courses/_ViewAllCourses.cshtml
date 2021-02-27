@@ -1,0 +1,55 @@
+﻿@model IEnumerable<MVCCore03Osama.Models.Course>
+
+@{
+    Layout = null;
+}
+
+<table class="table table-striped" id="coursesTable">
+    <thead>
+        <tr>
+
+            <th>
+                @Html.DisplayNameFor(model => model.TotalGrade)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Describtion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                <button class="btn btn-sm btn-success">
+                    <a onclick="showInPopup('@Url.Action("AddOrEdit","Courses", null, Context.Request.Scheme)', 'AddOrEdit')"><i class="fa fa-plus"></i> New Course</a>
+                </button>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalGrade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Describtion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            
+            <td>
+                <button class="btn btn-sm btn-primary"><a onclick="showInPopup('@Url.Action("AddOrEdit","Courses",new {id=item.ID},Context.Request.Scheme)','Update Course')" class="text-white"><i class="fas fa-pencil-alt"></i></a></button>
+
+                <button class="btn btn-sm btn-danger"><a onclick="" class="text-white"><i class="fas fa-trash"></i></a></button>
+
+                <button class="btn btn-sm btn-success"><a onclick="" class="text-white"><i class="fas fa-eye"></i></a></button>
+
+                @*<a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>*@
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+

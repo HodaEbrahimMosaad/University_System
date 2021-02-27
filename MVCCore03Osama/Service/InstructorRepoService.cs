@@ -140,13 +140,16 @@ namespace MVCCore03Osama.Service
                  if (CoursesToRemove != null)
                 {
                     // CoursesToAssign = await db.courses.Except(CoursesToRemove).ToListAsync();
-                    newInstructor.Courses =  db.courses.AsEnumerable().Except(CoursesToRemove).ToList(); 
-                    //CoursesToAssign =  db.courses.Where(o => !CoursesToRemove.Any(p => p.ID == o.ID)).ToList();
+                    newInstructor.Courses =  db.courses.AsEnumerable().Except(CoursesToRemove).ToList();
+                    var ListToExeptStudntCourse = newInstructor.Courses;
+                    var courseWithIns = db.courses.Where(c => c.InstructorId != null).ToList();
+                    CoursesToAssign = ListToExeptStudntCourse.Where(o => !courseWithIns.Any(p => p.ID == o.ID)).ToList();
+                   
                 }
                 InstructorCourses.Add(new InstructorCourseVM()
                 {
                     instructor = newInstructor,
-                    coursesToAssign = newInstructor.Courses.ToList(),
+                    coursesToAssign = CoursesToAssign.ToList(),
                     coursesToRemove=CoursesToRemove
                     
                 });

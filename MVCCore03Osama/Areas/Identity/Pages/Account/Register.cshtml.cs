@@ -138,7 +138,8 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                     Lname = Input.Lname,
                     Bio = Input.Bio,
                     ImgName = fileName,
-                    UserRole = Input.UserRole
+                    UserRole = Input.UserRole,
+                    status=Status.Pendding
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

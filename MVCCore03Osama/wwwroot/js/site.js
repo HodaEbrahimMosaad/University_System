@@ -4,20 +4,14 @@
 // Write your JavaScript code.
 $(function () {
     
-    //$("#loaderbody").addClass('hide');
-
-    //$(document).bind('ajaxStart', function () {
-    //    $("#loaderbody").removeClass('hide');
-    //}).bind('ajaxStop', function () {
-    //    $("#loaderbody").addClass('hide');
-    //});
-    $("#theme-loader").addClass('hide');
+    $("#loaderbody").addClass('hide');
 
     $(document).bind('ajaxStart', function () {
-        $("#theme-loader").removeClass('hide');
+        $("#loaderbody").removeClass('hide');
     }).bind('ajaxStop', function () {
-        $("#theme-loader").addClass('hide');
+        $("#loaderbody").addClass('hide');
     });
+    
 });
 
 function showInPopup(url, title) {

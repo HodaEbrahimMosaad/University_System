@@ -50,6 +50,13 @@ namespace MVCCore03Osama.Service
                 if (instructor != null)
                 {
                     instructor.status = Status.Blocked;
+                    var AllCourses = await db.courses.ToListAsync();
+                    var setNull = AllCourses.Where(c => c.InstructorId == instructor.Id).ToList();
+                    setNull.ForEach(c => c.InstructorId = null);
+                    var crsIDs = setNull.Select(c => c.ID).ToList();
+                    var StuCour = await db.studentCourses.ToListAsync();
+                    var stucrsToRemove = StuCour.Where(sc => crsIDs.Contains(sc.CourseId)).ToList();
+                    db.RemoveRange(stucrsToRemove);
                     db.Users.Update(instructor);
                     db.SaveChanges();
                     return true;

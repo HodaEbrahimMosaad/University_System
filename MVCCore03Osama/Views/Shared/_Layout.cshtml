@@ -69,7 +69,8 @@
                             </li>
 
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Manage Users</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Users</a>
+
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" asp-action="">Manage Students</a>
                                     <a class="dropdown-item" href="#">Another action</a>
@@ -78,6 +79,7 @@
                                     <a class="dropdown-item" href="#">Separated link</a>
                                 </div>
                             </li>
+
                         }
                         if (User.IsInRole("Student"))
                         {
@@ -85,6 +87,8 @@
                                 <a class="nav-link" asp-action="StudentHome" title="Student">Student Profile</a>
                             </li>
                         }
+
+
                         if (User.IsInRole("Instructor"))
                         {
                             <li class="nav-item">
@@ -92,26 +96,7 @@
                             </li>
                         }
 
-                        if (User.IsInRole("Instructor"))
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-action="Index" asp-controller="Instructor" title="Instructor">Instructor</a>
-                            </li>
-                        }
 
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                            <div class="dropdown-menu">
-
-                                <a class="dropdown-item" asp-action="getActiveStudents" asp-controller="Admin">Manage Student's Courses</a>
-                                <a class="dropdown-item" asp-action="getActiveInstructor" asp-controller="Admin">Manage Instructor's Courses</a>
-                                <a class="dropdown-item" asp-action="allStudents" asp-controller="Students">Manage Students</a>
-
-                                <a class="dropdown-item" href="#">Something else here</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Separated link</a>
-                            </div>
-                        </li>
                     }
 
 

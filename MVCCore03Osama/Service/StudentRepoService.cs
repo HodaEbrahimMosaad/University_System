@@ -152,11 +152,13 @@ namespace MVCCore03Osama.Service
                 Lname = student.Lname,
                 Bio = student.Bio,
                 UserRole = Role.Student,
-                status = Status.Active
+                status = Status.Active,
+                ImgName= "def.jfif"
             };
             var result= await userManager.CreateAsync(std, student.PasswordHash);
             if (result.Succeeded)
             {
+                await userManager.AddToRoleAsync(std, "Student");
                 return true;
             }
             return false;

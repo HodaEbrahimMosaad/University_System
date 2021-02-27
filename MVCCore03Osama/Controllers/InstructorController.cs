@@ -10,9 +10,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 using Newtonsoft.Json;
 using MVCCore03Osama.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVCCore03Osama.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = "Instructor")]
     public class InstructorController : Controller
     {
         public InstructorController(IInstructor _instructor, ICourse _course, UserManager<ApplicationUser> userManager,
@@ -93,7 +96,8 @@ namespace MVCCore03Osama.Controllers
             Ins.ImgName = "def.jfif";
 
             var result = await UserManager_.CreateAsync(Ins, password);
-            await _signInManager.SignInAsync(Ins, isPersistent: false);
+            //await _signInManager.SignInAsync(Ins, isPersistent: false);
+            await UserManager_.AddToRoleAsync(Ins, "Instructor");
             return RedirectToAction(nameof(Index));
         }
     }

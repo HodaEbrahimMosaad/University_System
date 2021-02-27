@@ -1,6 +1,8 @@
 ﻿@{
     Layout = "_Layout";
 }
+@model MVCCore03Osama.Models.Lecture
+@inject MVCCore03Osama.Models.userCoursesService userCourses
 
 <!DOCTYPE html>
 
@@ -14,26 +16,113 @@
     <div class="container">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Posts" asp-action="Index" asp-route-id="1" title="Discussion">Cours1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Materials" asp-action="Index" asp-route-courseId="1" title="Material">Cours2</a>
-                    @*Html.ActionLink("Material", "Index", "Materials")*@
-                </li>
+                @{
+                    int courseID;
+                    if (int.TryParse(Context.Request.Query["courseID"], out int r))
+                        courseID = r;
+                    else
+                        courseID = -1;
+
+
+                    int lectureID;
+                    if (int.TryParse(Context.Request.Query["lectureID"], out int rl))
+                        lectureID = rl;
+                    else
+                        lectureID = -1;
+
+                }
+                @{
+                    List<Course> courses = new List<Course>();
+                    courses = await userCourses.getCourses();
+                }
+                @foreach (var course in courses)
+                {
+                    if (course.ID == courseID)
+                    {
+                        <li class="nav-item active" >
+                            <a class="nav-link"  asp-controller="HomeUser" asp-route-courseID="@course.ID" title="@course.Name">@course.Name</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="HomeUser" asp-route-courseID="@course.ID" title="@course.Name">@course.Name</a>
+                        </li>
+                    }
+
+                }
+
+                @*<li class="nav-item">
+                        <a class="nav-link" asp-controller="Lectures" asp-action="Index" asp-route-id="1" title="Cours1">Cours1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Lectures" asp-action="Index" asp-route-id="1" title="Cours2">Cours2</a>
+
+                            </li>*@
             </ul>
         </nav>
+
+
         <div class="row">
-            <ul class="list-group col-lg-2">
-                <li class="list-group-item active" aria-current="true">
-                    @Html.ActionLink("Lec 1", "Index", "Posts")
-                </li>
-                <li class="list-group-item"> @Html.ActionLink("Lec 2", "Index", "Posts")</li>
-                <li class="list-group-item">A third item</li>
-                <li class="list-group-item">A fourth item</li>
-                <li class="list-group-item">And a fifth one</li>
-            </ul>
-            <div class="col-lg-10">
+            <div class="col-lg-3">
+                @if (courses.Count > 0 && courseID != -1)
+                {
+                    <a href="#" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createModal">
+                        Create
+                    </a>
+                    <ul class="list-group">
+                        @foreach (var lec in courses.Find(c => c.ID == courseID).Lectures)
+                        {
+                            if (lec.ID == lectureID)
+                            {
+                            <li class="list-group-item active">
+                                <a asp-controller="Lectures" style="color: white" asp-action="Index" asp-route-lectureID=@lec.ID asp-route-courseID=@courseID title="@lec.Name">
+                                    @lec.Name
+                                </a>
+                                <a href="#" type="button"style="color: white" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")' data-bs-toggle="modal" data-bs-target="#editModal">
+                                    edit
+                                </a>
+                                @*<a href="#" style="color: white" asp-action="DeleteConfirmed" asp-controller="Lectures" asp-route-Id=@lec.ID type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")' data-bs-toggle="modal" data-bs-target="#editModal">
+                                    remove
+                                </a>*@
+                                <a style="color: white" asp-controller="Lectures" asp-action="removeLec" asp-route-Id="@lec.ID" asp-route-courseID="@courseID" >remove</a>
+                            </li>
+                                //isFirstLec = false;
+                            }
+                            else
+                            {
+                                <li class="list-group-item">
+                                    <a asp-controller="Lectures" asp-action="Index" asp-route-lectureID=@lec.ID asp-route-courseID=@courseID title="@lec.Name">
+                                        @lec.Name
+                                    </a>
+                                    <a href="#" type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")' data-bs-toggle="modal" data-bs-target="#editModal">
+                                        edit
+                                    </a>
+                                    <a href="Lectures/removeLec?id=@lec.ID&CourseId=@courseID">remove</a>
+                                    @*<a class="nav-link" asp-controller="Lectures" asp-action asp-action="DeleteConfirmed" asp-route-Id="@lec.ID" asp-route-courseID="@courseID">remove</a>*@
+                                    @*<a href="#" type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")' data-bs-toggle="modal" data-bs-target="#editModal">
+                                        remove
+                                    </a>*@
+                                </li>
+                            }
+                            @*<a href="#" type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")' data-bs-toggle="modal" data-bs-target="#editModal">
+                        edit
+                    </a>
+                    <a href="#" type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")'  data-bs-toggle="modal" data-bs-target="#editModal">
+                        remove
+                    </a>*@
+                        }
+
+                    </ul>
+                }
+
+                <!--a class="list-group-item active" asp-controller="Lectures" asp-action="Index" asp-route-LecId=6 asp-route-id="1" title="Lec 2">Lec 2</!--a>
+    <a class="list-group-item" asp-controller="Lectures" asp-action="Index" asp-route-LecId=6 asp-route-id="1" title="Lec 2">Lec 2</a>
+    <a class="list-group-item">A third item</a>
+    <a class="list-group-item">A fourth item</a>
+    <a class="list-group-item">And a fifth one</a-->
+            </div>
+            <div class="col-lg-9">
                 <div class="container px-4">
                     <div class="row gx-5">
                         <div class="col">
@@ -49,5 +138,114 @@
         </div>
     </div>
     @RenderSection("Scripts", required: false)
+
+    <!-- create Modal -->
+    <div class="modal fade" id="createModal" aria-labelledby="createModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="createModalLabel">New Lecture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-action="Create" asp-route-courseID=@courseID asp-controller="Lectures">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                @*<div class="form-group">
+                                    <label asp-for="Date" class="control-label"></label>
+                                    <input asp-for="Date" class="form-control" />
+                                    <span asp-validation-for="Date" class="text-danger"></span>
+                                </div>*@
+                                @*<div class="form-group">
+                                        <label asp-for="InstructorId" class="control-label"></label>
+                                        <select asp-for="InstructorId" class="form-control" asp-items="ViewBag.InstructorId"></select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="CourseId" class="control-label"></label>
+                                        <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                                    </div>*@
+
+                                <input type="hidden" name="CourseId" value="@courseID" />
+                                <input type="hidden" name="InstructorId" value="c502e9eb-d5f1-41d4-ac12-52c65d7e89cb" />
+                                @*<div class="form-group">
+                                        <input type="submit" value="Create" class="btn btn-primary" />
+                                    </div>*@
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--edit Modal -->
+    <div class="modal fade" id="editModal" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">New Lecture</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form asp-action="Edit" asp-route-courseID=@courseID asp-controller="Lectures">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input id="editId" type="hidden" asp-for="ID" />
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input id="editName" asp-for="Name" class="form-control" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            @*<div class="form-group">
+                                <label asp-for="Date" class="control-label"></label>
+                                <input asp-for="Date" class="form-control" />
+                                <span asp-validation-for="Date" class="text-danger"></span>
+                            </div>*@
+                            @*<div class="form-group">
+                                <label asp-for="InstructorId" class="control-label"></label>
+                                <select asp-for="InstructorId" class="form-control" asp-items="ViewBag.InstructorId"></select>
+                                <span asp-validation-for="InstructorId" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CourseId" class="control-label"></label>
+                                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                                <span asp-validation-for="CourseId" class="text-danger"></span>
+                            </div>*@
+                            <input type="hidden" name="CourseId" value="@courseID" />
+                            <input type="hidden" name="InstructorId" value="c502e9eb-d5f1-41d4-ac12-52c65d7e89cb" />
+                            <input type="hidden" id="editDate" name="Date" value="" />
+                            @*<div class="form-group">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>*@
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function edit(id, name, date) {
+            document.getElementById("editName").value = name;
+            document.getElementById("editId").value = id;
+            document.getElementById("editDate").value = date;
+        }
+    </script>
 </body>
-        </html>
+</html>

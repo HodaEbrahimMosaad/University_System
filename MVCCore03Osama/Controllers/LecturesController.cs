@@ -19,76 +19,67 @@ namespace MVCCore03Osama.Controllers
             _context = context;
         }
 
-        // GET: Lectures
-        public async Task<IActionResult> Index()
+        // GET: Lectures/Index/5
+        public IActionResult Index(int courseId)
         {
-            var applicationDbContext = _context.lectures.Include(l => l.Course).Include(l => l.Instructor);
-            return View(await applicationDbContext.ToListAsync());
-        }
-
-        // GET: Lectures/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var lecture = await _context.lectures
-                .Include(l => l.Course)
-                .Include(l => l.Instructor)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (lecture == null)
-            {
-                return NotFound();
-            }
-
-            return View(lecture);
-        }
-
-        // GET: Lectures/Create
-        public IActionResult Create()
-        {
-            ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion");
-            ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id");
+            //var applicationDbContext = _context.lectures.Where(l => l.CourseId == courseId);
+            ViewData["CourseId"] = courseId;
+            ViewData["LectureId"] = Request.Query["LectureID"];
+            
             return View();
         }
+
+        //// GET: Lectures/Create
+        //public IActionResult Create()
+        //{
+        //    ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion");
+        //    ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id");
+        //    return View();
+        //}
 
         // POST: Lectures/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Name,Date,InstructorId,CourseId")] Lecture lecture)
+        //[Bind("ID,Name,Date,InstructorId,CourseId")] 
+        public async Task<IActionResult> Create(Lecture lecture)
         {
             if (ModelState.IsValid)
             {
+                lecture.Date = DateTime.Now;
                 _context.Add(lecture);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //ViewData["CourseId"] = courseId;
+                //ViewData["LectureId"] = Request.Query["LectureID"]
+                
+                //return RedirectToAction(nameof(Index), _params);
+                //return RedirectToAction("Index", "HomeUser", _params);
             }
-            ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion", lecture.CourseId);
-            ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id", lecture.InstructorId);
-            return View(lecture);
+            //ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion", lecture.CourseId);
+            //ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id", lecture.InstructorId);
+            //return View(lecture);
+            var _params = new { CourseID = Request.Query["CourseId"] };
+            return RedirectToAction("Index", "HomeUser", _params);
         }
 
-        // GET: Lectures/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Lectures/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var lecture = await _context.lectures.FindAsync(id);
-            if (lecture == null)
-            {
-                return NotFound();
-            }
-            ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion", lecture.CourseId);
-            ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id", lecture.InstructorId);
-            return View(lecture);
-        }
+        //    var lecture = await _context.lectures.FindAsync(id);
+        //    if (lecture == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion", lecture.CourseId);
+        //    ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id", lecture.InstructorId);
+        //    return View(lecture);
+        //}
 
         // POST: Lectures/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -120,43 +111,61 @@ namespace MVCCore03Osama.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
             }
-            ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion", lecture.CourseId);
-            ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id", lecture.InstructorId);
-            return View(lecture);
+            //ViewData["CourseId"] = new SelectList(_context.courses, "ID", "Describtion", lecture.CourseId);
+            //ViewData["InstructorId"] = new SelectList(_context.Set<Instructor>(), "Id", "Id", lecture.InstructorId);
+            //return View(lecture);
+            var _params = new { CourseID = Request.Query["CourseId"] };
+            return RedirectToAction("Index", "HomeUser", _params);
         }
 
-        // GET: Lectures/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: Lectures/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var lecture = await _context.lectures
-                .Include(l => l.Course)
-                .Include(l => l.Instructor)
-                .FirstOrDefaultAsync(m => m.ID == id);
-            if (lecture == null)
-            {
-                return NotFound();
-            }
+        //    var lecture = await _context.lectures
+        //        .Include(l => l.Course)
+        //        .Include(l => l.Instructor)
+        //        .FirstOrDefaultAsync(m => m.ID == id);
+        //    if (lecture == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(lecture);
-        }
+        //    return View(lecture);
+        //}
 
-        // POST: Lectures/Delete/5
-        [HttpPost, ActionName("Delete")]
+        //// POST: Lectures/Delete/5
+        //[ActionName("Delete")]
+        [HttpGet]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> Delete(int id)
         {
             var lecture = await _context.lectures.FindAsync(id);
             _context.lectures.Remove(lecture);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+
+            var _params = new { CourseID = Request.Query["CourseId"] };
+            return RedirectToAction("Index", "HomeUser", _params);
+            //return RedirectToAction(nameof(Index));
         }
+
+        public async Task<IActionResult> removeLec(int id)
+        {
+            var lecture = await _context.lectures.FindAsync(id);
+            _context.lectures.Remove(lecture);
+            await _context.SaveChangesAsync();
+
+            var _params = new { CourseID = Request.Query["CourseId"] };
+            return RedirectToAction("Index", "HomeUser", _params);
+            //return RedirectToAction(nameof(Index));
+        }
+
 
         private bool LectureExists(int id)
         {

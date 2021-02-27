@@ -36,6 +36,7 @@ namespace MVCCore03Osama
             services.AddScoped<IStudent, StudentRepoService>();
             services.AddScoped<IInstructor,InstructorRepoService>();
             services.AddScoped<ICourse,CourseRepoService>();
+            services.AddScoped<userCoursesService>();
             //services.AddTransient<IEmailSender, IEmailSender>();
 
             //services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)

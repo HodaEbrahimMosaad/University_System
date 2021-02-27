@@ -7,16 +7,27 @@
     {
         <li class="nav-item">
             <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-
-                Hello
                 @{
                     var _user = await UserManager.FindByNameAsync(User.Identity.Name);
-                    var name = _user.Fname + " " + _user.Lname;
+                    var name = _user.Fname;
                 }
-                @name ** @_user.Id !
+                Hello @name
 
-                @{ var img =_user.Email+"/" +  @_user.ImgName;}
-                <img asp-append-version="true" width="40px" height="40px" style="border-radius: 50%;" src="@("Images/" + img)" />
+
+
+
+
+                @{string img = "def.jfif";
+                    if (_user.ImgName != "def.jfif")
+                    {
+                        img = _user.Email + "/" + @_user.ImgName;
+
+                    }
+                    <img asp-append-version="true" width="40" height="40" style="border-radius: 50%;" src=@("~/Images/" + img) />
+                }
+
+
+
 
 
             </a>

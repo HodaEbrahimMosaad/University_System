@@ -81,15 +81,18 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+
+                var u = await _userManager.FindByEmailAsync(Input.Email);
+                if (result.Succeeded && u.status==Status.Active)
                 {
                     _logger.LogInformation("User logged in.");
                     _signInManager.IsSignedIn(User);
-                    var u = await _userManager.FindByEmailAsync(Input.Email);
-                    if (u.UserRole==Role.Admin)
+                    
+                    if (u.UserRole==Role.Admin )
                     {
                         returnUrl = Url.Content("~/Admin/AdminHome");
                     }
+                   
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

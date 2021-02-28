@@ -72,6 +72,7 @@ function showInPopup(url, title) {
 jQueryAjaxDelete = form => {
     if (confirm('Are you sure to delete this record ?')) {
         try {
+            
             $.ajax({
                 type: 'POST',
                 url: form.action,
@@ -79,6 +80,7 @@ jQueryAjaxDelete = form => {
                 contentType: false,
                 processData: false,
                 success: function (res) {
+                    alert("h")
                     $('#ViewAll').html(res.html);
                 },
                 error: function (err) {

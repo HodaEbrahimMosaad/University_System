@@ -1,7 +1,7 @@
 ﻿@model Student
 @{
     ViewData["Title"] = "Delete";
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    Layout = null;
 }
 
 <h1>Delete</h1>
@@ -14,50 +14,52 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Bio)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.Bio)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Fname)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.Fname)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Lname)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.Lname)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.UserName)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.status)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-6">
             @Html.DisplayFor(model => model.status)
         </dd>
     </dl>
 
-    <form asp-action="Delete">
+    <form asp-action="Delete"  asp-route-id="@Model.Id" onsubmit="return jQueryAjaxDelete(this);">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="allStudents">Back to List</a>
     </form>
+
+  
 </div>

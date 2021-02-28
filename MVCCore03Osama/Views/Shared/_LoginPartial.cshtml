@@ -5,38 +5,84 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                @{
-                    var _user = await UserManager.FindByNameAsync(User.Identity.Name);
-                    var name = _user.Fname;
-                }
-                Hello @name
-
-
-
-
-
-                @{string img = "def.jfif";
-                    if (_user.ImgName != "def.jfif")
-                    {
-                        img = _user.Email + "/" + @_user.ImgName;
-
+        if (User.IsInRole("Admin"))
+        {
+            <li class="user-profile header-notification">
+                <a nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    @{
+                        var _user = await UserManager.FindByNameAsync(User.Identity.Name);
+                        var name = _user.Fname;
                     }
-                    <img asp-append-version="true" width="40" height="40" style="border-radius: 50%;" src=@("~/Images/" + img) />
-                }
+                    @{string img = "def.jfif";
+                        if (_user.ImgName != "def.jfif")
+                        {
+                            img = _user.Email + "/" + @_user.ImgName;
+
+                        }
+                        <img asp-append-version="true" src=@("~/Images/" + img) id="navProfileImg" alt="User-Profile-Image" />
+                    }
+                    <span>@name</span>
+                    <i class="ti-angle-down"></i>
+                </a>
+                <ul class="show-notification profile-notification">
+                    <li>
+                        <a href="#!">
+                            <i class="ti-settings"></i> Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="ti-user"></i> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="ti-email"></i> My Messages
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="ti-lock"></i> Lock Screen
+                        </a>
+                    </li>
+                    <li>
+                        <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="nav-link btn btn-link "><i class="ti-layout-sidebar-left"></i> Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                    @{
+                        var _user = await UserManager.FindByNameAsync(User.Identity.Name);
+                        var name = _user.Fname;
+                    }
+                    Hello @name
+
+                    @{string img = "def.jfif";
+                        if (_user.ImgName != "def.jfif")
+                        {
+                            img = _user.Email + "/" + @_user.ImgName;
+
+                        }
+                        <img asp-append-version="true" width="40" height="40" style="border-radius: 50%;" src=@("~/Images/" + img) />
+                    }
+
+                </a>
+            </li>
+            <li class="nav-item">
+                <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                    <button type="submit" class="nav-link btn btn-link ">Logout</button>
+                </form>
+            </li>
+        }
 
 
 
-
-
-            </a>
-        </li>
-        <li class="nav-item">
-            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link ">Logout</button>
-            </form>
-        </li>
     }
     else
     {

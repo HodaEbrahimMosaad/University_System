@@ -1,11 +1,14 @@
 ﻿@model List<StudentCoursesVM>
- 
+
 @{
     ViewData["Title"] = "getActiveStudents";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>getActiveStudents</h1>
+@section graphs{
+    @*<partial name="_graphsPartial" model="@vars"></partial>*@
+    @await Component.InvokeAsync("Graphs")
+}
+<h3>getActiveStudents</h3>
 
 
 <table class="table">
@@ -22,40 +25,40 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @item.student.Email
-            </td>
-            <td>
-                @item.student.Fname
-            </td>
-            <td>
-                @item.student.Lname
-            </td>
-            <td>
-                @item.student.UserName
+            <tr>
+                <td>
+                    @item.student.Email
+                </td>
+                <td>
+                    @item.student.Fname
+                </td>
+                <td>
+                    @item.student.Lname
+                </td>
+                <td>
+                    @item.student.UserName
 
-            </td>
+                </td>
 
-            <td>
-                @{ var cousrsList = new SelectList(@item.coursesToAssign, "ID", "Name"); }
+                <td>
+                    @{ var cousrsList = new SelectList(@item.coursesToAssign, "ID", "Name"); }
 
-                <select onchange="assignStudetCourse(this,'@item.student.Id')" asp-items=@cousrsList class="single-select">
-                </select>
-            </td>
-            <td>
-                @{ var cousrsListRemoved = new SelectList(@item.coursesToRemove, "ID", "Name"); }
+                    <select onchange="assignStudetCourse(this,'@item.student.Id')" asp-items=@cousrsList class="single-select">
+                    </select>
+                </td>
+                <td>
+                    @{ var cousrsListRemoved = new SelectList(@item.coursesToRemove, "ID", "Name"); }
 
-                <select onchange="RemoveStudetCourse(this,'@item.student.Id')" asp-items=@cousrsListRemoved class="single-select">
-                </select>
-            </td>
-        </tr>
+                    <select onchange="RemoveStudetCourse(this,'@item.student.Id')" asp-items=@cousrsListRemoved class="single-select">
+                    </select>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
 <script>
-  
+
     function assignStudetCourse(value, stdID) {
         $.ajax({
             type: "Get",
@@ -97,4 +100,4 @@
 
 
 </script>
-   
+

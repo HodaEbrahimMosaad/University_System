@@ -22,6 +22,42 @@ namespace MVCCore03Osama.Controllers
         {
             return View(await student.getAllStudents());
         }
+
+        [NoDirectAccess]
+        [HttpGet]
+        public IActionResult AddOrEdit(string  id="")
+        {
+            var std = new Student();
+            if (id != "") 
+            {
+                std = student.getStudent(id);
+            }
+            
+            return View(std);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit(string id, Student _student)
+        {
+            if (ModelState.IsValid)
+            {
+                var std = student.getStudent(id);
+                if (std == null)
+                {
+                   await student.createStudent(_student);
+                }
+                else
+                {
+                   student.EditStudent(_student);
+                }
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView",await student.getAllStudents()) });
+            }
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", _student) });
+        }
+
+
         [HttpGet]
         public  IActionResult Edit(string id)
         {
@@ -48,20 +84,22 @@ namespace MVCCore03Osama.Controllers
                 return View(student.getStudent(id));
             
         }
-        [HttpGet]
-        public IActionResult Delete(string id)
-        {
-            return View(student.getStudent(id));
-        }
+        //[HttpGet]
+        //public IActionResult Delete(string id)
+        //{
+        //    return View(student.getStudent(id));
+        //}
         [HttpPost]
-        public IActionResult Delete(string id ,Student _student)
+        public async Task<IActionResult>Delete(string id )
         {
+            var _student = student.getStudent(id);
             bool isDeleted = student.deleteStudent(id, _student);
             if (isDeleted)
             {
-                return RedirectToAction(nameof(allStudents));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView", await student.getAllStudents()) });
             }
-            return View();
+            
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Delete", _student) });
         }
         [HttpGet]
         public IActionResult Create()
@@ -74,9 +112,10 @@ namespace MVCCore03Osama.Controllers
            bool isCreated = await student.createStudent( _student);
             if (isCreated == true)
             {
-                return RedirectToAction(nameof(allStudents));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView", await student.getAllStudents()) });
             }
-            return View( _student);
+
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", _student) });
         }
     }
 

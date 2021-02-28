@@ -34,6 +34,7 @@ function showInPopup(url, title) {
     jQueryAjaxPost = form => {
     
         try {
+            
             $.ajax({
                 type: 'POST',
                 url: form.action,
@@ -48,7 +49,7 @@ function showInPopup(url, title) {
                         //document.getElementById("courseForm").reset();
                         $('#form-modal').modal('hide');
 
-                        
+                        alert(";;")
                         $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
                         
                     }
@@ -71,6 +72,7 @@ function showInPopup(url, title) {
 jQueryAjaxDelete = form => {
     if (confirm('Are you sure to delete this record ?')) {
         try {
+            
             $.ajax({
                 type: 'POST',
                 url: form.action,
@@ -78,6 +80,7 @@ jQueryAjaxDelete = form => {
                 contentType: false,
                 processData: false,
                 success: function (res) {
+                    alert("h")
                     $('#ViewAll').html(res.html);
                 },
                 error: function (err) {

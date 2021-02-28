@@ -3,9 +3,13 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>All Uers</h1>
+@section graphs{
+    @*<partial name="_graphsPartial" model="@vars"></partial>*@
+    @await Component.InvokeAsync("Graphs")
+}
+<h3>All Uers</h3>
 
 <div id="ViewAll">
+
     @await Html.PartialAsync("_ViewAllUsers", Model)
 </div>

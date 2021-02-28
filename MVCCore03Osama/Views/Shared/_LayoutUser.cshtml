@@ -51,14 +51,6 @@
                     }
 
                 }
-
-                @*<li class="nav-item">
-                        <a class="nav-link" asp-controller="Lectures" asp-action="Index" asp-route-id="1" title="Cours1">Cours1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Lectures" asp-action="Index" asp-route-id="1" title="Cours2">Cours2</a>
-
-                            </li>*@
             </ul>
         </nav>
 
@@ -99,28 +91,12 @@
                                         edit
                                     </a>
                                     <a href="Lectures/removeLec?id=@lec.ID&CourseId=@courseID">remove</a>
-                                    @*<a class="nav-link" asp-controller="Lectures" asp-action asp-action="DeleteConfirmed" asp-route-Id="@lec.ID" asp-route-courseID="@courseID">remove</a>*@
-                                    @*<a href="#" type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")' data-bs-toggle="modal" data-bs-target="#editModal">
-                                        remove
-                                    </a>*@
                                 </li>
                             }
-                            @*<a href="#" type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")' data-bs-toggle="modal" data-bs-target="#editModal">
-                        edit
-                    </a>
-                    <a href="#" type="button" onclick='edit("@lec.ID", "@lec.Name", "@lec.Date")'  data-bs-toggle="modal" data-bs-target="#editModal">
-                        remove
-                    </a>*@
                         }
 
                     </ul>
                 }
-
-                <!--a class="list-group-item active" asp-controller="Lectures" asp-action="Index" asp-route-LecId=6 asp-route-id="1" title="Lec 2">Lec 2</!--a>
-    <a class="list-group-item" asp-controller="Lectures" asp-action="Index" asp-route-LecId=6 asp-route-id="1" title="Lec 2">Lec 2</a>
-    <a class="list-group-item">A third item</a>
-    <a class="list-group-item">A fourth item</a>
-    <a class="list-group-item">And a fifth one</a-->
             </div>
             <div class="col-lg-9">
                 <div class="container px-4">

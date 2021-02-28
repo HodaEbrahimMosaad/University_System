@@ -14,13 +14,21 @@ namespace MVCCore03Osama.Controllers
     {
         private readonly IStudent student;
         private readonly IInstructor instructor;
-        public AdminController(IStudent _student,IInstructor _instructor)
+        private readonly ICourse course;
+        public AdminController(IStudent _student,IInstructor _instructor, ICourse _course)
         {
             student = _student;
             instructor = _instructor;
+            course = _course;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> AdminHome()
         {
+            var st = await student.getAllStudents();
+            var ins = await instructor.getAllActiveInstructors();
+            var co = await course.GetAll();
+            ViewBag.studentsCount = st.Count;
+            ViewBag.instructorsCount = ins.Count;
+            ViewBag.coursesCount = co.Count;
             return View();
         }
 

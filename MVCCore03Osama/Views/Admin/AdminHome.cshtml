@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    List<int> vars = new List<int>()
+    {
+        (int)@ViewBag.studentsCount,
+        (int)@ViewBag.instructorsCount,
+        (int)@ViewBag.coursesCount,
+        (int)@ViewBag.studentsCount + (int)@ViewBag.instructorsCount,
+    };
+}
+@section graphs{ 
+    <partial name="_graphsPartial" model="@vars"></partial>
+}

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCCore03Osama.Data;
 using MVCCore03Osama.Models;
+
 using MVCCore03Osama.Service;
 
 using Microsoft.AspNetCore.Identity;
@@ -61,6 +62,7 @@ namespace MVCCore03Osama.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
+
             ViewData["LectureID"] = new SelectList(_context.lectures, "ID", "InstructorId");
             return View();
         }
@@ -70,6 +72,7 @@ namespace MVCCore03Osama.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create([Bind("ID,Title,Date,Body,ApplicationUserId,LectureID")] Post post)
         {
             if (ModelState.IsValid)
@@ -78,6 +81,7 @@ namespace MVCCore03Osama.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["LectureID"] = new SelectList(_context.lectures, "ID", "InstructorId", post.LectureID);
             return View(post);
         }
@@ -104,6 +108,7 @@ namespace MVCCore03Osama.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Date,Body,ApplicationUserId,LectureID")] Post post)
         {
             if (id != post.ID)
@@ -131,6 +136,7 @@ namespace MVCCore03Osama.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["LectureID"] = new SelectList(_context.lectures, "ID", "InstructorId", post.LectureID);
             return View(post);
         }
@@ -169,6 +175,7 @@ namespace MVCCore03Osama.Controllers
         {
             return _context.posts.Any(e => e.ID == id);
         }
+
         public bool DeletePost(int ID)
         {
             _post.DeletePost(ID);
@@ -193,5 +200,6 @@ namespace MVCCore03Osama.Controllers
             _context.SaveChanges();*/
             return true;
         }
+
     }
 }

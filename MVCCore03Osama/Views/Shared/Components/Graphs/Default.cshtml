@@ -1,0 +1,69 @@
+﻿<!-- card1 start -->
+<div class="col-md-6 col-xl-3">
+    <div class="card widget-card-1">
+        <div class="card-block-small">
+
+            <i class="icofont bg-c-blue card1-icon"><i class="fa fa-user-graduate"></i></i>
+            <span class="text-c-blue f-w-600">Students</span>
+            <h4>@ViewBag.studentsCount</h4>
+            <div>
+                <span class="f-left m-t-10 text-muted">
+                    <i class="text-c-blue f-16 icofont icofont-warning m-r-10"></i>Follow Up Students
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- card1 end -->
+<!-- card1 start -->
+<div class="col-md-6 col-xl-3">
+    <div class="card widget-card-1">
+        <div class="card-block-small">
+            <i class="icofont  bg-c-pink card1-icon"><i class="fa fa-chalkboard-teacher"></i></i>
+
+            <span class="text-c-pink f-w-600">Instructors</span>
+            <h4>@ViewBag.instructorsCount</h4>
+            <div>
+                <span class="f-left m-t-10 text-muted">
+                    <i class="text-c-pink f-16 icofont m-r-10"><i class="fa fa-pencil-alt"></i></i>Update Instructor data
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- card1 end -->
+<!-- card1 start -->
+<div class="col-md-6 col-xl-3">
+    <div class="card widget-card-1">
+        <div class="card-block-small">
+            <i class="icofont bg-c-green card1-icon"><i class="fa fa-books"></i></i>
+
+            <span class="text-c-green f-w-600">Courses</span>
+            <h4>@ViewBag.coursesCount</h4>
+            <div>
+                <span class="f-left m-t-10 text-muted">
+                    <i class="text-c-green f-16 icofont icofont-tag m-r-10"></i>Check Courses Discussion
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- card1 end -->
+<!-- card1 start -->
+<div class="col-md-6 col-xl-3">
+    <div class="card widget-card-1">
+        <div class="card-block-small">
+            <i class="icofont bg-c-yellow card1-icon"><i class="fa fa-users"></i></i>
+
+            <span class="text-c-yellow f-w-600">All Users</span>
+            @{ var usersCount = (int)@ViewBag.studentsCount + (int)@ViewBag.instructorsCount;}
+            <h4>@usersCount</h4>
+            <div>
+                <span class="f-left m-t-10 text-muted">
+                    <i class="text-c-yellow f-16 icofont icofont-refresh m-r-10"></i>Manage Users
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- card1 end -->

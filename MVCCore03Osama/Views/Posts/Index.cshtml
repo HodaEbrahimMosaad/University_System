@@ -1,0 +1,129 @@
+﻿@model IEnumerable<MVCCore03Osama.Models.Post>
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Index";
+    var _user = await UserManager.FindByNameAsync(User.Identity.Name);
+    var name = _user.Fname;
+    var Uip = _user.Id;
+}
+
+<h1>Index</h1>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" href="~/css/PostStyle.css">
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<div>
+    <form method="get">
+        @Html.AntiForgeryToken()
+
+        <table border="1" cellpadding="10">
+            <tr>
+                <td>Post title :</td>
+                <td>
+                    <input id="PostTitle" type="text" />
+                </td>
+            </tr>
+            <tr>
+                <td>Post Body :</td>
+                <td><textarea style="font-size:18px; resize:none" id="PostBody" name="w3review" rows="4" cols="50"></textarea></td>
+                <td hidden>
+                    <input id="HiddenID" value="@Uip" hidden />
+                </td>
+            </tr>
+
+
+            <tr>
+                <td colspan="2">
+                    <input id="insert" style="width:60px; height:30px; outline:none; border-radius:0; background-color:#28a745;border:0;" type="button" value="Post" />
+                </td>
+            </tr>
+        </table>
+        <br />
+        <div id="msg"></div>
+    </form>
+</div>
+<table class="table">
+    <tbody id="table">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <div style="width:100% !important" class="PostView" >
+                        <a asp-action="Details" asp-route-id="@item.ID">@item.Title</a>
+                        <p style="font-size:12px">@item.Date</p>
+                        <h4>@item.Body</h4>
+
+
+
+                        <input style="width:80px; height:30px; outline:none; border-radius:0; background-color:#007bff;border:0;" type="button" value="Comments" onclick="location.href = '@Url.Action("Details", "Posts" , new { ID = item.ID })'" />
+                        @if (item.ApplicationUserId == Uip)
+                        {
+                            <input style="width:60px; height:30px; outline:none; border-radius:0; background-color:#dc3545;border:0;" type="button" value="Delete" onclick="deletePost('@item.ID')" />
+    
+                            <input style="width:60px; height:30px; outline:none; border-radius:0; background-color:#ffc107;border:0;" type="button" value="Edit" onclick="location.href = '@Url.Action("Edit", "Posts" , new { ID = item.ID })'" />
+
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script>
+
+    $("#insert").click(function () {
+        $.ajax({
+type: "Get",
+url: '@Url.Action("Insert","Posts")',
+contentType: "json",
+            data: {
+                body:$("#PostBody").val(),
+                Title: $("#PostTitle").val(),
+                ID: $("#HiddenID").val()
+            },
+    dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                var inst = JSON.parse(Data);
+                $('#table').load(document.URL + ' #table');
+            },
+            error: function () {
+                if (($("#PostBody").val() == "") || ($("#PostTitle").val() == "")) {
+                    alert('Enter Valid Data')
+                }
+                else {alert('A error');}
+            }
+             });
+
+    });
+    function deletePost(Insid) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("DeletePost", "Posts")',
+            contentType: "json",
+            data: { ID: Insid },
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                $('.PostView').css({"width": "100% !important" });
+                $('#table').load(document.URL + ' #table');
+
+                /*document.getElementById("noti").style.display="block";
+                setTimeout(function () { document.getElementById("noti").style.display = "none"}, 3000);*/
+
+            },
+            error: function (e) {
+                alert("dasdasdads") }
+        });
+    }
+    /*function GoToPost () {
+        document.getElementById("demo").style.color = "red";
+    }*/
+</script>

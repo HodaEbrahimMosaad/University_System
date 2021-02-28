@@ -10,6 +10,7 @@
                 @{
                     var _user = await UserManager.FindByNameAsync(User.Identity.Name);
                     var name = _user.Fname;
+                    var Uip = _user.Id;
                 }
                 Hello @name
 

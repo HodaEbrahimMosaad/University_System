@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCCore03Osama.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210227150813_aliaa")]
-    partial class aliaa
+    [Migration("20210227193507_MahmoudEzzat")]
+    partial class MahmoudEzzat
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -250,7 +250,7 @@ namespace MVCCore03Osama.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LectureID")
+                    b.Property<int>("LectureID")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -500,13 +500,17 @@ namespace MVCCore03Osama.Migrations
 
             modelBuilder.Entity("MVCCore03Osama.Models.Post", b =>
                 {
-                    b.HasOne("MVCCore03Osama.Models.Lecture", null)
+                    b.HasOne("MVCCore03Osama.Models.Lecture", "Lecture")
                         .WithMany("Posts")
-                        .HasForeignKey("LectureID");
+                        .HasForeignKey("LectureID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MVCCore03Osama.Models.ApplicationUser", "postOwner")
                         .WithMany()
                         .HasForeignKey("postOwnerId");
+
+                    b.Navigation("Lecture");
 
                     b.Navigation("postOwner");
                 });

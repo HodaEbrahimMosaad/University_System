@@ -5,7 +5,11 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>getActiveStudents</h1>
+@section graphs{
+    @*<partial name="_graphsPartial" model="@vars"></partial>*@
+    @await Component.InvokeAsync("Graphs")
+}
+<h3>getActiveStudents</h3>
 
 
 <table class="table">
@@ -39,19 +43,19 @@
 
                 <td>
                     @{ SelectList cousrsList = default;
-                        if(@item.coursesToAssign!=null)
-                            cousrsList= new SelectList(@item.coursesToAssign, "ID", "Name");
-                        }
+                        if (@item.coursesToAssign != null)
+                            cousrsList = new SelectList(@item.coursesToAssign, "ID", "Name");
+                    }
 
-                    <select onchange="assignInstructorCourse(this,'@item.instructor.Id')"  asp-items=@cousrsList class="single-select form-control">
+                    <select onchange="assignInstructorCourse(this,'@item.instructor.Id')" asp-items=@cousrsList class="single-select form-control">
                     </select>
                 </td>
                 <td>
                     @{
                         SelectList cousrsListRemoved = default;
-                        if (@item.coursesToRemove!= null)
+                        if (@item.coursesToRemove != null)
                             cousrsListRemoved = new SelectList(@item.coursesToRemove, "ID", "Name");
-                        }
+                    }
 
                     <select onchange="RemoveInstructorCourse(this,'@item.instructor.Id')" asp-items=@cousrsListRemoved class="single-select">
                     </select>

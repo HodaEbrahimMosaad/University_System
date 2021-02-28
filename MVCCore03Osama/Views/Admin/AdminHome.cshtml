@@ -12,5 +12,6 @@
     };
 }
 @section graphs{ 
-    <partial name="_graphsPartial" model="@vars"></partial>
+    @*<partial name="_graphsPartial" model="@vars"></partial>*@
+    @await Component.InvokeAsync("Graphs")
 }

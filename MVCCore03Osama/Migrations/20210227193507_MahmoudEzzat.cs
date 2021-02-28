@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVCCore03Osama.Migrations
 {
-    public partial class esraa : Migration
+    public partial class MahmoudEzzat : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -271,7 +271,7 @@ namespace MVCCore03Osama.Migrations
                     Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
                     ApplicationUserId = table.Column<int>(type: "int", nullable: false),
                     postOwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    LectureID = table.Column<int>(type: "int", nullable: true)
+                    LectureID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -287,7 +287,7 @@ namespace MVCCore03Osama.Migrations
                         column: x => x.LectureID,
                         principalTable: "lectures",
                         principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

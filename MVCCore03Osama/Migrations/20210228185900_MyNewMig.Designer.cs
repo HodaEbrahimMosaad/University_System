@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCCore03Osama.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210226180348_esraaaaa")]
-    partial class esraaaaa
+    [Migration("20210228185900_MyNewMig")]
+    partial class MyNewMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -239,8 +239,8 @@ namespace MVCCore03Osama.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Body")
                         .IsRequired()
@@ -250,7 +250,7 @@ namespace MVCCore03Osama.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("LectureID")
+                    b.Property<int>("LectureID")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -258,14 +258,11 @@ namespace MVCCore03Osama.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("postOwnerId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("ID");
 
-                    b.HasIndex("LectureID");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("postOwnerId");
+                    b.HasIndex("LectureID");
 
                     b.ToTable("posts");
                 });
@@ -500,13 +497,17 @@ namespace MVCCore03Osama.Migrations
 
             modelBuilder.Entity("MVCCore03Osama.Models.Post", b =>
                 {
-                    b.HasOne("MVCCore03Osama.Models.Lecture", null)
-                        .WithMany("Posts")
-                        .HasForeignKey("LectureID");
-
                     b.HasOne("MVCCore03Osama.Models.ApplicationUser", "postOwner")
                         .WithMany()
-                        .HasForeignKey("postOwnerId");
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("MVCCore03Osama.Models.Lecture", "Lecture")
+                        .WithMany("Posts")
+                        .HasForeignKey("LectureID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lecture");
 
                     b.Navigation("postOwner");
                 });

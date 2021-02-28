@@ -88,7 +88,7 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                     var u = await _userManager.FindByEmailAsync(Input.Email);
                     if (u.UserRole==Role.Admin)
                     {
-                        returnUrl = Url.Content("~/Home/AdminHome");
+                        returnUrl = Url.Content("~/Admin/AdminHome");
                     }
                     return LocalRedirect(returnUrl);
                 }

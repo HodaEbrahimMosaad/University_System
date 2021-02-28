@@ -84,6 +84,12 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    _signInManager.IsSignedIn(User);
+                    var u = await _userManager.FindByEmailAsync(Input.Email);
+                    if (u.UserRole==Role.Admin)
+                    {
+                        returnUrl = Url.Content("~/Home/AdminHome");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

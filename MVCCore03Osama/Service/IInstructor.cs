@@ -14,6 +14,9 @@ namespace MVCCore03Osama.Service
 
         public Task<List<Instructor>> GetAll();
         public Task<Instructor> GetDetails(string id);
+        public Task<bool> DeleteInstructor(string id);
+        public Task<Instructor> Edit(string id);
+        public Task<bool> UpdateInstructor(string id, Instructor instructor);
         public Task<List<InstructorCourseVM>> getAllActiveInstructors();
         public bool regesterInstructorInCourse(string InsId, int courseId);
         public bool removeInstructorFromCourse(string InsId, int courseId);

@@ -61,8 +61,8 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             public string Email { get; set; }
 
             [Required(ErrorMessage = "FName name is required")]
-            [StringLength(20, MinimumLength = 5,
-            ErrorMessage = "FName should be minimum 5 characters and a maximum of 20 characters")]
+            [StringLength(20, MinimumLength = 3,
+            ErrorMessage = "FName should be minimum 3 characters and a maximum of 20 characters")]
             [DataType(DataType.Text)]
             public string Fname { get; set; }
 
@@ -71,8 +71,8 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             public Role UserRole { set; get; }
 
             [Required(ErrorMessage = "LName name is required")]
-            [StringLength(20, MinimumLength = 5,
-            ErrorMessage = "LName should be minimum 5 characters and a maximum of 20 characters")]
+            [StringLength(20, MinimumLength = 3,
+            ErrorMessage = "LName should be minimum 3 characters and a maximum of 20 characters")]
             [DataType(DataType.Text)]
             public string Lname { get; set; }
 
@@ -97,6 +97,12 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
+            [Required(ErrorMessage = "Degree name is required")]
+            [StringLength(100, MinimumLength = 3,
+            ErrorMessage = "Degree name should be minimum 3 characters and a maximum of 100 characters")]
+            [DataType(DataType.Text)]
+            public string Degree { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -112,21 +118,24 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 string wwwrootPath = webHostEnvironment.WebRootPath;
-                string fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
-                string extention = Path.GetExtension(Input.ImageFile.FileName);
-                fileName = fileName + DateTime.Now.ToString("yymmssfff") + extention;
                 string email_path = Path.Combine(wwwrootPath + "/Images/", Input.Email);
                 if (!Directory.Exists(email_path))
                 {
                     Directory.CreateDirectory(email_path);
                 }
-
-                string path = Path.Combine(wwwrootPath + "/Images/" + Input.Email  + "/"+ fileName);
-                using(var fileStream  = new FileStream(path, FileMode.Create))
+                string fileName = "def.jfif";
+                if (Input.ImageFile != null)
                 {
-                    await Input.ImageFile.CopyToAsync(fileStream);
+                    fileName = Path.GetFileNameWithoutExtension(Input.ImageFile.FileName);
+                    string extention = Path.GetExtension(Input.ImageFile.FileName);
+                    fileName = fileName + DateTime.Now.ToString("yymmssfff") + extention;
+                    string path = Path.Combine(wwwrootPath + "/Images/" + Input.Email + "/" + fileName);
+                    using (var fileStream = new FileStream(path, FileMode.Create))
+                    {
+                        await Input.ImageFile.CopyToAsync(fileStream);
+                    }
                 }
-
+                
                 var user = new ApplicationUser
                 {
                     UserName = Input.Email,
@@ -135,7 +144,8 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                     Lname = Input.Lname,
                     Bio = Input.Bio,
                     ImgName = fileName,
-                    UserRole = Input.UserRole
+                    UserRole = Input.UserRole,
+                    status=Status.Pendding
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

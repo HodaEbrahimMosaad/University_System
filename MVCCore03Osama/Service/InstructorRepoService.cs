@@ -20,6 +20,93 @@ namespace MVCCore03Osama.Service
             db = applicationDbContext;
             userManager = _userManager;
         }
+
+        public async Task<Instructor> Edit(string id)
+        {
+            if (id == null)
+            {
+                return null;
+            }
+
+            var instructors = await userManager.Users.Where
+                    (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+            var instructor = instructors.SingleOrDefault(t => t.Id == id);
+            if (instructor == null)
+            {
+                return null;
+            }
+            var serializedParent = JsonConvert.SerializeObject(instructor);
+            var ins = JsonConvert.DeserializeObject<Instructor>(serializedParent);
+            return ins;
+        }
+
+        public async Task<bool> DeleteInstructor(string id)
+        {
+            try
+            {
+                var instructors = await userManager.Users.Where
+                    (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+                var instructor = instructors.SingleOrDefault(t => t.Id == id);
+                if (instructor != null)
+                {
+                    instructor.status = Status.Blocked;
+                    var AllCourses = await db.courses.ToListAsync();
+                    var setNull = AllCourses.Where(c => c.InstructorId == instructor.Id).ToList();
+                    setNull.ForEach(c => c.InstructorId = null);
+                    var crsIDs = setNull.Select(c => c.ID).ToList();
+                    var StuCour = await db.studentCourses.ToListAsync();
+                    var stucrsToRemove = StuCour.Where(sc => crsIDs.Contains(sc.CourseId)).ToList();
+                    db.RemoveRange(stucrsToRemove);
+                    db.Users.Update(instructor);
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public async Task<bool> UpdateInstructor(string id, Instructor _instructor)
+        {
+            if (id != _instructor.Id)
+            {
+                return false;
+            }
+            try
+            {
+                var instructors = await userManager.Users.Where
+                    (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
+                var instructor = instructors.SingleOrDefault(t => t.Id == id);
+                if (instructor != null)
+                {
+                    instructor.Fname = _instructor.Fname;
+                    instructor.Lname = _instructor.Lname;
+                    instructor.Email = _instructor.Email;
+                    instructor.UserName = _instructor.UserName;
+                    instructor.PhoneNumber = _instructor.PhoneNumber;
+                    instructor.Bio = _instructor.Bio;
+                    db.Users.Update(instructor);
+                    db.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+                db.Users.Update(_instructor);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public async Task<Instructor> GetDetails(string id) {
             var instructors = await userManager.Users.Where
                (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
@@ -60,13 +147,16 @@ namespace MVCCore03Osama.Service
                  if (CoursesToRemove != null)
                 {
                     // CoursesToAssign = await db.courses.Except(CoursesToRemove).ToListAsync();
-                    newInstructor.Courses =  db.courses.AsEnumerable().Except(CoursesToRemove).ToList(); 
-                    //CoursesToAssign =  db.courses.Where(o => !CoursesToRemove.Any(p => p.ID == o.ID)).ToList();
+                    newInstructor.Courses =  db.courses.AsEnumerable().Except(CoursesToRemove).ToList();
+                    var ListToExeptStudntCourse = newInstructor.Courses;
+                    var courseWithIns = db.courses.Where(c => c.InstructorId != null).ToList();
+                    CoursesToAssign = ListToExeptStudntCourse.Where(o => !courseWithIns.Any(p => p.ID == o.ID)).ToList();
+                   
                 }
                 InstructorCourses.Add(new InstructorCourseVM()
                 {
                     instructor = newInstructor,
-                    coursesToAssign = newInstructor.Courses.ToList(),
+                    coursesToAssign = CoursesToAssign.ToList(),
                     coursesToRemove=CoursesToRemove
                     
                 });

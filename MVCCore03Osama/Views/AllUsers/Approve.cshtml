@@ -1,0 +1,37 @@
+﻿@model MVCCore03Osama.Models.ApplicationUser
+@{
+    Layout = null;
+}
+
+
+
+    Are you sure you want to approve @Html.DisplayFor(model => model.Fname) @Html.DisplayFor(model => model.Lname)
+    <br /><hr />
+    <form asp-action="Approve" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);">
+        
+        <input type="submit" value="Approve" class="btn btn-success" />
+        @*<button class="btn btn-sm btn-success">@Html.ActionLink("Approve", "Approve", new { id = Model.Id }) </button>*@
+    </form>
+    @*<button class="btn btn-success" onclick="approveUser('@Model.Id')">Submit</button>*@
+
+<script>
+function approveUser(insID) {
+    $.ajax({
+        type: "POST",
+        url: '@Url.Action("Approve", "AllUsers")',
+        contentType: "application/json; charset=utf-8",
+        data: { id: insID, x:2},
+        dataType: "json",
+        success: function (Data) {
+            if (Data) {
+                alert('removed Successfuly ');
+
+                location.href = "https://localhost:44369/AllUsers/Approve"
+            }
+            else alert("not removd", value.value);
+        },
+        error: function () { alert('A error'); }
+    });
+}
+</script>
+

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,21 +8,36 @@ using Microsoft.EntityFrameworkCore;
 using MVCCore03Osama.Data;
 using MVCCore03Osama.Models;
 
+using MVCCore03Osama.Service;
+
+using Microsoft.AspNetCore.Identity;
+
 namespace MVCCore03Osama.Controllers
 {
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        public IPost _post { get; }
+        public IComment _com { get; }
+        public UserManager<ApplicationUser> UserManager_ { get; }
+        public SignInManager<ApplicationUser> _signInManager { get; }
 
-        public PostsController(ApplicationDbContext context)
+        /*public InstructorController(IInstructor _instructor, ICourse _course, UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager)*/
+        public PostsController(ApplicationDbContext context, IPost post_, IComment com_, UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _context = context;
+            this._post = post_;
+            this._com = com_;
+            this.UserManager_ = userManager;
+            this._signInManager = signInManager;
         }
 
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _context.posts.ToListAsync());
+            var applicationDbContext = _context.posts.Include(p => p.Lecture);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Posts/Details/5
@@ -34,6 +49,7 @@ namespace MVCCore03Osama.Controllers
             }
 
             var post = await _context.posts
+                .Include(p => p.Lecture)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (post == null)
             {
@@ -46,6 +62,8 @@ namespace MVCCore03Osama.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
+
+            ViewData["LectureID"] = new SelectList(_context.lectures, "ID", "InstructorId");
             return View();
         }
 
@@ -54,7 +72,8 @@ namespace MVCCore03Osama.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Date,Body,ApplicationUserId")] Post post)
+
+        public async Task<IActionResult> Create([Bind("ID,Title,Date,Body,ApplicationUserId,LectureID")] Post post)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +81,8 @@ namespace MVCCore03Osama.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["LectureID"] = new SelectList(_context.lectures, "ID", "InstructorId", post.LectureID);
             return View(post);
         }
 
@@ -78,6 +99,7 @@ namespace MVCCore03Osama.Controllers
             {
                 return NotFound();
             }
+            ViewData["LectureID"] = new SelectList(_context.lectures, "ID", "InstructorId", post.LectureID);
             return View(post);
         }
 
@@ -86,7 +108,8 @@ namespace MVCCore03Osama.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Date,Body,ApplicationUserId")] Post post)
+
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Date,Body,ApplicationUserId,LectureID")] Post post)
         {
             if (id != post.ID)
             {
@@ -113,6 +136,8 @@ namespace MVCCore03Osama.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["LectureID"] = new SelectList(_context.lectures, "ID", "InstructorId", post.LectureID);
             return View(post);
         }
 
@@ -125,6 +150,7 @@ namespace MVCCore03Osama.Controllers
             }
 
             var post = await _context.posts
+                .Include(p => p.Lecture)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (post == null)
             {
@@ -149,5 +175,31 @@ namespace MVCCore03Osama.Controllers
         {
             return _context.posts.Any(e => e.ID == id);
         }
+
+        public bool DeletePost(int ID)
+        {
+            _post.DeletePost(ID);
+            return true;
+        }
+        public bool Insert(string body , string Title, string ID)
+        {
+            //return RedirectToAction("Index");
+            
+            //int lectureid = 3;
+
+            Post p = new Post
+            {
+                Body = body,
+                Title = Title,
+                LectureID = 3,
+                Date = DateTime.Now,
+                ApplicationUserId = ID,
+            };
+            _post.Insert(p);
+            /*_context.Add(p);
+            _context.SaveChanges();*/
+            return true;
+        }
+
     }
 }

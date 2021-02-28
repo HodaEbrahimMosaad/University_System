@@ -14,7 +14,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data">
+        <form asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype="multipart/form-data" id="formId">
             <h4>Create a new account.</h4>
             <hr />
             <div asp-validation-summary="All" class="text-danger"></div>
@@ -53,16 +53,18 @@
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Input.ImgName"></label>
-                <input asp-for="Input.ImgName" type="file" class="form-control" />
-                <span asp-validation-for="Input.ImgName" class="text-danger"></span>
-            </div>
+
             <div class="form-group">
                 <label asp-for="Input.UserRole"></label>
-                <select asp-for="Input.UserRole" asp-items="Html.GetEnumSelectList<Role>()" class="form-control"></select>
+                <select asp-for="Input.UserRole" asp-items="Html.GetEnumSelectList<Role>()" id="UserRole" class="form-control"></select>
                 <span asp-validation-for="Input.UserRole" class="text-danger"></span>
             </div>
+            <div class="form-group" style="display:none" id="degree">
+                <label asp-for="Input.Degree"></label>
+                <input asp-for="Input.Degree" class="form-control" />
+                <span asp-validation-for="Input.Degree" class="text-danger"></span>
+            </div>
+
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
     </div>
@@ -97,7 +99,20 @@
         </section>
     </div>
 </div>
-
+<script>
+    var a = document.getElementById('UserRole');
+    var degree = document.getElementById('degree');
+    a.addEventListener('change', function () {
+        if (this.value == "2") {
+           
+            degree.style.display = "block"
+        }
+        else {
+            degree.style.display = "none"
+        }
+    }, false);
+</script>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
 }

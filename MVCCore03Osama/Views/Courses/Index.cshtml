@@ -1,0 +1,11 @@
+﻿@model IEnumerable<MVCCore03Osama.Models.Course>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="row"></div>
+<div id="ViewAll">
+    @await Html.PartialAsync("_ViewAllCourses", Model)
+</div>
+

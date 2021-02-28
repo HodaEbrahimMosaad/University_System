@@ -96,10 +96,6 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-
-            [Required(ErrorMessage = "Degree name is required")]
-            [StringLength(100, MinimumLength = 3,
-            ErrorMessage = "Degree name should be minimum 3 characters and a maximum of 100 characters")]
             [DataType(DataType.Text)]
             public string Degree { get; set; }
 

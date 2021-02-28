@@ -50,7 +50,7 @@ namespace MVCCore03Osama.Controllers
                 }
                 else
                 {
-                    student.EditStudent(_student);
+                   student.EditStudent(_student);
                 }
                 return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView",await student.getAllStudents()) });
             }
@@ -84,20 +84,22 @@ namespace MVCCore03Osama.Controllers
                 return View(student.getStudent(id));
             
         }
-        [HttpGet]
-        public IActionResult Delete(string id)
-        {
-            return View(student.getStudent(id));
-        }
+        //[HttpGet]
+        //public IActionResult Delete(string id)
+        //{
+        //    return View(student.getStudent(id));
+        //}
         [HttpPost]
-        public IActionResult Delete(string id ,Student _student)
+        public async Task<IActionResult>Delete(string id )
         {
+            var _student = student.getStudent(id);
             bool isDeleted = student.deleteStudent(id, _student);
             if (isDeleted)
             {
-                return RedirectToAction(nameof(allStudents));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView", await student.getAllStudents()) });
             }
-            return View();
+            
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Delete", _student) });
         }
         [HttpGet]
         public IActionResult Create()
@@ -110,9 +112,10 @@ namespace MVCCore03Osama.Controllers
            bool isCreated = await student.createStudent( _student);
             if (isCreated == true)
             {
-                return RedirectToAction(nameof(allStudents));
+                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView", await student.getAllStudents()) });
             }
-            return View( _student);
+
+            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Create", _student) });
         }
     }
 

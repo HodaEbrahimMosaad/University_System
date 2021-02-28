@@ -34,6 +34,7 @@ function showInPopup(url, title) {
     jQueryAjaxPost = form => {
     
         try {
+            
             $.ajax({
                 type: 'POST',
                 url: form.action,
@@ -48,7 +49,7 @@ function showInPopup(url, title) {
                         //document.getElementById("courseForm").reset();
                         $('#form-modal').modal('hide');
 
-                        
+                        alert(";;")
                         $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
                         
                     }

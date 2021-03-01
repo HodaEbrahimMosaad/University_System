@@ -83,18 +83,18 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
                 var u = await _userManager.FindByEmailAsync(Input.Email);
-                if (result.Succeeded && u.status==Status.Active)
-                {
+                //if (result.Succeeded && u.status==Status.Active)
+                //{
                     _logger.LogInformation("User logged in.");
                     _signInManager.IsSignedIn(User);
                     
-                    if (u.UserRole==Role.Admin )
-                    {
+                    //if (u.UserRole==Role.Admin )
+                    //{
                         returnUrl = Url.Content("~/Admin/AdminHome");
-                    }
+                    //}
                    
                     return LocalRedirect(returnUrl);
-                }
+                //}
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

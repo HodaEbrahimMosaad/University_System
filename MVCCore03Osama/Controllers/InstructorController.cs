@@ -97,7 +97,6 @@ namespace MVCCore03Osama.Controllers
                     return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllInstructors", await Instructor_.GetAll()) });
 
                 }
-                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", Ins) });
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MVCCore03Osama.Data;
 using MVCCore03Osama.Models;
 using Newtonsoft.Json;
@@ -76,9 +76,7 @@ namespace MVCCore03Osama.Controllers
         public JsonResult getStudentAnswer(string stuId, int crs=2)
         {
             List<Answer> Answer = ApplicationDbContext.Answer.Where(a => a.StudentId == stuId && a.CourseId == crs).ToList();
-
             StudentCourse sc = ApplicationDbContext.studentCourses.FirstOrDefault(a => a.StudentId == stuId && a.CourseId == crs);
-            ViewBag.mess = "hoda";
             var o = JsonConvert.SerializeObject(Answer);
             return Json(o);
         }

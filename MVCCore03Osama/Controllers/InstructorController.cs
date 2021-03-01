@@ -55,9 +55,9 @@ namespace MVCCore03Osama.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddOrEdit([Bind("Id,Fname,Lname,PhoneNumber,Email,UserName,Bio")] Instructor Ins
-            , string id = null, string password = null)
+            , int edit, string id = null, string password = null)
         {
-            if (password != null)
+            if (edit == 1)
             {
                 try
                 {

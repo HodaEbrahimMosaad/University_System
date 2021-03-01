@@ -47,8 +47,7 @@ namespace MVCCore03Osama.Controllers
             ApplicationDbContext.SaveChanges();
             return true;
         }
-
-        public bool 
+ 
 
         public IActionResult CreateExam()
         {

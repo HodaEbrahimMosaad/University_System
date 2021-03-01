@@ -2,9 +2,12 @@
 
 @{
       Layout = null;
+
+
 }
 
-<form asp-action="AddOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);" method="post">
+
+<form asp-action="AddOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
 
@@ -59,11 +62,23 @@
         <label asp-for="Bio" class="control-label"></label>
         <input asp-for="Bio" class="form-control" />
         <span asp-validation-for="Bio" class="text-danger"></span>
+
+       
+    </div>
+
+    
+    <div>
+        <div class="form-group">
+            <label asp-for="UserName" class="control-label"></label>
+            <input asp-for="UserName" class="form-control" />
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
     </div>
     <div class="form-group">
         <input type="submit" value="Save" class="btn btn-primary btn-block" />
     </div>
 </form>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

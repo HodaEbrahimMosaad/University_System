@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using MVCCore03Osama.Data;
 using MVCCore03Osama.Models;
 using Newtonsoft.Json;

@@ -34,8 +34,12 @@ namespace MVCCore03Osama.Models
         public virtual ICollection<Comment> Comments { set; get; }
 
         [ForeignKey("ApplicationUser")]
-        public int ApplicationUserId { set; get; }
+        public string ApplicationUserId { set; get; }
 
         public virtual ApplicationUser postOwner { get; set; }
+        [ForeignKey("Lecture")]
+        public int LectureID { set; get; }
+
+        public virtual Lecture Lecture { get; set; }
     }
 }

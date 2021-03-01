@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using MVCCore03Osama.Models;
-
+using System.Collections.Generic;
 namespace MVCCore03Osama.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
@@ -82,19 +82,29 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
-                var u = await _userManager.FindByEmailAsync(Input.Email);
-                //if (result.Succeeded && u.status==Status.Active)
-                //{
-                    _logger.LogInformation("User logged in.");
-                    _signInManager.IsSignedIn(User);
-                    
-                    //if (u.UserRole==Role.Admin )
-                    //{
-                        returnUrl = Url.Content("~/Admin/AdminHome");
-                    //}
-                   
-                    return LocalRedirect(returnUrl);
-                //}
+
+                
+                if (result.Succeeded)
+                {
+                    var u =  _userManager.Users.FirstOrDefault(u=>u.Email==Input.Email);
+                    if (u.status == Status.Active)
+
+                    {
+                        _logger.LogInformation("User logged in.");
+                        _signInManager.IsSignedIn(User);
+
+                        if (u.UserRole == Role.Admin)
+                        {
+                            returnUrl = Url.Content("~/Admin/AdminHome");
+                        }
+
+                        return LocalRedirect(returnUrl);
+                    }
+
+                   await _signInManager.SignOutAsync();
+                    return Page();
+                }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

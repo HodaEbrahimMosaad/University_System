@@ -10,6 +10,7 @@ namespace MVCCore03Osama.Service
 {
     public interface IStudent
     {
+        public Task<List<Course>> GetStudentCourses(string stdID);
         public  Task<List<StudentCoursesVM>> getAllActiveStudents();
         public bool regesterStudentInCourse(string studentId, int courseId);
         public bool removeStudentFromCourse(string studentId, int courseId);

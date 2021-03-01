@@ -82,11 +82,13 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
 
+
                 
                 if (result.Succeeded)
                 {
                     var u =  _userManager.Users.FirstOrDefault(u=>u.Email==Input.Email);
                     if (u.status == Status.Active)
+
                     {
                         _logger.LogInformation("User logged in.");
                         _signInManager.IsSignedIn(User);
@@ -98,9 +100,11 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
 
                         return LocalRedirect(returnUrl);
                     }
+
                    await _signInManager.SignOutAsync();
                     return Page();
                 }
+
                 if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });

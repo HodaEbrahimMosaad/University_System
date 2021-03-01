@@ -1,0 +1,13 @@
+﻿body {
+
+
+
+}
+.PostView {
+    padding-bottom:30px;
+    box-shadow: 5px 10px 0px #008cba;
+    width: 100%;
+}
+.PostView:hover
+{
+}

@@ -23,7 +23,7 @@ namespace MVCCore03Osama.Models
 
         public virtual Course Course { get; set; }
 
-      
 
+        public virtual ICollection<Choice> Choice { get; set; }
     }
 }

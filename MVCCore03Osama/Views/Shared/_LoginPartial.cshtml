@@ -5,8 +5,8 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        if (User.IsInRole("Admin"))
-        {
+        //if (User.IsInRole("Admin"))
+        //{
             <li class="user-profile header-notification">
                 <a nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                     @{
@@ -52,8 +52,8 @@
                     </li>
                 </ul>
             </li>
-        }
-        else
+        //}
+        @*else
         {
             <li class="nav-item">
                 <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
@@ -79,7 +79,7 @@
                     <button type="submit" class="nav-link btn btn-link ">Logout</button>
                 </form>
             </li>
-        }
+        }*@
 
 
 

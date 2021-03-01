@@ -48,7 +48,10 @@ namespace MVCCore03Osama.Controllers
             return View();
         }
 
-
+        public IActionResult UserHome()
+        {
+            return View();
+        }
 
         [AllowAnonymous]
         public async Task<IActionResult> Index()
@@ -63,11 +66,11 @@ namespace MVCCore03Osama.Controllers
 
 
             var adminuser = userManager.Users.FirstOrDefault(u => u.Email == "alyaa@gmail.com");
-            var Studentuser = userManager.Users.FirstOrDefault(u => u.Email == "manager@gmail.com");
+            var Studentuser = userManager.Users.FirstOrDefault(u => u.Email == "mariam@gmail.com");
             var Instructoruser = userManager.Users.FirstOrDefault(u => u.Email == "client@gmail.com");
 
             await userManager.AddToRoleAsync(adminuser, "Admin");
-            //await userManager.AddToRoleAsync(Studentuser, "Student");
+            await userManager.AddToRoleAsync(Studentuser, "Student");
             //await userManager.AddToRoleAsync(Instructoruser, "Instructor");
 
             return View();

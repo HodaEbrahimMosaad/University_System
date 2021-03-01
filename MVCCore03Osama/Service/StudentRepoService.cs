@@ -165,6 +165,20 @@ namespace MVCCore03Osama.Service
 
             
         }
+
+
+        public async Task<List<Course>> GetStudentCourses(string stdID)
+        {
+            //var courses = db.courses.Where(c => c.InstructorId == InsId).ToList();
+            var cIds = db.studentCourses.Where(c => c.StudentId == stdID).ToList();
+            var courses = from c in db.courses
+                            join cs in db.studentCourses
+                            on c.ID equals cs.CourseId
+                            join s in userManager.Users
+                            on cs.StudentId equals s.Id
+                            select c;
+            return courses.ToList();
+        }
     }
   
 }

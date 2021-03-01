@@ -178,6 +178,7 @@ namespace MVCCore03Osama.Service
             }
 
         }
+        
         public bool removeInstructorFromCourse(string InsId, int courseId)
         {
             try
@@ -200,6 +201,13 @@ namespace MVCCore03Osama.Service
             {
                 return false;
             }
+        }
+
+        public async Task<List<Course>> GetInstructorCourses(string InsId)
+        {
+            var courses = db.courses.Where(c => c.InstructorId == InsId).ToList();
+
+            return courses;
         }
     }
 }

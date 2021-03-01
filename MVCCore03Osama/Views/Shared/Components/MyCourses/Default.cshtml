@@ -1,0 +1,17 @@
+﻿@model List<Course>
+@{
+    var courses = (List<Course>)ViewBag.courses;
+}
+
+
+@foreach (var item in courses)
+{
+    <li class=" ">
+        <a asp-controller="StudentCourses" asp-action="CourseDetails" asp-route-id="@item.ID">
+            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+            <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">@item.Name</span>
+            <span class="pcoded-mcaret"></span>
+        </a>
+    </li>
+}
+@* asp-route-userID="@ViewBag.userID" *@

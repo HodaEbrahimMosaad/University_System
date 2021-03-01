@@ -92,7 +92,12 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                     {
                         returnUrl = Url.Content("~/Admin/AdminHome");
                     }
-                   
+                    if (u.UserRole == Role.Instructor || u.UserRole == Role.Student)
+                    {
+                        returnUrl = Url.Content("~/Home/UserHome");
+                    }
+
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

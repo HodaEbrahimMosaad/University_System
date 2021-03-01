@@ -21,6 +21,7 @@ namespace MVCCore03Osama.Controllers
             instructor = _instructor;
             course = _course;
         }
+        //[Authorize(Roles = "Admin"), Authorize(Roles = "Instructor"), Authorize(Roles = "Student")]
         public async Task<IActionResult> AdminHome()
         {
             var st = await student.getAllStudents();

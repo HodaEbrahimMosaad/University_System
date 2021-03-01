@@ -1,4 +1,7 @@
 ﻿@model MVCCore03Osama.Models.Course
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
 
 @{
     ViewData["Title"] = "CourseDetails";
@@ -6,65 +9,83 @@
 }
 @{
     var lectures = (List<Lecture>)ViewBag.lectures;
+    @if (SignInManager.IsSignedIn(User))
+    {
+        var _user = await UserManager.FindByNameAsync(User.Identity.Name);
+        
+    }
 }
-<div class="col-lg-12 col-xl-12">
-    <div class="sub-title"><i class="fa fa-book-reader text-primary"> </i> @Model.Name</div>
-    <div class="xtabs">
-        <ul class="nav nav-tabs tabs" id="tabUL" role="tablist">
-            <li class="nav-item offset-2"></li>
-            <li class="nav-item">
-                <a class="nav-link active" onclick="updateContent('','p1')" value="p1" data-toggle="tab" href="#discussionContentTab" role="tab" aria-expanded="true"><i class="fa fa-comments"> </i> Discussion</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" onclick="updateContent('','p2')" value="p2" data-toggle="tab" href="#materialContentTab" role="tab" aria-expanded="false"><i class="fa fa-paperclip"> </i> Material</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" onclick="updateContent('','p3')" value="p3" data-toggle="tab" href="#messages1" role="tab" aria-expanded="false"><i class="fa fa-laptop-code"> </i> Exam</a>
-            </li>
+    <div class="col-lg-12 col-xl-12">
+        <div class="sub-title"><i class="fa fa-book-reader text-primary"> </i> @Model.Name</div>
+        <div class="xtabs">
+            <ul class="nav nav-tabs tabs" id="tabUL" role="tablist">
+                <li class="nav-item offset-2"></li>
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="updateContent('','p1')" value="p1" data-toggle="tab" href="#discussionContentTab" role="tab" aria-expanded="true"><i class="fa fa-comments"> </i> Discussion</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="updateContent('','p2')" value="p2" data-toggle="tab" href="#materialContentTab" role="tab" aria-expanded="false"><i class="fa fa-paperclip"> </i> Material</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="updateContent('','p3')" value="p3" data-toggle="tab" href="#examContentTab" role="tab" aria-expanded="false"><i class="fa fa-laptop-code"> </i> Exam</a>
+                </li>
+
+            </ul>
+        </div>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs md-tabs tabs-left b-none" id="licUL" role="tablist">
+            @* remove active class mn henaa *@
+            @{var flagFirst = true; }
+            @foreach (var item in lectures)
+            {
+                if (flagFirst)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link active" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
+                        <div class="slide"></div>
+                    </li>
+                    flagFirst = false;
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
+                        <div class="slide"></div>
+                    </li>
+                }
+            }
+
 
         </ul>
-    </div>
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs md-tabs tabs-left b-none" id="licUL" role="tablist">
-        @* remove active class mn henaa *@
-        @{var flagFirst = true; }
-        @foreach (var item in lectures)
-        {
-            if (flagFirst)
-            {
-                <li class="nav-item">
-                    <a class="nav-link active" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
-                    <div class="slide"></div>
-                </li>
-                flagFirst = false;
-            }
-            else
-            {
-                <li class="nav-item">
-                    <a class="nav-link" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
-                    <div class="slide"></div>
-                </li>
-            }
-        }
+        <!-- Tab panes -->
+        <div class="tab-content tabs-left-content card-block">
+            <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
 
+            </div>
+            <div class="tab-pane " id="discussionContentTab" role="tabpanel" aria-expanded="false">
+                ContentTab
+            </div>
 
-    </ul>
-    <!-- Tab panes -->
-    <div class="tab-content tabs-left-content card-block">
-        <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
+            <div class="tab-pane " id="examContentTab" role="tabpanel" aria-expanded="false">
+                
+                @if (User.IsInRole("Student"))
+                {
+                    @await Component.InvokeAsync("ExamView")
+                }
+                else @if (User.IsInRole("Instructor"))
+                {
+                    @await Component.InvokeAsync("ExamCreate")
+                }
+
+            </div>
 
         </div>
-        <div class="tab-pane active" id="discussionContentTab" role="tabpanel" aria-expanded="false">
-            ContentTab
-        </div>
-
     </div>
-</div>
 
-<script src="/lib/jquery/dist/jquery.min.js"></script>
-<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
-<script>
+    <script>
 
     var lec = document.querySelector("#licUL a.active").getAttribute("value");
     var tab = document.querySelector("#tabUL a.active").getAttribute("value");
@@ -78,12 +99,12 @@
         else if (lecID != '')
             lec = lecID;
 
-        if (tab == 'p2') 
+        if (tab == 'p2')
             ajaxMaterial(lec);
 
         console.log(lec + tab + "event fired");
 
-        
+
     }
 
     function ajaxMaterial(lecID) {
@@ -123,10 +144,11 @@
     });
     }
 
-</script>
+
+    </script>
 
 
-@*
-        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-        <a asp-action="Index">Back to List</a>
-    </div>*@
+    @*
+            @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+            <a asp-action="Index">Back to List</a>
+        </div>*@

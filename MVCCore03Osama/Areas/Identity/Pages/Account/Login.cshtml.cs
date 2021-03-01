@@ -97,6 +97,10 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                         {
                             returnUrl = Url.Content("~/Admin/AdminHome");
                         }
+                        else
+                        {
+                            returnUrl = Url.Content("~/Home/UserHome");
+                        }
 
                         return LocalRedirect(returnUrl);
                     }

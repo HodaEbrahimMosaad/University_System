@@ -95,6 +95,13 @@ namespace MVCCore03Osama.Controllers
                 {
                     case 0:
                         myuser.status = Status.Active;
+                        if(myuser.UserRole==Role.Instructor)
+                            await userManager.AddToRoleAsync(myuser, "Instructor");
+                        else if (myuser.UserRole == Role.Student)
+                            await userManager.AddToRoleAsync(myuser, "Student");
+                        else if (myuser.UserRole == Role.Admin)
+                            await userManager.AddToRoleAsync(myuser, "Admin");
+
                         break;
                     case 1:
                         myuser.status = Status.Pendding;
@@ -106,6 +113,7 @@ namespace MVCCore03Osama.Controllers
                 
                 db.SaveChanges();
             }
+            //await UserManager_.AddToRoleAsync(Ins, "Instructor");
             return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllUsers", userManager.Users.ToList()) });
         }
     }

@@ -1,0 +1,234 @@
+﻿<style>
+    #choice input {
+        margin: 5px
+    }
+</style>
+
+<select class="col-4 form-control" id="QueType" onchange="ChooseType(this)">
+    <option value="Choose">
+        Choose
+    </option>
+    <option value="Essay">
+        Essay
+    </option>
+
+    <option value="TF">
+        TF
+    </option>
+</select>
+
+<br />
+
+<div id="forChoice">
+    <form id="choice" class="row">
+        <div class="form-group col-8">
+            <input class="form-control" value="" name="question" placeholder="question" />
+        </div>
+        <div class="form-group col-4">
+            <input class="form-control" value="" name="mark" placeholder="mark" type="number" />
+        </div>
+        <br />
+        <div class="col-12">
+            <button style=" margin-left: 5px; height: 36px; margin-top: 4px;" class="btn btn-sm btn-success" type="button" onclick="AddChoice()" id="addCh">
+                <i class="fa fa-plus"></i>
+            </button>
+        </div>
+    </form>
+    <button class="btn btn-primary" onclick="addAnswer()" id="addAnswer">Choose The model Answer</button>
+    <button class="btn btn-primary" onclick="addQuestion()"> Submit the Question </button>
+</div>
+
+
+<div id="forEssay" class="row" style="display:none">
+    <div class="form-group col-8">
+        <input placeholder="Type The Question" name="que" class="form-control" />
+    </div>
+    <div class="form-group col-4">
+        <input placeholder="Mark" name="qmark" class="form-control" />
+    </div>
+    <div class="form-group col-12">
+        <input placeholder="Type Model Answer" name="ans" class="form-control" />
+    </div>
+    <button class="btn btn-primary" onclick="addEssayQue()" id="addAnswer">Submit the Question</button>
+</div>
+<div id="forTF" style="display:none">
+
+    <div class="form-group col-8">
+        <input placeholder="Type The Question" name="Tque" class="form-control" />
+    </div>
+    <div class="form-group col-4">
+        <input placeholder="Mark" name="Tmark" class="form-control" />
+    </div>
+    <select id="Tans" class="form-control">
+        <option>--- Choose Correct Answer ---</option>
+        <option value="true">True</option>
+        <option value="false">False</option>
+    </select>
+    <button class="btn btn-primary" onclick="addTFQue()" id="addAnswer">Submit the Question</button>
+
+</div>
+
+<button class="btn btn-success"> Submit The Exam</button>
+<script>
+
+    function addTFQue() {
+        if ($("#Tans").val() == "" || $("input[name='Tque']").val() == "") {
+            alert("Question and Answer cant be null")
+            return;
+        }
+        else {
+            $.ajax({
+            type: "Get",
+            url: '@Url.Action("CreateQuestion", "Exam")',
+            contentType: "json",
+            data: {
+                body: $("input[name='Tque']").val().trim(),
+                mark: Number.parseInt($("input[name='Tmark']").val()),
+                modelAns: $("#Tans").val(),
+                QueType: "TF",
+                CourseId: 2
+
+
+                },
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                QueIDObj.QueID = JSON.parse(Data);
+
+            },
+            error: function (e) { console.log(e) }
+        });
+        }
+    }
+
+
+    function addEssayQue() {
+        if ($("input[name='ans']").val().trim() == "" || $("input[name='que']").val().trim() == "") {
+            alert("Question and Answer cant be null")
+            return;
+        }
+        else {
+            $.ajax({
+            type: "Get",
+            url: '@Url.Action("CreateQuestion", "Exam")',
+            contentType: "json",
+            data: {
+                body: $("input[name='que']").val().trim(),
+                mark: Number.parseInt($("input[name='qmark']").val()),
+                modelAns: $("input[name='ans']").val().trim(),
+                QueType: "Essay",
+                CourseId: 2
+
+
+                },
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                QueIDObj.QueID = JSON.parse(Data);
+
+            },
+            error: function (e) { console.log(e) }
+        });
+        }
+    }
+    var count = 0;
+    function AddChoice() {
+        if (count >= 5) {
+            alert("Maximum nuber of chicec is 6");
+            $('#addCh').hide();
+        }
+        if (count > 0 && $('#addCh').prev().val().trim() == "") {
+            alert("fill previoes choice first");
+            return;
+        }
+        $('#addChild').closest('form').on('submit', function (e) {
+            e.preventDefault();
+        });
+        count++;
+        console.log(count);
+        $("#addCh").before("<input class='col-3 form-control ch' name='choice" + count + "' placeholder='choice " + count + "'/>");
+    }
+
+    function addAnswer() {
+        var select = "<select class='col-3 form-control ch' id='getModelAnswer' onchange='getModelAnswer()'>"
+
+        for (var i = 1; i <= count; i++) {
+            select += "<option value='" + $("input[name='choice" + i + "']").val() + "'>" + $("input[name='choice" + i + "']").val() + "</option>";
+            console.log(i)
+            console.log($("input[name='choice" + i + "']").val())
+        }
+        select += "</select>"
+        $("#addAnswer").before(select);
+        var form = $('#addAnswer').prev();
+    }
+
+    function ChooseType(y) {
+        console.log($('#QueType').val());
+        if ($('#QueType').val() == "Essay") {
+
+            $('#forEssay').show();
+
+            $('#forChoice').hide();
+            $('#forTF').hide();
+        } else if ($('#QueType').val() == "TF") {
+            $('#forTF').show();
+
+            $('#forEssay').hide();
+            $('#forChoice').hide();
+        } else {
+            $('#forChoice').show();
+            $('#forEssay').hide();
+            $('#forTF').hide();
+        }
+    };
+    function getModelAnswer() {
+        console.log($('#getModelAnswer').val());
+    }
+    var QueIDObj = { QueID:0};
+    function addQuestion() {
+
+        $.ajax({
+            type: "Post",
+            url: '@Url.Action("CreateQuestion", "Exam")',
+            contentType: "json",
+            data: {
+                body: $("input[name='question']").val(),
+                mark: Number.parseInt($("input[name='mark']").val()),
+                modelAns: $('#getModelAnswer').val(),
+                QueType: "Choose",
+                CourseId: 2
+
+
+                },
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                QueIDObj.QueID = JSON.parse(Data);
+                    for (var i = 1; i <= count; i++) {
+                    var text = $("input[name='choice" + i + "']").val()
+                   $.ajax({
+                    type: "Get",
+                    url: '@Url.Action("CreateChoice", "Exam")',
+                    contentType: "json",
+                    data: {
+                        QueID: QueIDObj.QueID,
+                        choice: text
+                        },
+                    dataType: "json",
+                    success: function (Data) {
+                        console.log(JSON.parse(Data));
+                    },
+                    error: function (e) { console.log(e) }
+                });
+                $("input[name='choice" + i + "']").val()
+            }
+                count = 0;
+            },
+            error: function (e) { console.log(e) }
+        });
+
+        alert('Q Added');
+
+
+    }
+</script>

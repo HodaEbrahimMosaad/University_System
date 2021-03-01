@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using MVCCore03Osama.Data;
 using MVCCore03Osama.Models;
@@ -18,9 +19,13 @@ namespace MVCCore03Osama.Controllers
         {
             this.ApplicationDbContext = applicationDbContext;
         }
+        [HttpPost]
         public int CreateQuestion(string body, int mark,
             string modelAns , QueType QueType,  int CourseId)
         {
+            var url = Request.GetDisplayUrl();
+            CourseId = int.Parse(url.Split("/")[^1]);
+            
             bool Active = true;
             Question Q = new Question()
             {
@@ -52,6 +57,7 @@ namespace MVCCore03Osama.Controllers
 
         public IActionResult ViewExam(int CourseId=2)
         {
+            var url = Request.GetDisplayUrl();
             //var studentId = "5f63caa8-5409-4567-8205-d4087b6c41d4";
             //var Ans = ApplicationDbContext.Answer.FirstOrDefault
             //    (a => a.StudentId == studentId && a.CourseId == CourseId);

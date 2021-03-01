@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVCCore03Osama.Migrations
 {
-    public partial class MahmoudEzzat : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -212,6 +212,30 @@ namespace MVCCore03Osama.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Question",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    body = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    mark = table.Column<int>(type: "int", nullable: false),
+                    ModelAnswer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QueType = table.Column<int>(type: "int", nullable: false),
+                    Active = table.Column<bool>(type: "bit", nullable: false),
+                    CourseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Question", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Question_courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "courses",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "studentCourses",
                 columns: table => new
                 {
@@ -219,7 +243,9 @@ namespace MVCCore03Osama.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Grade = table.Column<int>(type: "int", nullable: false),
                     CourseId = table.Column<int>(type: "int", nullable: false),
-                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Mark = table.Column<int>(type: "int", nullable: false),
+                    ExamStatus = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -269,16 +295,15 @@ namespace MVCCore03Osama.Migrations
                     Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    ApplicationUserId = table.Column<int>(type: "int", nullable: false),
-                    postOwnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     LectureID = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_posts", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_posts_AspNetUsers_postOwnerId",
-                        column: x => x.postOwnerId,
+                        name: "FK_posts_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -288,6 +313,60 @@ namespace MVCCore03Osama.Migrations
                         principalTable: "lectures",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Answer",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AnsText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuestionId = table.Column<int>(type: "int", nullable: true),
+                    CourseId = table.Column<int>(type: "int", nullable: true),
+                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Answer", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Answer_AspNetUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Answer_courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "courses",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Answer_Question_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Question",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Choice",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChoiceText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    QuestionId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Choice", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_Choice_Question_QuestionId",
+                        column: x => x.QuestionId,
+                        principalTable: "Question",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -310,6 +389,21 @@ namespace MVCCore03Osama.Migrations
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answer_CourseId",
+                table: "Answer",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answer_QuestionId",
+                table: "Answer",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Answer_StudentId",
+                table: "Answer",
+                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -351,6 +445,11 @@ namespace MVCCore03Osama.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Choice_QuestionId",
+                table: "Choice",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_comments_PostID",
                 table: "comments",
                 column: "PostID");
@@ -376,14 +475,19 @@ namespace MVCCore03Osama.Migrations
                 column: "LectureID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_posts_ApplicationUserId",
+                table: "posts",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_posts_LectureID",
                 table: "posts",
                 column: "LectureID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_posts_postOwnerId",
-                table: "posts",
-                column: "postOwnerId");
+                name: "IX_Question_CourseId",
+                table: "Question",
+                column: "CourseId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_studentCourses_CourseId",
@@ -398,6 +502,9 @@ namespace MVCCore03Osama.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Answer");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -414,6 +521,9 @@ namespace MVCCore03Osama.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Choice");
+
+            migrationBuilder.DropTable(
                 name: "comments");
 
             migrationBuilder.DropTable(
@@ -424,6 +534,9 @@ namespace MVCCore03Osama.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Question");
 
             migrationBuilder.DropTable(
                 name: "posts");

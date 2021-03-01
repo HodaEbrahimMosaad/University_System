@@ -7,9 +7,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MVCCore03Osama.Controllers
 {
+    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class AllUsersController : Controller
     {
         private readonly ApplicationDbContext db;

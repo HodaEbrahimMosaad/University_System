@@ -62,11 +62,11 @@ namespace MVCCore03Osama.Controllers
             await roleManager.CreateAsync(Instructor);
 
 
-            var adminuser = userManager.Users.FirstOrDefault(u => u.Email == "hodamosaad0@gmail.com");
+            var adminuser = userManager.Users.FirstOrDefault(u => u.Email == "alyaa@gmail.com");
             var Studentuser = userManager.Users.FirstOrDefault(u => u.Email == "manager@gmail.com");
             var Instructoruser = userManager.Users.FirstOrDefault(u => u.Email == "client@gmail.com");
 
-            //await userManager.AddToRoleAsync(adminuser, "Admin");
+            await userManager.AddToRoleAsync(adminuser, "Admin");
             //await userManager.AddToRoleAsync(Studentuser, "Student");
             //await userManager.AddToRoleAsync(Instructoruser, "Instructor");
 

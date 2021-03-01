@@ -1,62 +1,18 @@
 ﻿@model List<Student>
 
 @{
+
     ViewData["Title"] = "All Studetns";
 
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>All Students</h1>
-<a asp-action="Create">Create</a>
-
-<table class="table">
-    <thead>
-        <tr>
-
-            <th>Email</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Student  name</th>
-            <th>Student status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @item.Email
-                </td>
-                <td>
-                    @item.Fname
-                </td>
-                <td>
-                    @item.Lname
-                </td>
-                <td>
-                    @item.UserName
-
-                </td>
-                <td>
-                    @item.status
-
-                </td>
-                <td>
-
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    @if (item.status != Status.Blocked)
-                    {
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    }
-
-
-                </td>
-
-
-            </tr>
-        }
-    </tbody>
-</table>
+@section graphs{
+    @*<partial name="_graphsPartial" model="@vars"></partial>*@
+    @await Component.InvokeAsync("Graphs")
+}
+<div id="ViewAll">
+    @await Html.PartialAsync("_allView.cshtml", Model)
+</div>
 
 
 

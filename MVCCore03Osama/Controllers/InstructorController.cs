@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace MVCCore03Osama.Controllers
 {
     [Authorize]
-    [Authorize(Roles = "Instructor")]
+    [Authorize(Roles = "Admin")]
     public class InstructorController : Controller
     {
         public InstructorController(IInstructor _instructor, ICourse _course, UserManager<ApplicationUser> userManager,

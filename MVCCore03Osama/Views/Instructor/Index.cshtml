@@ -3,12 +3,19 @@
     ViewData["Title"] = "getActiveStudents";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>All Instructors</h1>
+@section graphs{
+    @*<partial name="_graphsPartial" model="@vars"></partial>*@
+    @await Component.InvokeAsync("Graphs")
+}
+<h3>Instructors</h3>
 <div id="noti" class="alert" style="display:none">
     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div>
+
+
+
+
 
 
 

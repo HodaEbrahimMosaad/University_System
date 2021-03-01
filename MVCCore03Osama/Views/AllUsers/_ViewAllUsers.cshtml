@@ -1,9 +1,9 @@
 ﻿@model IEnumerable<MVCCore03Osama.Models.ApplicationUser>
-
+@{var i = 0;} 
 <table class="table">
     <thead>
         <tr>
-
+            <th>#</th>
             <th>
                 FullName
             </th>
@@ -11,78 +11,114 @@
                 @Html.DisplayNameFor(model => model.Email)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.PhoneNumber)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.UserRole)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.status)
             </th>
-            <th></th>
-            <th></th>
+
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
+            i++;
         <tr>
-
+            <th>@i</th>
             <td>
                 @Html.DisplayFor(modelItem => item.Fname)
                 @Html.DisplayFor(modelItem => item.Lname)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Email)
+                @*@Html.DisplayFor(modelItem => item.Email)*@
+                <email mail-to="@item.Email"></email>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PhoneNumber)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UserRole)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.status)
-            </td>
-            <td>
-                <select class="form-control" name="selectStatus" id="selectStatus" onchange="ChangeStatus(this, '@item.Id')">
-                    
-                    <option value="1">Pending</option>
-                    <option value="0">Active</option>
-                    <option value="2">Blocked</option>
-                </select>
-            </td>
-            <td>
 
-                <button class="btn btn-sm btn-primary">
-                    <a onclick="showInPopup('@Url.Action("Details","AllUsers", new { id = item.Id }, Context.Request.Scheme)', 'Details')">Details</a>
-                </button> |
-                <button class="btn btn-sm btn-success">
-                    <a onclick="showInPopup('@Url.Action("Approve","AllUsers", new { id = item.Id }, Context.Request.Scheme)', 'Approve')">Approve</a>
-                </button> |
+            <td>
+                @{
+                    var btnClass = "btn-outline-primary";
+                    var hover = "";
+                    switch (item.status)
+                    {
+                        case Status.Active:
+                            btnClass = "btn-outline-success";
+                            hover = "dropdown-3";
+                            break;
+                        case Status.Pendding:
+                            btnClass = "btn-outline-warning";
+                            hover = "dropdown-5";
+                            break;
+                        case Status.Blocked:
+                            btnClass = "btn-outline-danger";
+                            hover = "dropdown-6";
+                            break;
+                    }
+                }
+                <div class="statusdb dropdown-success dropdown open">
+                    <button style="width:120px" class="btn @btnClass dropdown-toggle waves-effect waves-light " type="button" id="@hover" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.status</button>
+                    <div class="dropdown-menu" aria-labelledby="@hover" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 40px, 0px); top: 0px; left: 0px; will-change: transform;">
+                        <a class="dropdown-item waves-light waves-effect" onclick="ChangeStatus(1, '@item.Id')" value="1">Pending</a>
+                        <a class="dropdown-item waves-light waves-effect" onclick="ChangeStatus(0, '@item.Id')" value="0">Active</a>
+                        <a class="dropdown-item waves-light waves-effect" onclick="ChangeStatus(2, '@item.Id')" value="2">Blocked</a>
+                    </div>
+                </div>
 
-                <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "Delete", new { id = item.Id }) </button>
 
+
+
+                @*<select class="form-control" name="selectStatus" id="selectStatus" onchange="ChangeStatus(this, '@item.Id')">
+
+                <option value="1">Pending</option>
+                <option value="0">Active</option>
+                <option value="2">Blocked</option>
+            </select>*@
             </td>
+            @*<td>
+
+            <button class="btn btn-sm btn-primary">
+                <a onclick="showInPopup('@Url.Action("Details","AllUsers", new { id = item.Id }, Context.Request.Scheme)', 'Details')">Details</a>
+            </button> |
+            <button class="btn btn-sm btn-success">
+                <a onclick="showInPopup('@Url.Action("Approve","AllUsers", new { id = item.Id }, Context.Request.Scheme)', 'Approve')">Approve</a>
+            </button> |
+
+            <button class="btn btn-sm btn-danger">@Html.ActionLink("Delete", "Delete", new { id = item.Id }) </button>
+
+        </td>*@
         </tr>
         }
     </tbody>
 </table>
 <script>
     function ChangeStatus(value, userID) {
-        //alert(value.value + userID);
-        if (confirm('Are you sure You want to change status ?')) {
-            try {
+                            //alert(value.value + userID);
+                            if (confirm('Are you sure You want to change status ?')) {
+                                try {
                 $.ajax({
 
-                    type: 'GET',
+                                    type: 'GET',
                     url: '@Url.Action("ChangeStatus", "AllUsers")',
-                    data: { id: userID, status: value.value },
+                    data: { id: userID, status: value },
                     contentType: "application/json",
                     dataType:"json",
                     //processData: false,
                     success: function (res) {
-                        alert(value.value + userID);
+                                            //alert(value + userID);
                         $('#ViewAll').html(res.html);
-                    },
+                                        },
                     error: function (err) {
-                        console.log(err)
+                                            console.log(err)
                     }
-                })
+                                    })
             } catch (ex) {
                 console.log(ex)
             }

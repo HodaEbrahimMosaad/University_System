@@ -4,11 +4,18 @@ for details on configuring this project to bundle and minify static web assets. 
 button a, button a:active, button a:hover {
     color: #fff
 }
+
 .btn-sm {
     padding: 6px 10px;
 }
 .btn i {
     margin-right: 0px;
+}
+img#navProfileImg {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%
 }
 /*end custom style*/
 a.navbar-brand {

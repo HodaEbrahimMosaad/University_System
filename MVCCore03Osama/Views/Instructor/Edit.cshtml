@@ -4,8 +4,11 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
-<h1>Edit</h1>
+@section graphs{
+    @*<partial name="_graphsPartial" model="@vars"></partial>*@
+    @await Component.InvokeAsync("Graphs")
+}
+<h3>Edit</h3>
 
 <h4>Instructor</h4>
 <hr />

@@ -1,13 +1,14 @@
 ﻿@model MVCCore03Osama.Models.Instructor
 
 @{
-    
-    Layout = null;
+      Layout = null;
 }
 
 <form asp-action="AddOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryAjaxPost(this);" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="Id" />
+
+
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -32,6 +33,9 @@
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
         </div>
+
+
+
         <div class="col-md-6">
             <div class="form-group">
                 <label asp-for="Email"></label>
@@ -39,16 +43,26 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
         </div>
-        </div>
-       
+    </div>
+
+
+    @if (ViewBag.flag == "create")
+    {
         <div class="form-group">
-            <label asp-for="Bio" class="control-label"></label>
-            <input asp-for="Bio" class="form-control" />
-            <span asp-validation-for="Bio" class="text-danger"></span>
+            <label class="control-label">Password</label>
+            <input type="password" name="password" required class="form-control" />
         </div>
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary btn-block" />
-        </div>
+    }
+
+
+    <div class="form-group">
+        <label asp-for="Bio" class="control-label"></label>
+        <input asp-for="Bio" class="form-control" />
+        <span asp-validation-for="Bio" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary btn-block" />
+    </div>
 </form>
 
 @section Scripts {

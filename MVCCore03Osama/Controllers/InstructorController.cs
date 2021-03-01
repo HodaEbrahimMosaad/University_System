@@ -39,6 +39,7 @@ namespace MVCCore03Osama.Controllers
             if (id == null)
             {
                 //ViewBag.Courses = new SelectList(await Course.GetAll(), "Id", "Name");
+                ViewBag.flag = "create";
                 return View(new Instructor());
             }
             else

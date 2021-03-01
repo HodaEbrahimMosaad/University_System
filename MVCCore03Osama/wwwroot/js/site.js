@@ -58,8 +58,7 @@ function showInPopup(url, title) {
                         $('#form-modal .modal-title').html('');
                         //document.getElementById("courseForm").reset();
                         $('#form-modal').modal('hide');
-
-                        alert(";;")
+                        alert('blablabla')
                         $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
                         
                     }

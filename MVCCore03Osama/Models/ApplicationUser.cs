@@ -43,9 +43,9 @@ namespace MVCCore03Osama.Models
         [DisplayName("Upload File")]
         public IFormFile ImageFile { get; set; }
 
-        [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+        //[Required]
+        //[EmailAddress]
+        //[Display(Name = "Email")]
+        //public string Email { get; set; }
     }
 }

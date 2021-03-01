@@ -24,6 +24,10 @@ namespace MVCCore03Osama.Models
         public string StudentId { set; get; }
 
         public virtual Student Std { get; set; }
+
+        public int Mark { get; set; }
+        public int ExamStatus { get; set; }
+
         //[ForeignKey("ApplicationUser")]
         //public int ApplicationUserId { set; get; }
 

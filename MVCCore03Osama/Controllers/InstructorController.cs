@@ -32,6 +32,75 @@ namespace MVCCore03Osama.Controllers
         public UserManager<ApplicationUser> UserManager_ { get; }
         public SignInManager<ApplicationUser> _signInManager { get; }
 
+
+        [NoDirectAccess]
+        public async Task<IActionResult> AddOrEdit(string id = null)
+        {
+            if (id == null)
+            {
+                //ViewBag.Courses = new SelectList(await Course.GetAll(), "Id", "Name");
+                return View(new Instructor());
+            }
+            else
+            {
+                var Ins = await Instructor_.Edit(id);
+                if (Ins == null)
+                {
+                    return NotFound();
+                }
+                return View(Ins);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddOrEdit([Bind("Id,Fname,Lname,PhoneNumber,Email,UserName,Bio")] Instructor Ins
+            , string id = null, string password = null)
+        {
+            if (password != null)
+            {
+                try
+                {
+                    Ins.UserRole = Role.Instructor;
+                    Ins.UserName = Ins.Email;
+                    Ins.EmailConfirmed = true;
+                    Ins.ImgName = "def.jfif";
+                    var result = await UserManager_.CreateAsync(Ins, password);
+                    if (!result.Succeeded)
+                    {
+                        return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", Ins) });
+
+                    }
+                    //await _signInManager.SignInAsync(Ins, isPersistent: false);
+                    await UserManager_.AddToRoleAsync(Ins, "Instructor");
+                    ViewBag.FK_Course = await Course.GetAll();
+                    return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllInstructors", await Instructor_.GetAll()) });
+
+                }
+                catch
+                {
+                    return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", Ins) });
+                }
+            }
+
+            else
+            {
+                bool result = await Instructor_.UpdateInstructor(id, Ins);
+                if (!result)
+                {
+                    
+                    return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", Ins) });
+
+                }
+                else{ 
+                    ViewBag.FK_Course = await Course.GetAll();
+                    return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_ViewAllInstructors", await Instructor_.GetAll()) });
+
+                }
+                return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "AddOrEdit", Ins) });
+            }
+        }
+
         public async Task<IActionResult> Index()
         {
             

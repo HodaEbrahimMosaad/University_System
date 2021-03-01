@@ -4,13 +4,13 @@
 // Write your JavaScript code.
 $(function () {
     
-    //$("#loaderbody").addClass('hide');
+    $("#loaderbody").addClass('hide');
 
-    //$(document).bind('ajaxStart', function () {
-    //    $("#loaderbody").removeClass('hide');
-    //}).bind('ajaxStop', function () {
-    //    $("#loaderbody").addClass('hide');
-    //});
+    $(document).bind('ajaxStart', function () {
+        $("#loaderbody").removeClass('hide');
+    }).bind('ajaxStop', function () {
+        $("#loaderbody").addClass('hide');
+    });
     $("#theme-loader").addClass('hide');
 
     $(document).bind('ajaxStart', function () {
@@ -27,9 +27,13 @@ function showInPopup(url, title) {
         url: url,
         success: function (res) {
             //$("#form-modal .modal-body form").reset();
+            console.log(res)
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html(title);
             $("#form-modal").modal('show');
+            if (title == "Edit Instructor") {
+                $(".pass").hide();
+            }
 
         }
     })

@@ -21,5 +21,9 @@ namespace MVCCore03Osama.Data
         public DbSet<Post> posts { get; set; }
        
         public DbSet<StudentCourse> studentCourses { get; set; }
+
+        public DbSet<Question> Question { get; set; }
+        public DbSet<Answer> Answer { get; set; }
+        public DbSet<Choice> Choice { get; set; }
     }
 }

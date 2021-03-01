@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCCore03Osama.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210226180348_esraaaaa")]
-    partial class esraaaaa
+    [Migration("20210228214431_addExamClassMig")]
+    partial class addExamClassMig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,36 @@ namespace MVCCore03Osama.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("MVCCore03Osama.Models.Answer", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("AnsText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("QuestionId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("Answer");
+                });
 
             modelBuilder.Entity("MVCCore03Osama.Models.ApplicationUser", b =>
                 {
@@ -41,6 +71,7 @@ namespace MVCCore03Osama.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -112,6 +143,26 @@ namespace MVCCore03Osama.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("ApplicationUser");
+                });
+
+            modelBuilder.Entity("MVCCore03Osama.Models.Choice", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ChoiceText")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("QuestionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("QuestionId");
+
+                    b.ToTable("Choice");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Comment", b =>
@@ -270,6 +321,38 @@ namespace MVCCore03Osama.Migrations
                     b.ToTable("posts");
                 });
 
+            modelBuilder.Entity("MVCCore03Osama.Models.Question", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModelAnswer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("QueType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("body")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("mark")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CourseId");
+
+                    b.ToTable("Question");
+                });
+
             modelBuilder.Entity("MVCCore03Osama.Models.StudentCourse", b =>
                 {
                     b.Property<int>("id")
@@ -280,7 +363,13 @@ namespace MVCCore03Osama.Migrations
                     b.Property<int>("CourseId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ExamStatus")
+                        .HasColumnType("int");
+
                     b.Property<int>("Grade")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Mark")
                         .HasColumnType("int");
 
                     b.Property<string>("StudentId")
@@ -448,6 +537,36 @@ namespace MVCCore03Osama.Migrations
                     b.HasDiscriminator().HasValue("Student");
                 });
 
+            modelBuilder.Entity("MVCCore03Osama.Models.Answer", b =>
+                {
+                    b.HasOne("MVCCore03Osama.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId");
+
+                    b.HasOne("MVCCore03Osama.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId");
+
+                    b.HasOne("MVCCore03Osama.Models.Student", "Std")
+                        .WithMany()
+                        .HasForeignKey("StudentId");
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Question");
+
+                    b.Navigation("Std");
+                });
+
+            modelBuilder.Entity("MVCCore03Osama.Models.Choice", b =>
+                {
+                    b.HasOne("MVCCore03Osama.Models.Question", "Question")
+                        .WithMany()
+                        .HasForeignKey("QuestionId");
+
+                    b.Navigation("Question");
+                });
+
             modelBuilder.Entity("MVCCore03Osama.Models.Comment", b =>
                 {
                     b.HasOne("MVCCore03Osama.Models.Post", "Post")
@@ -509,6 +628,15 @@ namespace MVCCore03Osama.Migrations
                         .HasForeignKey("postOwnerId");
 
                     b.Navigation("postOwner");
+                });
+
+            modelBuilder.Entity("MVCCore03Osama.Models.Question", b =>
+                {
+                    b.HasOne("MVCCore03Osama.Models.Course", "Course")
+                        .WithMany()
+                        .HasForeignKey("CourseId");
+
+                    b.Navigation("Course");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.StudentCourse", b =>

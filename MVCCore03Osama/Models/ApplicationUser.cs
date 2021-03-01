@@ -42,5 +42,10 @@ namespace MVCCore03Osama.Models
         [NotMapped]
         [DisplayName("Upload File")]
         public IFormFile ImageFile { get; set; }
+
+        [Required]
+        [EmailAddress]
+        [Display(Name = "Email")]
+        public string Email { get; set; }
     }
 }

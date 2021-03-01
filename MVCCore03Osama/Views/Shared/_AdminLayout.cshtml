@@ -257,85 +257,113 @@
                                 </div>
                             </div>
                             @*<div class="pcoded-search">
-                                <span class="searchbar-toggle">  </span>
-                                <div class="pcoded-search-box ">
-                                    <input type="text" placeholder="Search">
-                                    <span class="search-icon"><i class="ti-search" aria-hidden="true"></i></span>
-                                </div>
-                            </div>*@
+            <span class="searchbar-toggle">  </span>
+            <div class="pcoded-search-box ">
+                <input type="text" placeholder="Search">
+                <span class="search-icon"><i class="ti-search" aria-hidden="true"></i></span>
+            </div>
+        </div>*@
                             <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation">Layout</div>
-                            <ul class="pcoded-item pcoded-left-item">
-                                <li class="active">
-                                    <a asp-controller="Admin" asp-action="AdminHome">
-                                        <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                                <li class="active">
-                                    <a asp-controller="Courses" asp-action="index">
-                                        <span class="pcoded-micon"><i class="ti-agenda"></i><b>D</b></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.dash.main">Courses</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li>
-                                @*<li class="active">
-                                        <a asp-controller="AllUsers" asp-action="index">
-                                            <span class="pcoded-micon"><i class="ti-user"></i><b>D</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Users</span>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <ul class="pcoded-item pcoded-left-item">
+                                    <li class="active">
+                                        <a asp-controller="Admin" asp-action="AdminHome">
+                                            <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a asp-controller="Courses" asp-action="index">
+                                            <span class="pcoded-micon"><i class="ti-agenda"></i><b>D</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Courses</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)">
+                                            <span class="pcoded-micon"><i class="ti-user"></i></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Users</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <li class=" ">
+                                                <a asp-action="Index" asp-controller="AllUsers">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">All Users</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+                                                <a asp-action="Index" asp-controller="Instructor">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Instructors</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+                                                <a asp-action="allStudents" asp-controller="Students">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Students</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+
+                                                <a asp-action="getActiveStudents" asp-controller="Admin">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Student's Courses</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+                                                <a asp-action="getActiveInstructor" asp-controller="Admin">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Instructor's Courses</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+
+
+                                        </ul>
+                                    </li>
+                                </ul>
+                            }
+                            else {
+                                <ul class="pcoded-item pcoded-left-item">
+                                    @*<li class="active">
+                                        <a asp-controller="Admin" asp-action="AdminHome">
+                                            <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class="">
+                                        <a asp-controller="Courses" asp-action="index">
+                                            <span class="pcoded-micon"><i class="ti-agenda"></i><b>D</b></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Courses</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>*@
+                                    <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)">
+                                            <span class="pcoded-micon"><i class="ti-agenda"></i></span>
+                                            <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Courses</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
 
-                                <li class="pcoded-hasmenu">
-                                    <a href="javascript:void(0)">
-                                        <span class="pcoded-micon"><i class="ti-user"></i></span>
-                                        <span class="pcoded-mtext" data-i18n="nav.basic-components.main">Users</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                    <ul class="pcoded-submenu">
-                                        <li class=" ">
-                                            <a asp-action="Index" asp-controller="AllUsers">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">All Users</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a asp-action="Index" asp-controller="Instructor">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Instructors</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a asp-action="allStudents" asp-controller="Students">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Students</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
+                                            @* select user courses using view coponent *@
+                                            @{ 
 
-                                            <a asp-action="getActiveStudents" asp-controller="Admin">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.alert">Student's Courses</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a asp-action="getActiveInstructor" asp-controller="Admin">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">Instructor's Courses</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
+                                            }
+                                            @await Component.InvokeAsync("MyCourses")
 
-
-                                    </ul>
-                                </li>
-                            </ul>
-                            
+                                        </ul>
+                                    </li>
+                                </ul>
+                            }
                         </div>
                     </nav>
                     <div class="pcoded-content">

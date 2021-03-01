@@ -6,6 +6,14 @@
     background: #f3f3f1 !important;
     color: #000 !important;
 }
+.dynamicContent .card {
+    padding: 20px;
+}
+.xtabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: #fbfbfb;
+    background-color: #3f51b5;
+    border-color: #ddd #ddd #fff;
+}
 /**  =====================
       Custom css start
 ==========================  **/
@@ -335,13 +343,16 @@ p {
   color: #7e7e7e; }
 
 .sub-title {
-  border-bottom: 1px solid rgba(204, 204, 204, 0.35);
-  padding-bottom: 10px;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  font-size: 14px;
-  font-weight: 400;
-  color: #2c3e50; }
+    border-bottom: 1px solid rgba(204, 204, 204, 0.35);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-size: 22px;
+    font-weight: 400;
+    color: #4680ff;
+    padding: 10px;
+    font-weight: bold;
+}
 
 /**======  Card-Layout css end ======**/
 /*======= Typography css start ========*/
@@ -580,7 +591,7 @@ a.bg-danger:hover {
 .tabs-right {
   min-width: 120px;
   vertical-align: top;
-  width: 150px; }
+  width: 170px; }
 
 .tabs-left,
 .tabs-left-content,

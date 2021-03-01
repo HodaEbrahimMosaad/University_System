@@ -88,11 +88,16 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account
                     _logger.LogInformation("User logged in.");
                     _signInManager.IsSignedIn(User);
                     
-                    //if (u.UserRole==Role.Admin )
-                    //{
+                    if (u.UserRole==Role.Admin )
+                    {
                         returnUrl = Url.Content("~/Admin/AdminHome");
-                    //}
-                   
+                    }
+                    if (u.UserRole == Role.Instructor || u.UserRole == Role.Student)
+                    {
+                        returnUrl = Url.Content("~/Home/UserHome");
+                    }
+
+
                     return LocalRedirect(returnUrl);
                 //}
                 if (result.RequiresTwoFactor)

@@ -1,0 +1,132 @@
+﻿@model MVCCore03Osama.Models.Course
+
+@{
+    ViewData["Title"] = "CourseDetails";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{
+    var lectures = (List<Lecture>)ViewBag.lectures;
+}
+<div class="col-lg-12 col-xl-12">
+    <div class="sub-title"><i class="fa fa-book-reader text-primary"> </i> @Model.Name</div>
+    <div class="xtabs">
+        <ul class="nav nav-tabs tabs" id="tabUL" role="tablist">
+            <li class="nav-item offset-2"></li>
+            <li class="nav-item">
+                <a class="nav-link active" onclick="updateContent('','p1')" value="p1" data-toggle="tab" href="#discussionContentTab" role="tab" aria-expanded="true"><i class="fa fa-comments"> </i> Discussion</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="updateContent('','p2')" value="p2" data-toggle="tab" href="#materialContentTab" role="tab" aria-expanded="false"><i class="fa fa-paperclip"> </i> Material</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" onclick="updateContent('','p3')" value="p3" data-toggle="tab" href="#messages1" role="tab" aria-expanded="false"><i class="fa fa-laptop-code"> </i> Exam</a>
+            </li>
+
+        </ul>
+    </div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs md-tabs tabs-left b-none" id="licUL" role="tablist">
+        @* remove active class mn henaa *@
+        @{var flagFirst = true; }
+        @foreach (var item in lectures)
+        {
+            if (flagFirst)
+            {
+                <li class="nav-item">
+                    <a class="nav-link active" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
+                    <div class="slide"></div>
+                </li>
+                flagFirst = false;
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
+                    <div class="slide"></div>
+                </li>
+            }
+        }
+
+
+    </ul>
+    <!-- Tab panes -->
+    <div class="tab-content tabs-left-content card-block">
+        <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
+
+        </div>
+        <div class="tab-pane active" id="discussionContentTab" role="tabpanel" aria-expanded="false">
+            ContentTab
+        </div>
+
+    </div>
+</div>
+
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+
+    var lec = document.querySelector("#licUL a.active").getAttribute("value");
+    var tab = document.querySelector("#tabUL a.active").getAttribute("value");
+    console.log(lec + tab);
+    ajaxMaterial(lec);
+    function updateContent(lecID = '', tabID = '') {
+        if (tabID != '')
+        {
+            tab = tabID;
+        }
+        else if (lecID != '')
+            lec = lecID;
+
+        if (tab == 'p2') 
+            ajaxMaterial(lec);
+
+        console.log(lec + tab + "event fired");
+
+        
+    }
+
+    function ajaxMaterial(lecID) {
+        console.log(lecID + tab+ "fro ajax");
+        $('#materialContentTab').innerHTML="";
+        $.ajax({
+        type: "Get",
+        url: '@Url.Action("GetLectureMaterial", "StudentCourses")',
+        contentType: "json",
+        data: {
+            id: Number.parseInt(lecID)
+        },
+            dataType: "json",
+            success: function (Data) {
+                console.log(lecID + tab + "fro success");
+                //console.log();
+                var material = JSON.parse(Data);
+                console.log(material);
+                var tableContent = `<table class="table">
+                                <tr><th>Name</th><th>Describtion</th><th>Path</th></tr>`;
+                for (var i = 0; i < material.length; i++) {
+                    tableContent += `
+                    <tr>
+                    <td> ${material[i].Name}</td>
+                    <td> ${material[i].Description}</td>
+                    <td> ${material[i].Path}</td>
+
+                    </tr>
+                    `;
+                }
+                tableContent += `</table>`;
+                //$('#materialContentTab').append(tableContent);
+                $('#materialContentTab').html(tableContent);
+
+        },
+        error: function (e) { console.log(e) }
+    });
+    }
+
+</script>
+
+
+@*
+        @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+        <a asp-action="Index">Back to List</a>
+    </div>*@

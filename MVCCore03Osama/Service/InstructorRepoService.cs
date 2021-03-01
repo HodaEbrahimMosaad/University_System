@@ -118,6 +118,7 @@ namespace MVCCore03Osama.Service
 
         public async Task<List<Instructor>> GetAll()
         {
+            
             var instructors = await userManager.Users.Where
                (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
 

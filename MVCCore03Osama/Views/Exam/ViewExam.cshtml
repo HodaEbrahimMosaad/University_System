@@ -1,0 +1,104 @@
+﻿@model IEnumerable<MVCCore03Osama.Models.Question>
+<form method="post" class="exam">
+    <input type="hidden" value="5f63caa8-5409-4567-8205-d4087b6c41d4" name="StudentId" />
+    <input type="hidden" value="2" name="CourseID" />
+    @foreach (var item in Model)
+    {
+        <div class="form-group">
+            <input type="hidden" value="@item.ID" name="QuestionId" />
+            <input type="hidden" value="@item.QueType" name="QuestionType" />
+            <label>
+                @item.body
+            </label>
+            @if (@item.QueType == QueType.Choose)
+            {
+                var choices = (List<Choice>)ViewBag.Choices;
+                var sch = choices.Where(c => c.QuestionId == item.ID);
+                foreach (var ch in sch)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="@item.ID" value="@ch.ChoiceText" />
+                        <label class="form-check-label">
+                            @ch.ChoiceText
+                        </label>
+                    </div>
+
+                }
+            }
+            else @if (@item.QueType == QueType.Essay)
+       {
+        <input class="form-control" type="text" placeholder="write answer" name="@item.ID" />
+    }
+    else if (@item.QueType == QueType.TF)
+    {
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="@item.ID" value="true" />
+            <label class="form-check-label">
+                True
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="@item.ID" value="false" />
+            <label class="form-check-label">
+                False
+            </label>
+        </div>
+
+    }
+        </div>
+
+    }
+
+    <button onclick="submitExam()" type="button">Submit</button>
+</form>
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+<script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function submitExam() {
+        var StudentId = $("input[name='StudentId']").val();
+        var CourseID = Number.parseInt($("input[name='CourseID']").val());
+        $(".exam").children()
+            .each(function () {
+                if ($(this).children("input[name='QuestionId']").val() != undefined) {
+                    var element = $(this);
+                    var queId = element.children("input[name='QuestionId']").val();
+                    var queTy = element.children("input[name='QuestionType']").val();
+                    var ansText;
+                    if (queTy == "Essay") {
+                        ansText = $('input[name="' + queId + '"]').val();
+                    } else {
+                        ansText = $('input[name="' + queId + '"]:checked').val();
+                    }
+                    $.ajax({
+                        type: "Get",
+                        url: '@Url.Action("SubmitAnswer", "Exam")',
+                        contentType: "json",
+                        data: {
+                            AnsText: ansText,
+                            QuestionId: queId,
+                            CourseId: CourseID,
+                            StudentId: StudentId
+                        },
+                        dataType: "json",
+                        success: function (Data) {
+                            console.log(JSON.parse(Data));
+                            
+                            $('.exam').css({
+                                "pointer-events": "none",
+                                "opacity": 0.5,
+                                "background": "#CCC",
+                            });
+
+                        },
+                        error: function (e) { console.log(e) }
+                    });
+                    console.log("Que Id : " + queId)
+                    console.log("Qns Id : " + ansText)
+                }
+
+            });
+        alert('anwers submitted');
+    }
+
+
+</script>

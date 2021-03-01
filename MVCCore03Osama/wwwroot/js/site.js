@@ -11,7 +11,13 @@ $(function () {
     }).bind('ajaxStop', function () {
         $("#loaderbody").addClass('hide');
     });
-    
+    $("#theme-loader").addClass('hide');
+
+    $(document).bind('ajaxStart', function () {
+        $("#theme-loader").removeClass('hide');
+    }).bind('ajaxStop', function () {
+        $("#theme-loader").addClass('hide');
+    });
 });
 
 function showInPopup(url, title) {
@@ -21,9 +27,13 @@ function showInPopup(url, title) {
         url: url,
         success: function (res) {
             //$("#form-modal .modal-body form").reset();
+            console.log(res)
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html(title);
             $("#form-modal").modal('show');
+            if (title == "Edit Instructor") {
+                $(".pass").hide();
+            }
 
         }
     })

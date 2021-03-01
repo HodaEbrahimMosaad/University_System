@@ -1,4 +1,4 @@
-﻿@model List<Instructor>
+﻿@model IEnumerable<MVCCore03Osama.Models.Instructor>
 @{
     ViewData["Title"] = "getActiveStudents";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -12,71 +12,19 @@
     <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
     <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
 </div>
-<a class="btn btn-primary" asp-action="Create" asp-controller="Instructor"> Add Instructor </a>
-<table class="table" id="insContent">
-    <thead>
-        <tr>
-
-            <th></th>
-            <th>@Html.DisplayNameFor(m => Model[0].Fname)</th>
-            <th>@Html.DisplayNameFor(m => Model[0].Lname)</th>
-            <th>@Html.DisplayNameFor(m => Model[0].Email)</th>
-            <th>@Html.DisplayNameFor(m => Model[0].PhoneNumber)</th>
-            <th>Courses</th>
-            <th>Actiion</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @{string img = "def.jfif";
-                        if (item.ImgName != "def.jfif")
-                        {
-                            img = item.Email + "/" + item.ImgName;
-
-                        }
-                        <img asp-append-version="true" width="40" height="40" style="border-radius: 50%;" src=@("~/Images/" + img) />
-                    }
-
-                </td>
-                <td>
-                    @item.Fname
-                </td>
-                <td>
-                    @item.Lname
-                </td>
-                <td>
-                    @item.Email
-                </td>
-                <td>
-                    @item.PhoneNumber
-
-                </td>
 
 
-                <td>
-                    @{ SelectList cousrsList = default;
 
-                        var crss = (List<Course>)ViewBag.FK_Course;
-                        var res = crss.Where(c => c.InstructorId == item.Id).ToList();
-                        if (res != null)
-                        {
-                            cousrsList = new SelectList(res, "ID", "Name");
-                        }
-                    }
 
-                    <select asp-items=@cousrsList class="single-select form-control">
-                    </select>
-                </td>
-                <td>
-                    <partial name="BtnGroup" model="@item.Id" />
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+
+
+
+<div id="ViewAll">
+    @*<partial name="_ViewAllInstructors" model="Model" />*@
+    @await Html.PartialAsync("_ViewAllInstructors", Model)
+</div>
+
+
 
 <script>
     function getDetails(Insid) {

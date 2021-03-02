@@ -6,7 +6,7 @@
 
 @foreach (var item in courses)
 {
-    <li class=" ">
+    <li class="">
         <a asp-controller="StudentCourses" asp-action="CourseDetails" asp-route-id="@item.ID">
             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
             <span class="pcoded-mtext" data-i18n="nav.basic-components.breadcrumbs">@item.Name</span>

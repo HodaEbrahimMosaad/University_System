@@ -9,17 +9,27 @@
 }
 @{
     var lectures = (List<Lecture>)ViewBag.lectures;
-    @if (SignInManager.IsSignedIn(User))
-    {
-        var _user = await UserManager.FindByNameAsync(User.Identity.Name);
-        
-    }
+    
 }
     <div class="col-lg-12 col-xl-12">
         <div class="sub-title"><i class="fa fa-book-reader text-primary"> </i> @Model.Name</div>
         <div class="xtabs">
             <ul class="nav nav-tabs tabs" id="tabUL" role="tablist">
-                <li class="nav-item offset-2"></li>
+                @* if instructor show add lecture button *@
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    var myuser = await UserManager.FindByNameAsync(User.Identity.Name);
+                    if (myuser.UserRole == Role.Instructor)
+                    {
+                        <li class="nav-item col-2"><button class="btn btn-outline-success"><i class="fa fa-plus"></i> Add Lecture</button></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item offset-2"></li>
+                    }
+
+                }
+
                 <li class="nav-item">
                     <a class="nav-link active" onclick="updateContent('','p1')" value="p1" data-toggle="tab" href="#discussionContentTab" role="tab" aria-expanded="true"><i class="fa fa-comments"> </i> Discussion</a>
                 </li>
@@ -32,59 +42,62 @@
 
             </ul>
         </div>
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs md-tabs tabs-left b-none" id="licUL" role="tablist">
-            @* remove active class mn henaa *@
-            @{var flagFirst = true; }
-            @foreach (var item in lectures)
-            {
-                if (flagFirst)
+        <div class="row">
+            <!-- Nav tabs -->
+            <ul class="mt-3 nav nav-tabs md-tabs tabs-left b-none col-lg-2" id="licUL" role="tablist">
+                @* remove active class mn henaa *@
+                @{var flagFirst = true; }
+                @foreach (var item in lectures)
                 {
-                    <li class="nav-item">
-                        <a class="nav-link active" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
-                        <div class="slide"></div>
-                    </li>
-                    flagFirst = false;
+                    if (flagFirst)
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link active" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
+                            <div class="slide"></div>
+                        </li>
+                        flagFirst = false;
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class="nav-link" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
+                            <div class="slide"></div>
+                        </li>
+                    }
                 }
-                else
-                {
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
-                        <div class="slide"></div>
-                    </li>
-                }
-            }
 
 
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content tabs-left-content card-block">
-            <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content tabs-left-content card-block  col-lg-9">
+                <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
 
-            </div>
-            <div class="tab-pane " id="discussionContentTab" role="tabpanel" aria-expanded="false">
-                ContentTab
-            </div>
+                </div>
+                <div class="tab-pane " id="discussionContentTab" role="tabpanel" aria-expanded="false">
+                    ContentTab
+                </div>
 
-            <div class="tab-pane " id="examContentTab" role="tabpanel" aria-expanded="false">
-                <h1>@ViewBag.hasExam</h1>
-                @if (User.IsInRole("Student"))
-                {
-                    @await Component.InvokeAsync("ExamView")
-                }
-                else @if (User.IsInRole("Instructor"))
+                <div class="tab-pane " id="examContentTab" role="tabpanel" aria-expanded="false">
+                    @if (User.IsInRole("Student"))
+                    {
+                        @await Component.InvokeAsync("ExamView")
+                    }
+                    else @if (User.IsInRole("Instructor"))
                {
                    if (ViewBag.hasExam)
                    {
-                    //@await Component.InvokeAsync("ExamCreate")
-                    }
-                    else
-                        @await Component.InvokeAsync("ExamCreate")
-                    }
+                       //@await Component.InvokeAsync("ExamCreate")
+                   }
+                   else
+                    @await Component.InvokeAsync("ExamCreate")
+                }
+
+                </div>
 
             </div>
 
         </div>
+        
     </div>
 
     <script src="/lib/jquery/dist/jquery.min.js"></script>
@@ -111,7 +124,7 @@
 
 
     }
-
+        
     function ajaxMaterial(lecID) {
         console.log(lecID + tab+ "fro ajax");
         $('#materialContentTab').innerHTML="";
@@ -128,10 +141,11 @@
                 //console.log();
                 var material = JSON.parse(Data);
                 console.log(material);
-                var tableContent = `<table class="table">
-                                <tr><th>Name</th><th>Describtion</th><th>Path</th></tr>`;
+                var tableContent = `<table class="materialsTable table table-hover">
+                                <thead><tr><th>Name</th><th>Describtion</th><th>Path</th></tr><thead>`;
                 for (var i = 0; i < material.length; i++) {
                     tableContent += `
+                    <tbody>
                     <tr>
                     <td> ${material[i].Name}</td>
                     <td> ${material[i].Description}</td>
@@ -140,7 +154,7 @@
                     </tr>
                     `;
                 }
-                tableContent += `</table>`;
+                tableContent += `</tbody></table>`;
                 //$('#materialContentTab').append(tableContent);
                 $('#materialContentTab').html(tableContent);
 

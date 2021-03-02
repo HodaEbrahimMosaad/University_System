@@ -29,6 +29,7 @@ namespace MVCCore03Osama.Controllers
             Course c = await course.GetCourseDetails(id);
             var x = c;
             ViewBag.lectures = await course.GetCourselectures(id);
+            ViewBag.hasExam = applicationDbContext.Question.Any(q => q.CourseId == id);
             return View(c);
         }
 

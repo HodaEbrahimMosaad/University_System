@@ -3,8 +3,9 @@
         margin: 5px
     }
 </style>
-
-<select class="col-4 form-control" id="QueType" onchange="ChooseType(this)">
+<h1>@ViewBag.CourseId</h1>
+<input type="hidden" value="@ViewBag.CourseId" name="crs"/>
+<select class="form-control " id="QueType" onchange="ChooseType(this)">
     <option value="Choose">
         Choose
     </option>
@@ -86,7 +87,7 @@
                 mark: Number.parseInt($("input[name='Tmark']").val()),
                 modelAns: $("#Tans").val(),
                 QueType: "TF",
-                CourseId: 2
+                CourseId: Number.parseInt($("input[name='crs']").val())
 
 
                 },
@@ -117,7 +118,7 @@
                 mark: Number.parseInt($("input[name='qmark']").val()),
                 modelAns: $("input[name='ans']").val().trim(),
                 QueType: "Essay",
-                CourseId: 2
+                CourseId: Number.parseInt($("input[name='crs']").val())
 
 
                 },
@@ -188,7 +189,7 @@
     function addQuestion() {
 
         $.ajax({
-            type: "Post",
+            type: "Get",
             url: '@Url.Action("CreateQuestion", "Exam")',
             contentType: "json",
             data: {
@@ -196,7 +197,7 @@
                 mark: Number.parseInt($("input[name='mark']").val()),
                 modelAns: $('#getModelAnswer').val(),
                 QueType: "Choose",
-                CourseId: 2
+                CourseId: Number.parseInt($("input[name='crs']").val())
 
 
                 },

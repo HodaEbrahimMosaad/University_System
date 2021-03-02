@@ -26,7 +26,8 @@ namespace MVCCore03Osama.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            
+            var url = Request.GetDisplayUrl();
+            ViewBag.CourseId = int.Parse(url.Split("/")[^1]);
             return View();
         }
     }

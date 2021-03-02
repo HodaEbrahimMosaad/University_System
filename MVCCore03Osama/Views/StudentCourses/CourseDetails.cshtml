@@ -67,15 +67,20 @@
             </div>
 
             <div class="tab-pane " id="examContentTab" role="tabpanel" aria-expanded="false">
-                
+                <h1>@ViewBag.hasExam</h1>
                 @if (User.IsInRole("Student"))
                 {
                     @await Component.InvokeAsync("ExamView")
                 }
                 else @if (User.IsInRole("Instructor"))
-                {
-                    @await Component.InvokeAsync("ExamCreate")
-                }
+               {
+                   if (ViewBag.hasExam)
+                   {
+                    //@await Component.InvokeAsync("ExamCreate")
+                    }
+                    else
+                        @await Component.InvokeAsync("ExamCreate")
+                    }
 
             </div>
 

@@ -19,12 +19,11 @@ namespace MVCCore03Osama.Controllers
         {
             this.ApplicationDbContext = applicationDbContext;
         }
-        [HttpPost]
+        
         public int CreateQuestion(string body, int mark,
             string modelAns , QueType QueType,  int CourseId)
         {
-            var url = Request.GetDisplayUrl();
-            CourseId = int.Parse(url.Split("/")[^1]);
+            
             
             bool Active = true;
             Question Q = new Question()

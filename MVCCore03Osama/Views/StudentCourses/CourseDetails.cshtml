@@ -66,9 +66,8 @@
                     }
                 }
 
-
             </ul>
-            <!-- Tab panes -->
+        <!-- Tab panes -->
             <div class="tab-content tabs-left-content card-block  col-lg-9">
                 <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
 
@@ -83,18 +82,20 @@
                         @await Component.InvokeAsync("ExamView")
                     }
                     else @if (User.IsInRole("Instructor"))
-               {
-                   if (ViewBag.hasExam)
-                   {
-                       //@await Component.InvokeAsync("ExamCreate")
+                    {
+                        if (ViewBag.hasExam)
+                        {
+                            @await Component.InvokeAsync("ExamCorrection")
+
                    }
-                   else
+                        else
                     @await Component.InvokeAsync("ExamCreate")
                 }
 
                 </div>
 
             </div>
+
 
         </div>
         

@@ -2,6 +2,9 @@
     background: #f3f3f1;
     color: #000;
 }
+.materialsTable thead th {
+    border - top: 0 !important;
+}
 .dropdown-split-success .dropdown-menu a:hover, .dropdown-success .dropdown-menu a:hover {
     background: #f3f3f1 !important;
     color: #000 !important;

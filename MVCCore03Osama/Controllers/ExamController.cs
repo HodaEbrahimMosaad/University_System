@@ -80,9 +80,18 @@ namespace MVCCore03Osama.Controllers
 
         public JsonResult getStudentAnswer(string stuId, int crs=2)
         {
-            List<Answer> Answer = ApplicationDbContext.Answer.Where(a => a.StudentId == stuId && a.CourseId == crs).ToList();
-            StudentCourse sc = ApplicationDbContext.studentCourses.FirstOrDefault(a => a.StudentId == stuId && a.CourseId == crs);
+            List<Answer> Answer = new List<Answer>();
+            Answer = ApplicationDbContext.Answer.Where(a => a.StudentId == stuId && a.CourseId == crs).ToList();
+            //StudentCourse sc = ApplicationDbContext.studentCourses.FirstOrDefault(a => a.StudentId == stuId && a.CourseId == crs);
             var o = JsonConvert.SerializeObject(Answer);
+            if (Answer.Count == 0)
+            {
+                dynamic que = new ExpandoObject();
+                que.Empty = true;
+                var oc = JsonConvert.SerializeObject(que);
+                
+                return Json(oc);
+            }
             return Json(o);
         }
 

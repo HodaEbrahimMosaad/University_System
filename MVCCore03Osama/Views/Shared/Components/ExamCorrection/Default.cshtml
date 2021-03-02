@@ -1,0 +1,183 @@
+﻿@model IEnumerable<ApplicationUser>
+@inject MVCCore03Osama.Data.ApplicationDbContext App
+
+<select id="students" class="form-select form-control" onchange="getStudentAnswer()">
+    <option selected>Select A Student</option>
+    @foreach (var st in Model)
+    {
+        <option value="@st.Id">@st.Fname  @st.Lname</option>
+    }
+</select>
+
+
+
+<input type="hidden" name="courseid" value=@ViewBag.crs />
+
+<div id="showAnswers">
+
+
+</div>
+
+<button onclick="calcMark()" class="btn btn-primary"> Submit Correction</button>
+<script>
+    var mark_ = 0;
+    var total = 0;
+    function calcMark() {
+        $('input.mark').each(function (i, obj) {
+            //console.log($(this).val())
+            mark_ += Number.parseInt($(this).val())
+        });
+        alert(`he got ${mark_} from ${total} and Student Grade Updated`)
+        console.log(mark_);
+
+         $.ajax({
+            type: "Get",
+            url: '@Url.Action("UpdateMark", "Exam")',
+            contentType: "json",
+            data: {
+                stid: $('#students').val(),
+                crid: Number.parseInt($("input[name='courseid']").val()),
+                mark: mark_
+            },
+                dataType: "json",
+                success: async function (Data) {
+                var que = JSON.parse(Data);
+
+            },
+            error: function (e) { console.log(e) }
+        });
+
+
+    };
+    function getStudentAnswer() {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("CheckIfCorrected", "Exam")',
+            contentType: "json",
+            data: {
+                stid: $('#students').val(),
+                crid: Number.parseInt($("input[name='courseid']").val())
+            },
+                dataType: "json",
+            success: function (Data) {
+                    var que = JSON.parse(Data);
+                    console.log(que)
+                    if (que.corrected == true) {
+                        $('#showAnswers').append(`You Allready Corrected this exam and took ${que.mark}`);
+                    }
+
+            },
+            error: function (e) { console.log(e) }
+        });
+
+        
+        //console.log($('#students').val());
+        $.ajax({
+                type: "Get",
+                url: '@Url.Action("getStudentAnswer", "Exam")',
+                contentType: "json",
+                data: {
+                    stuId: $('#students').val(),
+                    crs: Number.parseInt($("input[name='courseid']").val())
+                },
+            dataType: "json",
+            success: function (Data) {
+                console.log(Data)
+                var exam = JSON.parse(Data);
+                if (exam.Empty == true) {
+                    alert('this student did not take the exam  yet')
+                }
+                    for (var i = 0; i < exam.length; i++) {
+                        console.log(Number.parseInt(exam[i].QuestionId));
+                         $.ajax({
+                            type: "Get",
+                            url: '@Url.Action("GetQuestion", "Exam")',
+                            contentType: "json",
+                            data: {
+                                AnsText: exam[i].AnsText,
+                                id: Number.parseInt(exam[i].QuestionId)
+                            },
+                                dataType: "json",
+                                success:  function (Data) {
+
+                                    var que = JSON.parse(Data);
+                                    console.log(que);
+                                    var body = que.body
+                                    var AnsText = que.AnsText
+                                    var ModelAnswer = que.ModelAnswer
+                                    var QueType = que.QueType
+                                    var mark = que.mark
+                                    var txt = `<div>
+                                    <div class="form-group">
+                                        <label>
+                                            ${body}
+                                        </label>`
+                                        if (QueType =="1")
+                                        {
+                                            total += mark;
+
+                                            txt += `<div class="form-check">
+                                                <input disabled class="form-check-input" type="radio"  checked/>
+                                                <label class="form-check-label">
+                                                    Student Answer: ${AnsText}
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input disabled class="form-check-input" type="radio" checked />
+                                                <label class="form-check-label">
+                                                    Model Answer: ${ModelAnswer}
+                                                </label>
+                                            </div>`
+                                            if (AnsText == ModelAnswer) {
+                                                mark_ += Number.parseInt(mark);
+                                                txt += `Answer correct  - ${mark} From ${mark}`
+                                            } else {
+                                                txt += `Answer not correct  - 0 From ${mark}`
+                                            }
+                                            }
+                                            else if (QueType == "2")
+                                        {
+                                            total += mark;
+                                                txt += `Student Answer: <input disabled class="form-control" type="text" value=${AnsText} />
+                                                Model Answer: <input disabled class="form-control" type="text" value= ${ModelAnswer}  />
+                                                Write the mark : <input type="number" max="${mark}"  class="mark" name="mark" /> From ${mark}`
+                                            }
+                                            else if (QueType == "0")
+                                        {
+                                            total += mark;
+                                                txt += `<div class="form-check">
+                                                    <input disabled class="form-check-input" type="radio" checked/>
+                                                    <label class="form-check-label">
+                                                        Student Answer: ${AnsText}
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input disabled class="form-check-input" type="radio" checked />
+                                                    <label class="form-check-label">
+                                                        Model Answer: ${ModelAnswer}
+                                                    </label>
+                                                </div>`
+                                            if (AnsText == ModelAnswer) {
+                                                mark_ += Number.parseInt(mark);
+                                                    console.log(mark)
+
+                                                txt += `Answer correct  - ${mark} From ${mark}`
+                                                } else {
+                                                txt += `Answer not correct - 0 From ${mark}`
+                                                }
+                                            }
+                                    txt += `</div>
+                                    </div>`
+                                    $('#showAnswers').append(txt);
+                            },
+                            error: function (e) { console.log(e) }
+                        });
+                    }
+                },
+           error: function (e) { console.log(e); alert('f'); }
+        });
+
+    }
+</script>
+
+

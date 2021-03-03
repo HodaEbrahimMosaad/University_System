@@ -21,13 +21,13 @@ $(function () {
 });
 
 function showInPopup(url, title) {
-    //alert("eeeeeeeeeeeeee");
+    
     $.ajax({
         type: "GET",
         url: url,
         success: function (res) {
             //$("#form-modal .modal-body form").reset();
-            console.log(res)
+          
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html(title);
             $("#form-modal").modal('show');
@@ -35,6 +35,9 @@ function showInPopup(url, title) {
                 $(".pass").hide();
             }
 
+        },
+        error: function () {
+            
         }
     })
     
@@ -58,8 +61,7 @@ function showInPopup(url, title) {
                         $('#form-modal .modal-title').html('');
                         //document.getElementById("courseForm").reset();
                         $('#form-modal').modal('hide');
-                        alert('blablabla')
-                        $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
+                 $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
                         
                     }
                     else

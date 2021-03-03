@@ -700,7 +700,9 @@ a.bg-danger:hover {
   font-weight: 600; }
 
 .img-circle {
-  border-radius: 50%; }
+  border-radius: 50%;
+  width:5%;
+}
 
 .b-none {
   border: none !important; }

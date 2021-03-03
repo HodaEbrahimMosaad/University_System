@@ -27,5 +27,10 @@ namespace MVCCore03Osama.Models
         [ForeignKey("Post")]
         public int PostID { set; get; }
         public virtual Post Post { set; get; }
+
+        [ForeignKey("ApplicationUser")]
+        public string ApplicationUserId { set; get; }
+
+        public virtual ApplicationUser commentOwner { get; set; }
     }
 }

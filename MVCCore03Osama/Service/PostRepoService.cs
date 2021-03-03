@@ -28,18 +28,13 @@ namespace MVCCore03Osama.Service
             context.SaveChanges();
         }
 
-        public void UpdatePost(int PostID,Post post)
+
+        public void UpdatePost(int PostID,string Body , string Title)
         {
             Post P = context.posts.Find(PostID);
-            P.Body = post.Body;
-            P.Title = post.Title;
-            P.LectureID = post.LectureID;
-            P.Date = post.Date;
-            P.ApplicationUserId = post.ApplicationUserId;
-            P.Comments = post.Comments;
-            P.postOwner = post.postOwner;
-            P.Lecture = post.Lecture;
-            P.ID = post.ID;
+            P.Body = Body;
+            P.Title =Title;
+
             context.SaveChanges();
         }
         public void DeletePost(int id)

@@ -37,9 +37,12 @@ namespace MVCCore03Osama.Models
         public string ApplicationUserId { set; get; }
 
         public virtual ApplicationUser postOwner { get; set; }
-        [ForeignKey("Lecture")]
-        public int LectureID { set; get; }
 
-        public virtual Lecture Lecture { get; set; }
+       
+        [ForeignKey("Course")]
+        public int? CourseID { set; get; }
+
+        public virtual Course course { get; set; }
+
     }
 }

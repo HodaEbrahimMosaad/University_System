@@ -8,7 +8,7 @@
         //if (User.IsInRole("Admin"))
         //{
             <li class="user-profile header-notification">
-                <a nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <a nav-link" href="#"  title="Manage">
                     @{
                         var _user = await UserManager.FindByNameAsync(User.Identity.Name);
                         var name = _user.Fname;

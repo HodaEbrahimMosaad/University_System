@@ -22,7 +22,7 @@ namespace MVCCore03Osama.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? id)
         {
             return View(await _context.courses.ToListAsync());
         }
@@ -84,6 +84,23 @@ namespace MVCCore03Osama.Controllers
         {
             return _context.courses.Any(e => e.ID == id);
         }
+
+        public bool Delete(int id)
+        {
+            var c =_context.courses.FirstOrDefault(c => c.ID == id);
+            _context.courses.Remove(c);
+            _context.SaveChanges();
+            return true;
+        }
+        public IActionResult Preview()
+        {
+            ViewBag.flag = true;
+            return RedirectToAction("Index");
+        }
+
     }
+
+
+
     
 }

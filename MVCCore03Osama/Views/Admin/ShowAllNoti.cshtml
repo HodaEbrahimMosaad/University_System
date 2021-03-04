@@ -1,0 +1,105 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model IEnumerable<MVCCore03Osama.Models.AdminContact>
+@inject MVCCore03Osama.Data.ApplicationDbContext App
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Show Notification";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+@{ var _user = await UserManager.FindByNameAsync(User.Identity.Name);}
+<input type="hidden" name="responseerId" value="@_user.Id" />
+
+
+<table class="table table-hover table-striped" id="notiid">
+    <thead>
+    <td>
+        Sender
+    </td>
+    <td>
+        Sender Email
+    </td>
+    <td>
+        Message
+    </td>
+    <td>
+        Send At
+    </td>
+    <td>
+        Response
+    </td>
+    </thead>
+    <tbody>
+        @foreach (var noti in Model)
+        {
+        <tr>
+            <td>
+                @{ var user = App.Users.FirstOrDefault(u => u.Id == noti.UserID); }
+                @user.Fname @user.Lname
+            </td>
+            <td>
+                <email mail-to="@user.Email"></email>
+            </td>
+            <td>
+                @noti.Meessage
+            </td>
+            <td>
+                @noti.SendAt.ToString()
+            </td>
+
+            @if (noti.Response == null)
+            {
+                <td>
+                    You Did Not Respond Yet
+                    <textarea style=" border-radius: 10px; margin: 7px -5px;" name="response" class="form-control"></textarea>
+                    <button onclick="ResponseFun(this,'@noti.UserID')" class="btn btn-success">Send Response</button>
+
+                    <input type="hidden" name="notiid" value="@noti.ID" />
+
+                </td>
+            }
+            else
+            {
+                <td>
+                    @if (_user.Id == noti.ResponserID)
+                    {
+                        <spann>You Responded With: "@noti.Response"</spann>
+                    }
+                    else
+                    {
+                        var sender = App.Users.FirstOrDefault(u => u.Id == noti.ResponserID);
+                        <span>@sender.Fname @sender.Lname Responded With @noti.Response</span>
+                    }
+
+                </td>
+            }
+        </tr>
+
+    }
+        </tbody>
+    </table>
+<script>
+    function ResponseFun(e,sendto) {
+        var senderA = $("input[name='responseerId']").val()
+        var txtarea = $(e).prev();
+        var Response = $(e).prev().val();
+        console.log(Response)
+        var notiid = $(e).next().val();
+        console.log(Response)
+
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("SendResponse", "Admin")',
+            data: { sendto: sendto, senderAdmin: senderA, Response: Response, notiid: notiid },
+            contentType: "json",
+
+            dataType: "json",
+            success: function (Data) {
+                $.notify('Sended Successfuly', { globalPosition: 'top center', className: 'success' })
+
+                $('#notiid').load(document.URL + ' #notiid');
+                txtarea.html('');
+            },
+            error: function (e) { console.log(e) }
+        });
+    }
+</script>

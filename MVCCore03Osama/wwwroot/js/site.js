@@ -58,9 +58,9 @@ function showInPopup(url, title) {
                         $('#form-modal .modal-title').html('');
                         //document.getElementById("courseForm").reset();
                         $('#form-modal').modal('hide');
-                        alert('blablabla')
+                        //insContent
+                        $('#insContent').load(document.URL + ' #insContent');
                         $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
-                        
                     }
                     else
                         $('#form-modal .modal-body').html(res.html);
@@ -76,7 +76,45 @@ function showInPopup(url, title) {
         } catch (ex) {
             console.log(ex)
         }
+}
+
+
+jQueryAjaxPostIns = form => {
+
+    try {
+
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.isValid) {
+                    //$('#ViewAll').html(res.html)
+                    $('#form-modal .modal-body').html('');
+                    $('#form-modal .modal-title').html('');
+                    //document.getElementById("courseForm").reset();
+                    $('#form-modal').modal('hide');
+                    //insContent
+                    $('#insContent').load(document.URL + ' #insContent');
+                    $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
+                }
+                else
+                    $('#form-modal .modal-body').html(res.html);
+
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+
+        return false;
+    } catch (ex) {
+        console.log(ex)
     }
+}
 
 jQueryAjaxDelete = form => {
     if (confirm('Are you sure to delete this record ?')) {

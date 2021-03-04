@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 
 namespace MVCCore03Osama
 {
@@ -86,6 +87,12 @@ namespace MVCCore03Osama
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+            //    endpoints.MapControllerRoute(
+            //    "Courses",
+            //    "Courses/{*id}",
+            //     new { controller = "Courses", action = "DbLookup", id = UrlParameter.Optional }
+            //);
                 //endpoints.MapAreaControllerRoute("areaRoute", "User", "{area=User}/{controller=Posts}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });

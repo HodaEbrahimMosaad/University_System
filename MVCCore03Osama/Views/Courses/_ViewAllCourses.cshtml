@@ -3,7 +3,6 @@
 @{
     Layout = null;
 }
-
 <table class="table table-hover" id="coursesTable">
     <thead>
         <tr>
@@ -39,17 +38,40 @@
             </td>
             
             <td>
-                <button class="btn btn-sm btn-primary"><a onclick="showInPopup('@Url.Action("AddOrEdit","Courses",new {id=item.ID},Context.Request.Scheme)','Update Course')" class="text-white"><i class="fas fa-pencil-alt"></i></a></button>
+                <button class="btn btn-sm btn-primary">
+                    <a onclick="showInPopup('@Url.Action("AddOrEdit","Courses",new {id=item.ID},Context.Request.Scheme)','Update Course')" class="text-white"><i class="fas fa-pencil-alt"></i></a>
+                </button>
 
-                <button class="btn btn-sm btn-danger"><a onclick="" class="text-white"><i class="fas fa-trash"></i></a></button>
+                <button onclick="deleteCourse('@item.ID')" class="btn btn-sm btn-danger"><a onclick="" class="text-white"><i class="fas fa-trash"></i></a></button>
 
-                <button class="btn btn-sm btn-success"><a onclick="" class="text-white"><i class="fas fa-eye"></i></a></button>
 
                 @*<a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-            <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>*@
+        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>*@
             </td>
         </tr>
         }
     </tbody>
 </table>
 
+
+<script>
+    function changeTable(id) {
+        
+    }
+    function deleteCourse(Insid) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("Delete", "Courses")',
+            contentType: "json",
+            data: { id: Insid},
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                $('#coursesTable').load(document.URL + ' #coursesTable');
+                $.notify('Course Deleted Successfuly', { globalPosition: 'top center', className: 'error' })
+                //document.getElementById("noti").style.display="block";
+            },
+            error: function (e) { console.log(e) }
+        });
+    };
+</script>

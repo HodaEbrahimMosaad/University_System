@@ -95,8 +95,47 @@ namespace MVCCore03Osama.Controllers
             return Json(o);
         }
 
+
+        public JsonResult CheckIfStudentTSubmitedExam(int CourseId, string StudentId)
+        {
+            dynamic flag = new ExpandoObject();
+
+
+            var ans = ApplicationDbContext.Answer.FirstOrDefault
+                (a => a.CourseId == CourseId && a.StudentId == StudentId);
+
+
+            var queSum = ApplicationDbContext.Question.Where
+                (a => a.CourseId == CourseId).Select(x => x.mark).Sum();
+
+
+            if (ans == null)
+            {
+                flag.take = false;
+                flag.marked = false;
+            }else
+            {
+                flag.take = true;
+                flag.queSum = queSum;
+                var checkCorrection = ApplicationDbContext.studentCourses.
+                FirstOrDefault(sc => sc.CourseId == CourseId && sc.StudentId == StudentId);
+                if (checkCorrection.Mark > 0)
+                {
+                    flag.mark = checkCorrection.Mark;
+                    flag.marked = true;
+                }else
+                {
+                    flag.marked = false;
+                }
+            }
+
+            var o = JsonConvert.SerializeObject(flag);
+            return Json(o);
+        }
+
         public bool SubmitAnswer(string AnsText,int QuestionId, int CourseId, string StudentId)
         {
+
             Answer Ans = new Answer()
             {
                 AnsText = AnsText,

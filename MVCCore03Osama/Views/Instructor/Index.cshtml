@@ -63,8 +63,9 @@
                 console.log(JSON.parse(Data));
                 $('#insContent').load(document.URL + ' #insContent');
 
-                document.getElementById("noti").style.display="block";
-                setTimeout(function () { document.getElementById("noti").style.display = "none"}, 3000);
+                //document.getElementById("noti").style.display = "block";
+                $.notify('Deleted Successfuly', { globalPosition: 'top center', className: 'error' })
+                //setTimeout(function () { document.getElementById("noti").style.display = "none"}, 3000);
 
             },
             error: function (e) { console.log(e) }

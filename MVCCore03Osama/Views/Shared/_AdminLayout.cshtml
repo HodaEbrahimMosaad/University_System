@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
+@inject MVCCore03Osama.Data.ApplicationDbContext App
 <!DOCTYPE html>
 <html lang="en">
 
@@ -33,6 +34,7 @@
     <link rel="stylesheet" type="text/css" href="~/adminAssets/css/style.css">
     <link rel="stylesheet" type="text/css" href="~/adminAssets/css/jquery.mCustomScrollbar.css" Dashboard>
 
+    <link rel="stylesheet" type="text/css" rel="stylesheet" href="~/css/chat.css" />
 
 
     @*<link href="~/lib/bootstrap/dist/css/bootstrap (1).css" rel="stylesheet" />*@
@@ -138,85 +140,118 @@
                             </li>
                         </ul>
                         <ul class="nav-right">
+                            @*@if (User.IsInRole("Admin"))
+                            {*@
                             <li class="header-notification">
-                                <a href="#!">
+                                @{ var notii = App.AdminContact.Where(a => a.Seen == false)
+                                                     .OrderByDescending(a => a.SendAt).ToList();}
+
+                                <a onmouseover="UpdateSeen()" href="#!">
                                     <i class="ti-bell"></i>
-                                    <span class="badge bg-c-pink"></span>
+                                    @if (notii.Count != 0)
+                                    {
+                                        <span class="badge bg-c-pink">@notii.Count</span>
+
+                                    }
                                 </a>
                                 <ul class="show-notification">
                                     <li>
                                         <h6>Notifications</h6>
+                                        @if (notii.Count == 0)
+                                        {
+                                            <label class="label label-success">Nothing New</label>
+                                        } 
+                                        else
+                                        {
                                         <label class="label label-danger">New</label>
+                                        }
                                     </li>
+
+                                    @foreach (var noti in notii)
+                                    {
+                                        var user = App.Users.FirstOrDefault(u => u.Id == noti.UserID);
+                                        <li>
+                                            <div class="media">
+                                                <img class="d-flex align-self-center img-radius" src="~/Images/@user.UserName/@user.ImgName" alt="Generic placeholder image">
+                                                <div class="media-body">
+                                                    <h5 class="notification-user">@user.Fname @user.Lname</h5>
+                                                    <p class="notification-msg">@noti.Meessage</p>
+                                                    <span class="notification-time">@noti.SendAt.ToString()</span>
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                    }
+
                                     <li>
                                         <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="~/adminAssets/images/avatar-4.jpg" alt="Generic placeholder image">
                                             <div class="media-body">
-                                                <h5 class="notification-user">John Doe</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
+                                                <a asp-action="ShowAllNoti" asp-controller="Admin">Show All</a>
                                             </div>
                                         </div>
                                     </li>
-                                    <li>
-                                        <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="~/adminAssets/images/avatar-3.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Joseph William</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="media">
-                                            <img class="d-flex align-self-center img-radius" src="~/adminAssets/images/avatar-4.jpg" alt="Generic placeholder image">
-                                            <div class="media-body">
-                                                <h5 class="notification-user">Sara Soudein</h5>
-                                                <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                                                <span class="notification-time">30 minutes ago</span>
-                                            </div>
-                                        </div>
-                                    </li>
+
+
+                                    @*<li>
+                <div class="media">
+                    <img class="d-flex align-self-center img-radius" src="~/adminAssets/images/avatar-3.jpg" alt="Generic placeholder image">
+                    <div class="media-body">
+                        <h5 class="notification-user">Joseph William</h5>
+                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                        <span class="notification-time">30 minutes ago</span>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <div class="media">
+                    <img class="d-flex align-self-center img-radius" src="~/adminAssets/images/avatar-4.jpg" alt="Generic placeholder image">
+                    <div class="media-body">
+                        <h5 class="notification-user">Sara Soudein</h5>
+                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
+                        <span class="notification-time">30 minutes ago</span>
+                    </div>
+                </div>
+            </li>*@
                                 </ul>
                             </li>
-                            @*<li class="user-profile header-notification">
-                                    <a href="#!">
-                                        <img src="~/adminAssets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
-                                        <span>John Doe</span>
-                                        <i class="ti-angle-down"></i>
-                                    </a>
-                                    <ul class="show-notification profile-notification">
-                                        <li>
-                                            <a href="#!">
-                                                <i class="ti-settings"></i> Settings
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="ti-user"></i> Profile
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="ti-email"></i> My Messages
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="ti-lock"></i> Lock Screen
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="auth-normal-sign-in.html">
-                                                <i class="ti-layout-sidebar-left"></i> Logout
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>*@
+                             @*}*@
+                                @*<li class="user-profile header-notification">
+                <a href="#!">
+                    <img src="~/adminAssets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
+                    <span>John Doe</span>
+                    <i class="ti-angle-down"></i>
+                </a>
+                <ul class="show-notification profile-notification">
+                    <li>
+                        <a href="#!">
+                            <i class="ti-settings"></i> Settings
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="ti-user"></i> Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="ti-email"></i> My Messages
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="ti-lock"></i> Lock Screen
+                        </a>
+                    </li>
+                    <li>
+                        <a href="auth-normal-sign-in.html">
+                            <i class="ti-layout-sidebar-left"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </li>*@
 
-                            <li><partial name="_LoginPartial" /></li>
-                        </ul>
+                                <li><partial name="_LoginPartial" /></li>
+                            </ul>
                     </div>
                 </div>
             </nav>
@@ -230,7 +265,15 @@
                                     @{
                                         var _user = await UserManager.FindByNameAsync(User.Identity.Name);
                                         var name = _user.Fname + " " + _user.Lname;
+
                                     }
+
+                                    <input type="hidden" value="@_user.Id" name="userid" />
+                                    <input type="hidden" value="@_user.Fname" name="username" />
+                                    <input type="hidden" value="@_user.ImgName" name="userimage" />
+                                    <input type="hidden" value="@_user.UserName" name="useremail" />
+
+
                                     @{string img = "def.jfif";
                                         if (_user.ImgName != "def.jfif")
                                         {
@@ -257,12 +300,12 @@
                                 </div>
                             </div>
                             @*<div class="pcoded-search">
-            <span class="searchbar-toggle">  </span>
-            <div class="pcoded-search-box ">
-                <input type="text" placeholder="Search">
-                <span class="search-icon"><i class="ti-search" aria-hidden="true"></i></span>
-            </div>
-        </div>*@
+                                    <span class="searchbar-toggle">  </span>
+                                    <div class="pcoded-search-box ">
+                                        <input type="text" placeholder="Search">
+                                        <span class="search-icon"><i class="ti-search" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>*@
                             <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation">Layout</div>
                             @if (User.IsInRole("Admin"))
                             {
@@ -330,22 +373,23 @@
                                     </li>
                                 </ul>
                             }
-                            else {
+                            else
+                            {
                                 <ul class="pcoded-item pcoded-left-item">
                                     @*<li class="active">
-                                        <a asp-controller="Admin" asp-action="AdminHome">
-                                            <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>
-                                    <li class="">
-                                        <a asp-controller="Courses" asp-action="index">
-                                            <span class="pcoded-micon"><i class="ti-agenda"></i><b>D</b></span>
-                                            <span class="pcoded-mtext" data-i18n="nav.dash.main">Courses</span>
-                                            <span class="pcoded-mcaret"></span>
-                                        </a>
-                                    </li>*@
+                                            <a asp-controller="Admin" asp-action="AdminHome">
+                                                <span class="pcoded-micon"><i class="ti-home"></i><b>D</b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li class="">
+                                            <a asp-controller="Courses" asp-action="index">
+                                                <span class="pcoded-micon"><i class="ti-agenda"></i><b>D</b></span>
+                                                <span class="pcoded-mtext" data-i18n="nav.dash.main">Courses</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>*@
                                     <li class="pcoded-hasmenu">
                                         <a href="javascript:void(0)">
                                             <span class="pcoded-micon"><i class="ti-agenda"></i></span>
@@ -355,7 +399,7 @@
                                         <ul class="pcoded-submenu">
 
                                             @* select user courses using view coponent *@
-                                            @{ 
+                                            @{
 
                                             }
                                             @await Component.InvokeAsync("MyCourses")
@@ -374,13 +418,39 @@
                                     <div class="page-body">
                                         <div class="row">
                                             @RenderSection("graphs", required: false)
-                                            
+
                                             <div class="dynamicContent col-md-12">
                                                 <div class="card">
                                                     @RenderBody()
                                                 </div>
                                             </div>
                                         </div>
+                                        <!--------------->
+                                        <div id="toDrag">
+                                            <div id="cont">
+                                                <img class="user-img" style="box-shadow:0px 8px 16px 0px rgba(0,0,0,0.2)" src="~/Images/cartoon-robot-toy-object-for-small-children-to-vector-32859441.jpg" />
+                                            </div>
+                                            <section class="chatbox" id="myApp">
+                                                <section class="chat-window" id="app">
+                                                </section>
+                                                <div id="con">
+                                                    <div id="loading">
+                                                    </div>
+
+                                                </div>
+                                                @if (User.IsInRole("Instructor") || User.IsInRole("Student"))
+                                                {
+                                                    <button onclick="contactAdmin()" id="contactAdmin" class="option">Click To Send To Admin</button>
+                                                }
+                                                    <form class="chat-input" onsubmit="return false;">
+                                                        <input onkeyup="test2(this.keyCode)" type="text" id="input" autocomplete="on" placeholder="Type a message" />
+                                                        <button id="bttn" onclick="test()">
+                                                            <img src="~/Images/send.png">
+                                                        </button>
+                                                    </form>
+                                                </section>
+                                        </div>
+                                        <!------------------>
                                     </div>
                                 </div>
 
@@ -393,10 +463,10 @@
                 </div>
             </div>
             @*<div class="fixed-button">
-                <a href="" target="_blank" class="btn btn-md btn-primary">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i> Upgrade To Pro
-                </a>
-            </div>*@
+                    <a href="" target="_blank" class="btn btn-md btn-primary">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Upgrade To Pro
+                    </a>
+                </div>*@
         </div>
     </div>
 
@@ -439,6 +509,11 @@
     <script src="~/adminAssets/js/demo-12.js"></script>
     <script src="~/adminAssets/js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script>
+
+        setInterval(function () {
+            //alert('hoda')
+        }, 1000)
+
         var $window = $(window);
         var nav = $('.fixed-button');
         $window.scroll(function () {
@@ -449,9 +524,31 @@
                 nav.removeClass('active');
             }
         });
+
+
+        function UpdateSeen() {
+            $('.badge').html('')
+            $.ajax({
+            type: "Get",
+            url: '@Url.Action("UpdateSeen", "Admin")',
+            contentType: "json",
+            dataType: "json",
+            success: function (Data) {
+                
+
+            },
+            error: function (e) { console.log(e) }
+        });
+        }
+
+
+
+
+
     </script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/notify.min.js" asp-append-version="true"></script>
+    <script src="~/js/chat.js"></script>
     @RenderSection("Scripts", required: false)
 </body>
 

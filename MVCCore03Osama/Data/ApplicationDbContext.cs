@@ -25,5 +25,7 @@ namespace MVCCore03Osama.Data
         public DbSet<Question> Question { get; set; }
         public DbSet<Answer> Answer { get; set; }
         public DbSet<Choice> Choice { get; set; }
+
+        public DbSet<AdminContact> AdminContact { get; set; }
     }
 }

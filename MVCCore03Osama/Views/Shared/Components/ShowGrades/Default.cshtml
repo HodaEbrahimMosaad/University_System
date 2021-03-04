@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ApplicationUser>
+@inject MVCCore03Osama.Data.ApplicationDbContext App
+<table class="table table-hover">
+    <thead class="table-card-header">
+        <td>
+            Student Name
+        </td>
+        <td>
+            Student Email
+        </td>
+        <td>
+            Student Mark
+        </td>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>
+                    @user.Fname @user.Lname
+                </td>
+                <td>
+                    <email mail-to="@user.UserName" >  </email>
+                </td>
+                <td>
+                    @{
+                        var courseid = (int)ViewBag.courseid;
+                        var users = App.studentCourses.
+                        FirstOrDefault(sc => sc.CourseId == courseid &&
+                        sc.StudentId == user.Id);
+                    }
+                    @if (@users.Mark == 0)
+                    {
+                        <span>Student Didn't Take The Exam Yet</span>
+                    }
+                    else
+                    {
+                        @users.Mark
+                    }
+
+
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+

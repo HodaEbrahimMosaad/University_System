@@ -89,17 +89,24 @@ namespace MVCCore03Osama.Controllers
         //{
         //    return View(student.getStudent(id));
         //}
-        [HttpPost]
-        public async Task<IActionResult>Delete(string id )
+        //[HttpPost]
+        //public async Task<IActionResult>Delete(string id )
+        //{
+        //    var _student = student.getStudent(id);
+        //    bool isDeleted = student.deleteStudent(id, _student);
+        //    if (isDeleted)
+        //    {
+        //        return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView", await student.getAllStudents()) });
+        //    }
+
+        //    return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Delete", _student) });
+        //}
+        public bool Delete(string id)
         {
             var _student = student.getStudent(id);
-            bool isDeleted = student.deleteStudent(id, _student);
-            if (isDeleted)
-            {
-                return Json(new { isValid = true, html = Helper.RenderRazorViewToString(this, "_allView", await student.getAllStudents()) });
-            }
+            student.deleteStudent(id, _student);
             
-            return Json(new { isValid = false, html = Helper.RenderRazorViewToString(this, "Delete", _student) });
+            return true;
         }
         [HttpGet]
         public IActionResult Create()

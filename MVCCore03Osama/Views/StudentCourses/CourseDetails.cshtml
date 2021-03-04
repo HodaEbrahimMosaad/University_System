@@ -11,7 +11,26 @@
     var lectures = (List<Lecture>)ViewBag.lectures;
     
 }
-    <div class="col-lg-12 col-xl-12">
+<style>
+    table {
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+    td {
+        width: 10%;
+        word-break: break-all;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    #licUL .btn-sm {
+        padding: 2px 5px;
+    }
+     #licUL a{
+        color:#000;
+    }
+</style>
+    <div id="courseDetails" class="col-lg-12 col-xl-12">
         <div class="sub-title"><i class="fa fa-book-reader text-primary"> </i> @Model.Name</div>
         <div class="xtabs">
             <ul class="nav nav-tabs tabs" id="tabUL" role="tablist">
@@ -21,7 +40,11 @@
                     var myuser = await UserManager.FindByNameAsync(User.Identity.Name);
                     if (myuser.UserRole == Role.Instructor)
                     {
-                        <li class="nav-item col-2"><button class="btn btn-outline-success"><i class="fa fa-plus"></i> Add Lecture</button></li>
+                        <li class="nav-item col-2">
+                            <button class="btn btn-outline-success"  onclick="showInPopupv2('@Url.Action("AddOrEdit","Lectures", null, Context.Request.Scheme)', 'AddOrEdit')">
+                                <i class="fa fa-plus"></i> Add Lecture
+                            </button>
+                        </li>
                     }
                     else
                     {
@@ -46,34 +69,60 @@
             <!-- Nav tabs -->
             <ul class="mt-3 nav nav-tabs md-tabs tabs-left b-none col-lg-2" id="licUL" role="tablist">
                 @* remove active class mn henaa *@
+                <li class="nav-item text-white"> omk 7elwa</li>
+                <li class="nav-item text-white"> omk 7elwa</li>
                 @{var flagFirst = true; }
                 @foreach (var item in lectures)
                 {
                     if (flagFirst)
                     {
                         <li class="nav-item">
-                            <a class="nav-link active" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
-                            <div class="slide"></div>
-                        </li>
-                        flagFirst = false;
-                    }
-                    else
-                    {
-                        <li class="nav-item">
-                            <a class="nav-link" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">@item.Name</a>
-                            <div class="slide"></div>
-                        </li>
-                    }
-                }
+                            <a class="nav-link active" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">
+                                @item.Name
+                                @if (SignInManager.IsSignedIn(User))
+                                {
+                                    var myuser = await UserManager.FindByNameAsync(User.Identity.Name);
+                                    if (myuser.UserRole == Role.Instructor)
+                                    {
+                                        <button class="btn btn-sm btn-outline-primary" onclick="showInPopupv2('@Url.Action("AddOrEdit","Lectures",new {id=item.ID},Context.Request.Scheme)','Update Lecture')" class="text-white"><i class="fas fa-pencil-alt"></i></button>
+                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteLecture('@item.ID')"><i class="fa fa-trash"></i></button>
+                                    }
+                                }
+                                
+                                </a>
+                                <div class="slide"></div>
+                                </li>
+                                flagFirst = false;
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" onclick="updateContent(@item.ID, '')" value="@item.ID" id="" data-toggle="tab" href="#home5" @*@{$"lec{item.ID}"}*@ role="tab" aria-expanded="false">
+                                        @item.Name
+                                        @if (SignInManager.IsSignedIn(User))
+                                        {
+                                            var myuser = await UserManager.FindByNameAsync(User.Identity.Name);
+                                            if (myuser.UserRole == Role.Instructor)
+                                            {
+                                                <button class="btn btn-sm btn-outline-primary" onclick="showInPopupv2('@Url.Action("AddOrEdit","Lectures",new {id=item.ID},Context.Request.Scheme)','Update Lecture')" class="text-white"><i class="fas fa-pencil-alt"></i></button>
+                                                <button class="btn btn-sm btn-outline-danger" onclick="deleteLecture('@item.ID')"><i class="fa fa-trash"></i></button>
+                                            }
+                                        }
+                                    </a>
+                                    <div class="slide"></div>
+                                </li>
+                            }
+                        }
 
             </ul>
         <!-- Tab panes -->
             <div class="tab-content tabs-left-content card-block  col-lg-9">
-                <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
-
+                <div class="tab-pane " id="materialContentTab" role="tabpanel" aria-expanded="false">
+                    material
                 </div>
-                <div class="tab-pane "  id="discussionContentTab" role="tabpanel" aria-expanded="false">
-                    ContentTab
+
+                <div class="tab-pane active" id="discussionContentTab" role="tabpanel" aria-expanded="false">
+
                 </div>
 
                 <div class="tab-pane " id="examContentTab" role="tabpanel" aria-expanded="false">
@@ -105,10 +154,6 @@
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-
-
-
-
             var url = window.location.pathname;
         var id = url.substring(url.lastIndexOf('/') + 1);
         console.log(id,"kkk")
@@ -161,18 +206,24 @@
 
 
         var lec;
+
     var tab = document.querySelector("#tabUL a.active").getAttribute("value");
     console.log(lec + tab);
     ajaxMaterial(lec);
     function updateContent(lecID = '', tabID = '') {
+    if (tabID != '') {
+            tab = tabID;
+        }
         if (tabID == 'p1')
         {
             ajaxPosts();
             tab = tabID;
             console.log(lec + tab + "event posts");
         }
-        else if (lecID != '')
+        else if (lecID != '') {
+            ajaxMaterial(lecID)
             lec = lecID;
+        }
 
         if (tab == 'p2')
             ajaxMaterial(lec);
@@ -182,12 +233,14 @@
 
     }
 
+
         function ajaxMaterial(lecID) {
 
             lec = document.querySelector("#licUL a.active")
             if (lec != undefined) {
                 lec = document.querySelector("#licUL a.active").getAttribute("value");
             }
+
 
         console.log(lecID + tab+ "fro ajax");
         $('#materialContentTab').innerHTML="";
@@ -205,15 +258,23 @@
                 var material = JSON.parse(Data);
                 console.log(material);
                 var tableContent = `<table class="materialsTable table table-hover">
-                                <thead><tr><th>Name</th><th>Describtion</th><th>Path</th></tr><thead>`;
+                                <thead><tr><th>Name</th><th>Describtion</th><th>Path</th>
+                                <th>
+                                    <button class="btn btn-sm btn-success">
+                                        <a onclick="showInPopupv2('@Url.Action("AddOrEdit","Materials", null, Context.Request.Scheme)', 'AddOrEdit', ${lec})"><i class="fa fa-plus"></i> Add Material</a>
+                                    </button>
+                                </th>
+                                </tr></thead><tbody>`;
                 for (var i = 0; i < material.length; i++) {
                     tableContent += `
-                    <tbody>
+
                     <tr>
                     <td> ${material[i].Name}</td>
                     <td> ${material[i].Description}</td>
-                    <td> ${material[i].Path}</td>
+                    <td><a href = "${material[i].Path}"> ${material[i].Path}</a></td>
+                    <td>
 
+                    </td>
                     </tr>
                     `;
                 }
@@ -227,7 +288,22 @@
     }
 
 
-
+        function deleteLecture(lecid) {
+        $.ajax({
+            type: "Get",
+            url: '@Url.Action("Delete", "Lectures")',
+            contentType: "json",
+            data: { id: lecid},
+            dataType: "json",
+            success: function (Data) {
+                console.log(JSON.parse(Data));
+                $('#licUL').load(document.URL + ' #licUL');
+                $.notify('Lecture Deleted Successfuly', { globalPosition: 'top center', className: 'error' })
+                //document.getElementById("noti").style.display="block";
+            },
+            error: function (e) { console.log(e) }
+        });
+    };
 
     </script>
 

@@ -1,8 +1,8 @@
 ﻿@model string
 
 <div class="btn-group" role="group" aria-label="Basic example">
-    <button onclick="getDetails('@Model')" data-toggle="modal" data-target="#detailmodal" class="btn btn-success"><i class="fa fa-eye"></i></button>
-    <a onclick="showInPopup('@Url.Action("AddOrEdit", "Instructor",new {id=Model}, Context.Request.Scheme)', 'Edit Instructor')" class="btn btn-primary">
+    <button onclick="getDetails('@Model')" data-toggle="modal" data-target="#detailmodal" class="btn btn-sm btn-success"><i class="fa fa-eye"></i></button>
+    <a onclick="showInPopup('@Url.Action("AddOrEdit", "Instructor",new {id=Model}, Context.Request.Scheme)', 'Edit Instructor')" class="btn btn-sm btn-primary">
         <i class="fa fa-edit"></i>
     </a>
     <a onclick="deleteIns('@Model')" class="btn btn-danger"><i class="fa fa-trash"></i></a>
@@ -19,7 +19,7 @@
                     Delete?
                 </div>
                 <div class="modal-footer">
-                    <button onclick="deleteIns('@Model')" type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                    <button onclick="deleteIns('@Model')" type="button" class="btn btn-sm btn-danger" data-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>

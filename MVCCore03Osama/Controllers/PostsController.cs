@@ -14,6 +14,7 @@ using MVCCore03Osama.Models;
 using MVCCore03Osama.Service;
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace MVCCore03Osama.Controllers
 {
@@ -204,12 +205,13 @@ namespace MVCCore03Osama.Controllers
         //    return true;
         //}
         ///////////=====================Aliaa===============================/////////
-        ///
+       
         [NoDirectAccess]
         [HttpGet]
-        public async  Task< IActionResult> AddOrEdit(int id =0)
+        public async  Task< IActionResult> AddOrEdit(int crsid,int id =0 )
         {
-            var post = new Post();
+            ViewBag.crsId = crsid;
+               var post = new Post();
             if (id != 0)
             {
                 post = await _context.posts.FirstOrDefaultAsync(z=>z.ID==id);
@@ -222,8 +224,11 @@ namespace MVCCore03Osama.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddOrEdit(int  id, Post post)
+        public async Task<IActionResult> AddOrEdit(int id , Post post)
         {
+            var url = Request.GetDisplayUrl();
+            ViewBag.crsid = int.Parse(url.Split("/")[^1]);
+            
             if (ModelState.IsValid)
             {
                 var _post = _context.posts.FirstOrDefault(p => p.ID == id);
@@ -249,9 +254,16 @@ namespace MVCCore03Osama.Controllers
 
         public async Task<IActionResult> Index(int crsId )
         {
-            
-            var applicationDbContext = await _context.posts.Include(u => u.postOwner)
+
+            ViewBag.crsid = crsId;
+            var applicationDbContext = await _context.posts.Where(c=>c.CourseID==crsId).Include(u => u.postOwner)
                 .Include(p => p.Comments).ThenInclude(i=>i.commentOwner).OrderByDescending(z => z.Date).ToListAsync();
+            //return Json(new
+            //{
+            //    isValid = true,
+            //    html = Helper.RenderRazorViewToString(this, "_allView",
+            //     applicationDbContext.ToList())
+            //});
             return View(applicationDbContext);
         }
 

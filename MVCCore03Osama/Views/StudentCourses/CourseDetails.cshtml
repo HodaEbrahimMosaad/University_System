@@ -72,7 +72,7 @@
                 <div class="tab-pane active" id="materialContentTab" role="tabpanel" aria-expanded="false">
 
                 </div>
-                <div class="tab-pane " id="discussionContentTab" role="tabpanel" aria-expanded="false">
+                <div class="tab-pane "  id="discussionContentTab" role="tabpanel" aria-expanded="false">
                     ContentTab
                 </div>
 
@@ -106,14 +106,70 @@
 
     <script>
 
-    var lec = document.querySelector("#licUL a.active").getAttribute("value");
+
+
+
+            var url = window.location.pathname;
+        var id = url.substring(url.lastIndexOf('/') + 1);
+        console.log(id,"kkk")
+
+        function ajaxPosts() {
+
+        $('#discussionContentTab').innerHTML="";
+        $.ajax({
+        type: "Get",
+        url: '@Url.Action("Index", "Posts")',
+
+        data: {
+            crsId: id
+        },
+
+            success: function (Data) {
+                console.log(Data)
+                var content = Data;
+                $('#discussionContentTab').html(Data);
+
+        },
+        error: function (e) { console.log(e) }
+    });
+    }
+
+
+               function ajaxPostsView() {
+
+        $('#discussionContentTab').innerHTML="";
+        $.ajax({
+        type: "Get",
+        url: '@Url.Action("Index", "Posts")',
+
+        data: {
+            crsId: id
+        },
+
+            success: function (Data) {
+                console.log(Data)
+                var content = Data;
+                $('#discussionContentTab').html(Data.html);
+
+        },
+        error: function (e) { console.log(e) }
+    });
+    }
+
+
+
+
+
+        var lec;
     var tab = document.querySelector("#tabUL a.active").getAttribute("value");
     console.log(lec + tab);
     ajaxMaterial(lec);
     function updateContent(lecID = '', tabID = '') {
-        if (tabID != '')
+        if (tabID == 'p1')
         {
+            ajaxPosts();
             tab = tabID;
+            console.log(lec + tab + "event posts");
         }
         else if (lecID != '')
             lec = lecID;
@@ -125,8 +181,14 @@
 
 
     }
-        
-    function ajaxMaterial(lecID) {
+
+        function ajaxMaterial(lecID) {
+
+            lec = document.querySelector("#licUL a.active")
+            if (lec != undefined) {
+                lec = document.querySelector("#licUL a.active").getAttribute("value");
+            }
+
         console.log(lecID + tab+ "fro ajax");
         $('#materialContentTab').innerHTML="";
         $.ajax({
@@ -163,6 +225,8 @@
         error: function (e) { console.log(e) }
     });
     }
+
+
 
 
     </script>

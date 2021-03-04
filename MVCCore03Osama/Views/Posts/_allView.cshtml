@@ -2,80 +2,39 @@
 @using Microsoft.AspNetCore.Identity
 @{
     Layout = null;
+    var crsid = ViewBag.crsid;
     var user = await UserManager.FindByNameAsync(User.Identity.Name);
 }
-<button class="btn btn-sm btn-primary"><a onclick="showInPopup('@Url.Action("AddOrEdit","Posts",null,Context.Request.Scheme)','Update Post')" class="text-white"><i class="fas fa-pencil-alt"></i></a>New Post</button>
-
-@*@foreach (var item in Model)
-    {
-       <div class="row">
-            <div class="col-11 bg-light">
-                <div>
-
-
-
-                    <div>
-                        <p>
-                        <p> @item.postOwner.Fname  @item.postOwner.Lname</p>
-                        @item.Title
-                        </p>
-                        @if (user.Id == item.ApplicationUserId)
-                        {
-                            <button class="btn btn-sm btn-primary f-12"><a onclick="showInPopup('@Url.Action("AddOrEdit","Posts",new {id=item.ID},Context.Request.Scheme)','Update Post')" class="text-white"><i class="fas fa-pencil-alt"></i></a></button>
-
-                            <form asp-action="Delete" asp-route-id="@item.ID" style="display:inline-block" onsubmit="return jQueryAjaxDelete(this);">
-
-                                <input type="submit" value="Delete" class="btn btn-sm btn-danger" />
-
-                            </form>
-                        }
-
-                    </div>
-                    <div class="col-9">
-                        <p> @item.Body</p>
-                    </div>
-                    <div>
-                        <input type="text" name="@item.ID" onkeyup="writeComment(this,'@item.ID')" />
-
-                    </div>
-                    @foreach (var comment in item.Comments)
-                    {
-
-
-                        <div class=" bg-white col-8">
-                            @comment.Body
-                        </div>
-                    }
-
-
-                </div>
-            </div>
-        </div>*@
+<button class="btn btn-sm btn-primary"><a onclick="showInPopup('@Url.Action("AddOrEdit","Posts",new {id=0,crsid=ViewBag.crsid},Context.Request.Scheme)','Update Post')" class="text-white"><i class="fas fa-pencil-alt"></i></a>New Post</button>
 
 
 
 
 
-<div class="container bootdey">
-    <div class="col-md-12 bootstrap snippets">
-        @*<div class="panel">
-            <div class="panel-body">
-                <textarea class="form-control" rows="2" placeholder="What are you thinking?"></textarea>
-                <div class="mar-top clearfix">
-                    <button class="btn btn-sm btn-primary pull-right" type="submit"><i class="fa fa-pencil fa-fw"></i> Share</button>
-                    <a class="btn btn-trans btn-icon fa fa-video-camera add-tooltip" href="#"></a>
-                    <a class="btn btn-trans btn-icon fa fa-camera add-tooltip" href="#"></a>
-                    <a class="btn btn-trans btn-icon fa fa-file add-tooltip" href="#"></a>
-                </div>
-            </div>
-        </div>*@
+<div class="container bootdey col-md-12" id="mydivTopost">
+    <div class=" bootstrap snippets">
+    
         <div class="panel">
             <div class="panel-body">
                 <!-- Newsfeed Content -->
                 <!--===================================================-->
                 @foreach(var item in Model) {
                 <div class="media-block" style="border-radius: 2%;">
-                    <a class="media-left" href="#"><img class="img-circle img-sm"  style="width:10%;" alt="Profile Picture" src="~/Images/def.jfif"></a>
+                    <a class="media-left" href="#">
+
+                       
+                        @{
+                            string img = "def.jfif";
+                            if (item.postOwner.ImgName != "def.jfif")
+                            {
+                                img = @item.postOwner.Email + "/" + @item.postOwner.ImgName;
+
+                            }
+                            
+                        }
+
+                        <img class="img-circle img-sm" style="width:10%;" alt="Profile Picture" src="~/Images/@img"  >
+                    </a>
                     <div class="media-body">
                         <div class="mar-btm">
                             <a href="#" class="btn-link text-semibold media-heading box-inline">@item.postOwner.Fname  @item.postOwner.Lname</a>
@@ -87,11 +46,11 @@
 
                                 @if (user.Id == item.ApplicationUserId)
                                 {
-                                    <button class="btn btn-sm btn-default btn-hover-success"><a onclick="showInPopup('@Url.Action("AddOrEdit","Posts",new {id=item.ID},Context.Request.Scheme)','Update Post')" class="text-white"><i class="fas fa-pencil-alt"></i></a></button>
+                                    <button class="btn btn-sm btn-warning btn-hover-success"><a onclick="showInPopup('@Url.Action("AddOrEdit","Posts",new {id=item.ID ,crsid=ViewBag.crsid},Context.Request.Scheme)','Update Post')" class="text-white"><i class="fas fa-pencil-alt"></i></a></button>
 
                                     <form asp-action="Delete" asp-route-id="@item.ID" style="display:inline-block" onsubmit="return jQueryAjaxDelete(this);">
 
-                                        <input type="submit" value="Delete" class="btn btn-sm btn-default btn-hover-success" />
+                                        <input type="submit" value="Delete" class="btn btn-sm btn-danger btn-hover-success" />
 
                                     </form>
                                 }
@@ -107,11 +66,27 @@
                                 <div class="bg-darken-yellow col-lg-8 card offset-1">
 
                                     <div class="media-block">
-                                        <a class="media-left" href="#"><img class="img-circle img-sm" alt="Profile Picture" src="~/Images/def.jfif"></a>
+                                        <a class="media-left" href="#">
+
+
+                                            @{
+                                                string imgc = "def.jfif";
+                                                if (comment.commentOwner.ImgName != "def.jfif")
+                                                {
+                                                    imgc = @comment.commentOwner.Email + "/" + @comment.commentOwner.ImgName;
+
+                                                }
+
+                                            }
+                                            
+
+                                            <img class="img-circle img-sm" alt="Profile Picture" src="~/Images/@imgc">
+
+                                        </a>
                                         <div class="media-body">
                                             <div class="mar-btm">
                                                 <a href="#" class="btn-link text-semibold media-heading box-inline">@comment.commentOwner.Fname  @comment.commentOwner.Lname</a>
-                                                <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile At- @comment.Date</p>
+                                                <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Web At- @comment.Date</p>
                                             </div>
                                             <p>@comment.Body...</p>
 

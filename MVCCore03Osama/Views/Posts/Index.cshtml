@@ -3,17 +3,13 @@
 @{
 
     ViewData["Title"] = "All Posts";
-
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var crsid = ViewBag.crsid;
+    Layout = null;
 }
 
-@section graphs{
-   
-    @await Component.InvokeAsync("Graphs")
-}
 
 <div id="ViewAll">
-
+ 
     @await Html.PartialAsync("_allView.cshtml", Model)
 
 </div>

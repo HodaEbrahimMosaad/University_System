@@ -20,6 +20,7 @@
             <th>Last name</th>
             <th>User name</th>
             <th>Assign Courses</th>
+            <th>Remove Courses</th>
         </tr>
     </thead>
     <tbody>
@@ -43,13 +44,17 @@
                 <td>
                     @{ var cousrsList = new SelectList(@item.coursesToAssign, "ID", "Name"); }
 
-                    <select onchange="assignStudetCourse(this,'@item.student.Id')" asp-items=@cousrsList class="single-select">
+                    
+                    <select onchange="assignStudetCourse(this,'@item.student.Id')" asp-items=@cousrsList class="single-select form-control">
+                        <option selected disabled> select course</option>
                     </select>
                 </td>
                 <td>
                     @{ var cousrsListRemoved = new SelectList(@item.coursesToRemove, "ID", "Name"); }
 
-                    <select onchange="RemoveStudetCourse(this,'@item.student.Id')" asp-items=@cousrsListRemoved class="single-select">
+                   
+                    <select onchange="RemoveStudetCourse(this,'@item.student.Id')" asp-items=@cousrsListRemoved class="single-select form-control">
+                        <option> select course</option>
                     </select>
                 </td>
             </tr>

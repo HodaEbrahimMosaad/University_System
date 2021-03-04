@@ -1,0 +1,45 @@
+﻿@model Post
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
+@{
+    ViewData["Title"] = "AddOrEdit";
+    Layout = null;
+
+    var user = await UserManager.FindByNameAsync(User.Identity.Name);
+   var crsid = ViewBag.crsid;
+
+}
+
+<div class="row">
+    <div class="col-md-10">
+        <form id="postForm" asp-action="AddOrEdit" asp-route-id="@Model.ID" onsubmit="return jQueryAjaxPostPosts(this);">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" value="@user.Id" name="ApplicationUserId" />
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Body" class="control-label"></label>
+                <textarea asp-for="Body" class="form-control"></textarea>
+                <span asp-validation-for="Body" class="text-danger"></span>
+            </div>
+
+            <input asp-for="Date" type="hidden" class="form-control" value=@DateTime.Now />
+           
+            <input type="hidden" value="@ViewBag.crsId" @*value="@Model.CourseID"*@ name="CourseID" />
+            <div class="form-group">
+                <input type="submit" value="Post" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+

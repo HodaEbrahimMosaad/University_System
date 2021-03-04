@@ -21,13 +21,13 @@ $(function () {
 });
 
 function showInPopup(url, title) {
-    //alert("eeeeeeeeeeeeee");
+
     $.ajax({
         type: "GET",
         url: url,
         success: function (res) {
             //$("#form-modal .modal-body form").reset();
-            console.log(res)
+
             $("#form-modal .modal-body").html(res);
             $("#form-modal .modal-title").html(title);
             $("#form-modal").modal('show');
@@ -35,13 +35,86 @@ function showInPopup(url, title) {
                 $(".pass").hide();
             }
 
+        },
+        error: function () {
+
+        }
+    })
+
+}
+
+
+jQueryAjaxPost = form => {
+
+    try {
+
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.isValid) {
+                    $('#ViewAll').html(res.html)
+                    $('#form-modal .modal-body').html('');
+                    $('#form-modal .modal-title').html('');
+                    //document.getElementById("courseForm").reset();
+                    $('#form-modal').modal('hide');
+                    $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
+
+                }
+                else
+                    $('#form-modal .modal-body').html(res.html);
+
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+
+        return false;
+    } catch (ex) {
+        console.log(ex)
+    }
+}
+
+function showInPopupv2(url, title, lec=0) {
+    var siteurl = window.location.href;// Returns full URL (https://example.com/path/example.html)
+    var crsId = Number.parseInt(siteurl.slice(-1));
+    var mydata;
+    if (lec != 0) {
+        mydata = { crsid: crsId, lecid: lec }
+        console.log("lec " + lec + "co=rs" + crsId)
+    }
+    else {
+        mydata = { crsid: crsId }
+    }
+    console.log(crsId + lec);
+    $.ajax({
+        type: "GET",
+        url: url,
+        data: mydata,
+        success: function (res) {
+            $("#form-modal .modal-body").html(res);
+            $("#form-modal .modal-title").html(title);
+            $("#form-modal").modal('show');
+            if (title == "Edit Instructor") {
+                $(".pass").hide();
+            }
+
+        },
+        error: function (err) {
+            console.log("error");
+            console.log(err)
         }
     })
     
 }
 
 
-    jQueryAjaxPost = form => {
+    jQueryAjaxPostv2 = form => {
     
         try {
             
@@ -52,26 +125,14 @@ function showInPopup(url, title) {
                 contentType: false,
                 processData: false,
                 success: function (res) {
-                    if (res.isValid) {
-                        $('#ViewAll').html(res.html)
-                        $('#form-modal .modal-body').html('');
-                        $('#form-modal .modal-title').html('');
-                        //document.getElementById("courseForm").reset();
-                        $('#form-modal').modal('hide');
-                        alert('blablabla')
-                        $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
-                        
-                    }
-                    else
-                        $('#form-modal .modal-body').html(res.html);
-
+                    $('#form-modal').modal('hide');
+                    console.log("sucsss")
+                    $('#courseDetails').load(document.URL + ' #courseDetails');
                 },
                 error: function (err) {
                     console.log(err)
                 }
             })
-            //to prevent default form submit event
-            
             return false;
         } catch (ex) {
             console.log(ex)

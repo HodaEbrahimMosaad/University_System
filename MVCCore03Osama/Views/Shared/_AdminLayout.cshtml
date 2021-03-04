@@ -139,83 +139,197 @@
                                 </a>
                             </li>
                         </ul>
+                        @{
+                            var _user = await UserManager.FindByNameAsync(User.Identity.Name);
+                            var name = _user.Fname + " " + _user.Lname;
+
+                        }
+
                         <ul class="nav-right">
-                            @*@if (User.IsInRole("Admin"))
-                            {*@
-                            <li class="header-notification">
-                                @{ var notii = App.AdminContact.Where(a => a.Seen == false)
-                                                     .OrderByDescending(a => a.SendAt).ToList();}
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="header-notification refreshhere">
+                                    @{ var notii = App.AdminContact.Where(a => a.Seen == false)
+                     .OrderByDescending(a => a.SendAt).ToList();}
 
-                                <a onmouseover="UpdateSeen()" href="#!">
-                                    <i class="ti-bell"></i>
-                                    @if (notii.Count != 0)
-                                    {
-                                        <span class="badge bg-c-pink">@notii.Count</span>
+                                    <a onmouseover="UpdateSeen()" href="#!">
+                                        <i class="ti-bell"></i>
+                                        @if (notii.Count != 0)
+                                        {
+                                            <span class="badge bg-c-pink">@notii.Count</span>
 
-                                    }
-                                </a>
-                                <ul class="show-notification">
-                                    <li>
-                                        <h6>Notifications</h6>
-                                        @if (notii.Count == 0)
-                                        {
-                                            <label class="label label-success">Nothing New</label>
-                                        } 
-                                        else
-                                        {
-                                        <label class="label label-danger">New</label>
                                         }
-                                    </li>
+                                    </a>
+                                    <ul class="show-notification">
+                                        <li>
+                                            <h6>Notifications</h6>
+                                            @if (notii.Count == 0)
+                                            {
+                                                <label class="label label-success">Nothing New</label>
+                                            }
+                                            else
+                                            {
+                                                <label class="label label-danger">New</label>
+                                            }
+                                        </li>
 
-                                    @foreach (var noti in notii)
-                                    {
-                                        var user = App.Users.FirstOrDefault(u => u.Id == noti.UserID);
+                                        @foreach (var noti in notii)
+                                        {
+                                            var user = App.Users.FirstOrDefault(u => u.Id == noti.UserID);
+                                            <li>
+                                                <div class="media">
+                                                    @{string mypath = "def.jfif";
+                                                        if (user.ImgName != "def.jfif")
+                                                        {
+                                                            mypath = user.UserName + "/" + user.ImgName;
+
+                                                        }
+                                                    }
+                                                    <img class="d-flex align-self-center img-radius" src="~/Images/@mypath" alt="Generic placeholder image">
+                                                    <div class="media-body">
+                                                        <h5 class="notification-user">@user.Fname @user.Lname</h5>
+                                                        <p class="notification-msg">@noti.Meessage</p>
+                                                        <span class="notification-time">@noti.SendAt.ToString()</span>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                                        }
                                         <li>
                                             <div class="media">
-                                                <img class="d-flex align-self-center img-radius" src="~/Images/@user.UserName/@user.ImgName" alt="Generic placeholder image">
                                                 <div class="media-body">
-                                                    <h5 class="notification-user">@user.Fname @user.Lname</h5>
-                                                    <p class="notification-msg">@noti.Meessage</p>
-                                                    <span class="notification-time">@noti.SendAt.ToString()</span>
+                                                    <a asp-action="ShowAllNoti" asp-controller="Admin">Show All</a>
                                                 </div>
                                             </div>
                                         </li>
+                                    </ul>
+                                </li>
+                                }
+                                else
+                                {
 
+                        <li class="header-notification refreshhere">
+                           
+
+                            @{var notii = App.AdminContact.Where(a => a.UserID == _user.Id && a.Response != null && a.ResponserID != null)
+                                .OrderByDescending(a => a.SendAt).ToList();
+                            }
+
+                            <a onmouseover="UpdateSeenUser()" href="#!">
+                                <i class="ti-bell"></i>
+                                @if (notii.Count != 0)
+                                {
+                                    <span class="badge bg-c-pink">@notii.Count</span>
+
+                                }
+                            </a>
+                            <ul class="show-notification">
+                                <li>
+                                    <h6>Notifications</h6>
+                                    @if (notii.Count == 0)
+                                    {
+                                        <label class="label label-success">Nothing New</label>
                                     }
+                                    else
+                                    {
+                                        <label class="label label-danger">New</label>
+                                    }
+                                </li>
 
+                                @foreach (var noti in notii)
+                                {
+                                    var user = App.Users.FirstOrDefault(u => u.Id == noti.ResponserID);
                                     <li>
                                         <div class="media">
+                                            @{string mypath = "def.jfif";
+                                                if (user.ImgName != "def.jfif")
+                                                {
+                                                    mypath = user.UserName + "/" + user.ImgName;
+
+                                                }
+                                            }
+                                            <img class="d-flex align-self-center img-radius" src="~/Images/@mypath" alt="Generic placeholder image">
                                             <div class="media-body">
-                                                <a asp-action="ShowAllNoti" asp-controller="Admin">Show All</a>
+                                                <h5 class="notification-user">@user.Fname @user.Lname</h5>
+                                                <p class="notification-msg">@noti.Response</p>
+                                                <span class="notification-time">@noti.SendAt.ToString()</span>
                                             </div>
                                         </div>
                                     </li>
+                                }
+                            <li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <div class="media">
+                                        <div class="media-body">
 
+                                            <a asp-action="ShowAllNoti" asp-controller="Admin">Show All</a>
+                                        </div>
+                                        
+                                    </div>
+                                }
+                                </li>
+                            </ul>
+                        </li>
 
-                                    @*<li>
-                <div class="media">
-                    <img class="d-flex align-self-center img-radius" src="~/adminAssets/images/avatar-3.jpg" alt="Generic placeholder image">
-                    <div class="media-body">
-                        <h5 class="notification-user">Joseph William</h5>
-                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                        <span class="notification-time">30 minutes ago</span>
-                    </div>
-                </div>
-            </li>
-            <li>
-                <div class="media">
-                    <img class="d-flex align-self-center img-radius" src="~/adminAssets/images/avatar-4.jpg" alt="Generic placeholder image">
-                    <div class="media-body">
-                        <h5 class="notification-user">Sara Soudein</h5>
-                        <p class="notification-msg">Lorem ipsum dolor sit amet, consectetuer elit.</p>
-                        <span class="notification-time">30 minutes ago</span>
-                    </div>
-                </div>
-            </li>*@
-                                </ul>
+                            
+
+                    }
+                                
+
+                            }
+
+                            @*@if (User.IsInRole("Admin"))
+            {
+                <li class="header-notification">
+                    @{ var notii = App.AdminContact.Where(a => a.Seen == false)
+                                          .OrderByDescending(a => a.SendAt).ToList();}
+
+                    <a onmouseover="UpdateSeen()" href="#!">
+                        <i class="ti-bell"></i>
+                        @if (notii.Count != 0)
+                        {
+                            <span class="badge bg-c-pink">@notii.Count</span>
+
+                        }
+                    </a>
+                    <ul class="show-notification">
+                        <li>
+                            <h6>Notifications</h6>
+                            @if (notii.Count == 0)
+                            {
+                                <label class="label label-success">Nothing New</label>
+                            }
+                            else
+                            {
+                                <label class="label label-danger">New</label>
+                            }
+                        </li>
+
+                        @foreach (var noti in notii)
+                        {
+                            var user = App.Users.FirstOrDefault(u => u.Id == noti.UserID);
+                            <li>
+                                <div class="media">
+                                    <img class="d-flex align-self-center img-radius" src="~/Images/@user.UserName/@user.ImgName" alt="Generic placeholder image">
+                                    <div class="media-body">
+                                        <h5 class="notification-user">@user.Fname @user.Lname</h5>
+                                        <p class="notification-msg">@noti.Meessage</p>
+                                        <span class="notification-time">@noti.SendAt.ToString()</span>
+                                    </div>
+                                </div>
                             </li>
-                             @*}*@
-                                @*<li class="user-profile header-notification">
+                        }
+                        <li>
+                            <div class="media">
+                                <div class="media-body">
+                                    <a asp-action="ShowAllNoti" asp-controller="Admin">Show All</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            }*@
+                            @*<li class="user-profile header-notification">
                 <a href="#!">
                     <img src="~/adminAssets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
                     <span>John Doe</span>
@@ -250,8 +364,8 @@
                 </ul>
             </li>*@
 
-                                <li><partial name="_LoginPartial" /></li>
-                            </ul>
+                            <li><partial name="_LoginPartial" /></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
@@ -262,12 +376,7 @@
                         <div class="pcoded-inner-navbar main-menu">
                             <div class="">
                                 <div class="main-menu-header">
-                                    @{
-                                        var _user = await UserManager.FindByNameAsync(User.Identity.Name);
-                                        var name = _user.Fname + " " + _user.Lname;
-
-                                    }
-
+                                    
                                     <input type="hidden" value="@_user.Id" name="userid" />
                                     <input type="hidden" value="@_user.Fname" name="username" />
                                     <input type="hidden" value="@_user.ImgName" name="userimage" />
@@ -511,7 +620,7 @@
     <script>
 
         setInterval(function () {
-            //alert('hoda')
+            $('.refreshhere').load(document.URL + ' .refreshhere');
         }, 1000)
 
         var $window = $(window);
@@ -525,20 +634,30 @@
             }
         });
 
+        function UpdateSeenUser() {
+            $('.badge').html('')
+        }
+
+
+
+
 
         function UpdateSeen() {
-            $('.badge').html('')
-            $.ajax({
-            type: "Get",
-            url: '@Url.Action("UpdateSeen", "Admin")',
-            contentType: "json",
-            dataType: "json",
-            success: function (Data) {
-                
+            setTimeout(function () {
+                $.ajax({
+                    type: "Get",
+                    url: '@Url.Action("UpdateSeen", "Admin")',
+                    contentType: "json",
+                    dataType: "json",
+                    success: function (Data) {
 
-            },
-            error: function (e) { console.log(e) }
-        });
+
+                    },
+                    error: function (e) { console.log(e) }
+                });
+            }, 3000)
+            $('.badge').html('')
+
         }
 
 

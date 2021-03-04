@@ -116,19 +116,19 @@ namespace MVCCore03Osama.Service
             return ins;
         }
 
-        public async Task<List<Instructor>> GetAll()
+        public async Task<List<ApplicationUser>> GetAll()
         {
             
             var instructors = await userManager.Users.Where
                (u => u.status == Status.Active && u.UserRole == Role.Instructor).ToListAsync();
 
-            List<Instructor> AllInstructors = new List<Instructor>();
-            for (int i = 0; i < instructors?.Count(); i++)
-            {
-                var serializedParent = JsonConvert.SerializeObject(instructors[i]);
-                AllInstructors.Add(JsonConvert.DeserializeObject<Instructor>(serializedParent));
-            }
-            return AllInstructors;
+            //List<ApplicationUser> instructors = new List<App>();
+            //for (int i = 0; i < instructors?.Count(); i++)
+            //{
+            //    var serializedParent = JsonConvert.SerializeObject(instructors[i]);
+            //    AllInstructors.Add(JsonConvert.DeserializeObject<Instructor>(serializedParent));
+            //}
+            return instructors;
         }
 
         public async Task<List<InstructorCourseVM>> getAllActiveInstructors()
@@ -139,8 +139,10 @@ namespace MVCCore03Osama.Service
             List<InstructorCourseVM> InstructorCourses = new List<InstructorCourseVM>();
             for (int i = 0; i < instructors?.Count(); i++)
             {
-                var serializedParent = JsonConvert.SerializeObject(instructors[i]);
-                Instructor newInstructor = JsonConvert.DeserializeObject<Instructor>(serializedParent);
+                //var serializedParent = JsonConvert.SerializeObject(instructors[i]);
+
+                //Instructor newInstructor = JsonConvert.DeserializeObject<Instructor>(serializedParent);
+                var newInstructor = instructors[i];
                 var CoursesToAssign = await db.courses.ToListAsync();
                 
                 
@@ -148,8 +150,9 @@ namespace MVCCore03Osama.Service
                  if (CoursesToRemove != null)
                 {
                     // CoursesToAssign = await db.courses.Except(CoursesToRemove).ToListAsync();
-                    newInstructor.Courses =  db.courses.AsEnumerable().Except(CoursesToRemove).ToList();
-                    var ListToExeptStudntCourse = newInstructor.Courses;
+
+                   var cc =  db.courses.AsEnumerable().Except(CoursesToRemove).ToList();
+                    var ListToExeptStudntCourse = cc;
                     var courseWithIns = db.courses.Where(c => c.InstructorId != null).ToList();
                     CoursesToAssign = ListToExeptStudntCourse.Where(o => !courseWithIns.Any(p => p.ID == o.ID)).ToList();
                    

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Hosting;
 using MVCCore03Osama.Data;
 using MVCCore03Osama.Models;
 using MVCCore03Osama.Service;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,8 @@ namespace MVCCore03Osama
 
             services.AddScoped<IPost, PostRepoService>();
             services.AddScoped<IComment, CommentRepoService>();
+           
+        
             //services.AddTransient<IEmailSender, IEmailSender>();
 
             //services.AddIdentity<ApplicationUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)

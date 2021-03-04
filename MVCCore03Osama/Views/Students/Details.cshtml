@@ -5,49 +5,43 @@
     Layout =null;
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Student</h4>
-    <hr />
+
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-3">
+            Full Name
+        </dt>
+
+        <dt class="col-sm-9">
+            @Model.Fname @Model.Lname
+        </dt>
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class="col-sm-6">
+        <dd class="col-sm-9">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Bio)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Bio)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Fname)
-        </dt>
-        <dt class="col-sm-10">
-            @Html.DisplayFor(model => model.Fname)
-        </dt>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Lname)
-        </dt>
-        <dt class="col-sm-10">
-            @Html.DisplayFor(model => model.Lname)
-        </dt>
-        <dt class="col-sm-2">
+
+
+        <dt class="col-sm-3">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
-        <dt class="col-sm-10">
+        <dt class="col-sm-9">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dt>
-        <dt class="col-sm-2">
+        @*<dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UserName)
         </dt>
         <dt class="col-sm-10">
             @Html.DisplayFor(model => model.UserName)
+        </dt>*@
+        <dt class="col-sm-3">
+            @Html.DisplayNameFor(model => model.Bio)
         </dt>
-
+        <dd class="col-sm-9">
+            @Html.DisplayFor(model => model.Bio)
+        </dd>
 
     </dl>
 </div>

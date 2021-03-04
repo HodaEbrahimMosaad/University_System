@@ -31,7 +31,8 @@
                 mark_ += Number.parseInt($(this).val())
             }
         });
-        alert(`he got ${mark_} from ${total} and Student Grade Updated`)
+        $.notify(`he got ${mark_} from ${total} and Student Grade Updated`, { globalPosition: 'top center', className: 'success' })
+
         console.log(mark_);
 
          $.ajax({

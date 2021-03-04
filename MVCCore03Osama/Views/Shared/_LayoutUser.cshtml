@@ -186,28 +186,29 @@
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             @*<div class="form-group">
-                                <label asp-for="Date" class="control-label"></label>
-                                <input asp-for="Date" class="form-control" />
-                                <span asp-validation-for="Date" class="text-danger"></span>
-                            </div>*@
+                    <label asp-for="Date" class="control-label"></label>
+                    <input asp-for="Date" class="form-control" />
+                    <span asp-validation-for="Date" class="text-danger"></span>
+                </div>*@
                             @*<div class="form-group">
-                                <label asp-for="InstructorId" class="control-label"></label>
-                                <select asp-for="InstructorId" class="form-control" asp-items="ViewBag.InstructorId"></select>
-                                <span asp-validation-for="InstructorId" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="CourseId" class="control-label"></label>
-                                <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
-                                <span asp-validation-for="CourseId" class="text-danger"></span>
-                            </div>*@
+                    <label asp-for="InstructorId" class="control-label"></label>
+                    <select asp-for="InstructorId" class="form-control" asp-items="ViewBag.InstructorId"></select>
+                    <span asp-validation-for="InstructorId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CourseId" class="control-label"></label>
+                    <select asp-for="CourseId" class="form-control" asp-items="ViewBag.CourseId"></select>
+                    <span asp-validation-for="CourseId" class="text-danger"></span>
+                </div>*@
                             <input type="hidden" name="CourseId" value="@courseID" />
                             <input type="hidden" name="InstructorId" value="c502e9eb-d5f1-41d4-ac12-52c65d7e89cb" />
                             <input type="hidden" id="editDate" name="Date" value="" />
                             @*<div class="form-group">
-                                <input type="submit" value="Save" class="btn btn-primary" />
-                            </div>*@
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>*@
                         </div>
                     </div>
+                    
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <input type="submit" value="Save" class="btn btn-primary" />

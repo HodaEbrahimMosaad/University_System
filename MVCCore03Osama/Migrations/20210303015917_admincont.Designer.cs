@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MVCCore03Osama.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210301211809_init")]
-    partial class init
+    [Migration("20210303015917_admincont")]
+    partial class admincont
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,32 @@ namespace MVCCore03Osama.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.3")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("MVCCore03Osama.Models.AdminContact", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Meessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("SendAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserID")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("UserID");
+
+                    b.ToTable("AdminContact");
+                });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Answer", b =>
                 {
@@ -531,6 +557,15 @@ namespace MVCCore03Osama.Migrations
                     b.HasBaseType("MVCCore03Osama.Models.ApplicationUser");
 
                     b.HasDiscriminator().HasValue("Student");
+                });
+
+            modelBuilder.Entity("MVCCore03Osama.Models.AdminContact", b =>
+                {
+                    b.HasOne("MVCCore03Osama.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserID");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Answer", b =>

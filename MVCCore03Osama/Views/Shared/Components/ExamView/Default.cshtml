@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<MVCCore03Osama.Models.Question>
-
+<input type="hidden" value=@ViewBag.stuId name="StudentId" />
+<input type="hidden" value=@ViewBag.CourseId name="CourseID" />
 <form method="post" class="exam">
-    <input type="hidden" value="35158528-c15a-4dc7-bb1b-fdb9a4f1b7d8" name="StudentId" />
-    <input type="hidden" value="2" name="CourseID" />
+
     @foreach (var item in Model)
     {
         <div class="form-group">
@@ -47,23 +47,165 @@
 
     }
         </div>
+        <br />
 
     }
 
-    <button onclick="submitExam()" type="button">Submit</button>
+    <button class="btn btn-success" onclick="submitExam()" type="button">Submit</button>
 </form>
 <script src="/lib/jquery/dist/jquery.min.js"></script>
 <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+
+    var StudentId = $("input[name='StudentId']").val();
+    var CourseID = Number.parseInt($("input[name='CourseID']").val());
+
+
+
+    $.ajax({
+            type: "Get",
+            url: '@Url.Action("CheckIfStudentTSubmitedExam", "Exam")',
+            contentType: "json",
+            data: {
+                CourseId: CourseID,
+                StudentId: StudentId
+            },
+            dataType: "json",
+                success: function (Data) {
+                    console.log(Data)
+                    var data = JSON.parse(Data);
+                    if (data.take == true && data.marked == false) {
+                        //$.notify(`This Exam did not corrected yet.`, { globalPosition: 'top center', className: 'warn' })
+
+                        $('.exam').prepend('<h1 style="color: blue;">This Exam did not corrected yet.</h1><br/>');
+
+                        $('.exam').css({
+                            "pointer-events": "none",
+                            "opacity": 0.5,
+                            "background": "#eee",
+                        });
+                    }
+                    if (data.take == true && data.marked == true) {
+                        $('.exam').html('');
+                        $('.exam').prepend(`<h1 style="color:green;">The Medel Answers:</h1>`);
+                        var x = (data.mark / data.queSum) * 100;
+                        $('.exam').prepend(`<h1 style="color:green;">You Got ${data.mark}/${data.queSum} as ${x.toFixed()}% .</h1>`);
+                        
+
+
+                        $.ajax({
+                            type: "Get",
+                            url: '@Url.Action("getStudentAnswer", "Exam")',
+                            contentType: "json",
+                            data: {
+                                stuId: StudentId,
+                                crs: CourseID
+                            },
+                            dataType: "json",
+                            success: function (Data) {
+                                console.log(Data)
+                                var exam = JSON.parse(Data);
+
+
+                                for (var i = 0; i < exam.length; i++) {
+                                    console.log(Number.parseInt(exam[i].QuestionId));
+                                     $.ajax({
+                                        type: "Get",
+                                        url: '@Url.Action("GetQuestion", "Exam")',
+                                        contentType: "json",
+                                        data: {
+                                            AnsText: exam[i].AnsText,
+                                            id: Number.parseInt(exam[i].QuestionId)
+                                        },
+                                            dataType: "json",
+                                            success:  function (Data) {
+
+                                                var que = JSON.parse(Data);
+                                                console.log(que);
+                                                var body = que.body
+                                                var AnsText = que.AnsText
+                                                var ModelAnswer = que.ModelAnswer
+                                                var QueType = que.QueType
+                                                var mark = que.mark
+                                                var txt = `
+
+
+                                            <div>
+                                                <div class="form-group">
+                                                    <label>
+                                                        ${body}
+                                                    </label></br>`
+                                                    if (QueType =="1")
+                                                    {
+                                                        txt += `<div class="form-check">
+                                                            <input disabled class="form-check-input" type="radio"  checked/>
+                                                            <label class="form-check-label">
+                                                                Student Answer: ${AnsText}
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input disabled class="form-check-input" type="radio" checked />
+                                                            <label class="form-check-label">
+                                                                Model Answer: ${ModelAnswer}
+                                                            </label>
+                                                        </div>`
+                                                        if (AnsText == ModelAnswer) {
+                                                            txt += `Answer correct `
+                                                        } else {
+                                                            txt += `Answer not correct `
+                                                        }
+                                                        }
+                                                        else if (QueType == "2")
+                                                    {
+                                                            txt += `Student Answer: <input disabled class="form-control" type="text" value=${AnsText} />
+                                                            Model Answer: <input disabled class="form-control" type="text" value= ${ModelAnswer}  />
+                                                            `
+                                                        }
+                                                        else if (QueType == "0")
+                                                    {
+                                                            txt += `<div class="form-check">
+                                                                <input disabled class="form-check-input" type="radio" checked/>
+                                                                <label class="form-check-label">
+                                                                    Student Answer: ${AnsText}
+                                                                </label>
+                                                            </div>
+                                                            <div class="form-check">
+                                                                <input disabled class="form-check-input" type="radio" checked />
+                                                                <label class="form-check-label">
+                                                                    Model Answer: ${ModelAnswer}
+                                                                </label>
+                                                            </div>`
+                                                        if (AnsText == ModelAnswer) {
+                                                                console.log(mark)
+
+                                                            txt += `Answer correct `
+                                                            } else {
+                                                            txt += `Answer not correct`
+                                                            }
+                                                        }
+                                                txt += `</div>
+                                                </div><br/>`
+                                                //$('.exam').html('');
+                                                $('.exam').append(txt);
+                                        },
+                                        error: function (e) { console.log(e) }
+                                    });
+                            }
+                            $('#Submit_Correction').show();
+                            },
+                       error: function (e) { console.log(e); alert('f'); }
+                    });
+                    }
+            },
+            error: function (e) { console.log(e) }
+         });
     function submitExam() {
-        var StudentId = $("input[name='StudentId']").val();
-        var CourseID = Number.parseInt($("input[name='CourseID']").val());
         $(".exam").children()
             .each(function () {
                 if ($(this).children("input[name='QuestionId']").val() != undefined) {
                     var element = $(this);
                     var queId = element.children("input[name='QuestionId']").val();
-                    var queTy = element.children("input[name='QuestionType']").val();
+                    var queTy = element.children ("input[name='QuestionType']").val();
                     var ansText;
                     if (queTy == "Essay") {
                         ansText = $('input[name="' + queId + '"]').val();
@@ -83,7 +225,6 @@
                         dataType: "json",
                         success: function (Data) {
                             console.log(JSON.parse(Data));
-
                             $('.exam').css({
                                 "pointer-events": "none",
                                 "opacity": 0.5,

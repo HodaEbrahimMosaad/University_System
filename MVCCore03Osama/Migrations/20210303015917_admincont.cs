@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVCCore03Osama.Migrations
 {
-    public partial class init : Migration
+    public partial class admincont : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -74,6 +74,28 @@ namespace MVCCore03Osama.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdminContact",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Meessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    SendAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdminContact", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_AdminContact_AspNetUsers_UserID",
+                        column: x => x.UserID,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -391,6 +413,11 @@ namespace MVCCore03Osama.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AdminContact_UserID",
+                table: "AdminContact",
+                column: "UserID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Answer_CourseId",
                 table: "Answer",
                 column: "CourseId");
@@ -502,6 +529,9 @@ namespace MVCCore03Osama.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AdminContact");
+
             migrationBuilder.DropTable(
                 name: "Answer");
 

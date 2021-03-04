@@ -62,6 +62,9 @@
                 <li class="nav-item">
                     <a class="nav-link" onclick="updateContent('','p3')" value="p3" data-toggle="tab" href="#examContentTab" role="tab" aria-expanded="false"><i class="fa fa-laptop-code"> </i> Exam</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" onclick="updateContent('','p4')" value="p3" data-toggle="tab" href="#ShowGrades" role="tab" aria-expanded="false"><i class="fa fa-laptop-code"> </i> Show Grades</a>
+                </li>
 
             </ul>
         </div>
@@ -124,19 +127,29 @@
                 <div class="tab-pane active" id="discussionContentTab" role="tabpanel" aria-expanded="false">
 
                 </div>
+                <div class="tab-pane " id="ShowGrades" role="tabpanel" aria-expanded="false">
+                    @if (User.IsInRole("Instructor"))
+                    {
+                        @await Component.InvokeAsync("ShowGrades",new { crsid = 0 })
+                    }
+                    </div>
 
                 <div class="tab-pane " id="examContentTab" role="tabpanel" aria-expanded="false">
                     @if (User.IsInRole("Student"))
                     {
                         @await Component.InvokeAsync("ExamView")
                     }
-                    else @if (User.IsInRole("Instructor"))
+
+
+                    @if (User.IsInRole("Instructor"))
                     {
+
+                        
                         if (ViewBag.hasExam)
                         {
                             @await Component.InvokeAsync("ExamCorrection")
 
-                   }
+                    }
                         else
                     @await Component.InvokeAsync("ExamCreate")
                 }
@@ -149,6 +162,8 @@
         </div>
         
     </div>
+
+    
 
     <script src="/lib/jquery/dist/jquery.min.js"></script>
     <script src="/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

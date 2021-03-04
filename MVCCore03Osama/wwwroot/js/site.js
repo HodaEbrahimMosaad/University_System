@@ -125,9 +125,11 @@ function showInPopupv2(url, title, lec=0) {
                 contentType: false,
                 processData: false,
                 success: function (res) {
+
                     $('#form-modal').modal('hide');
                     console.log("sucsss")
                     $('#courseDetails').load(document.URL + ' #courseDetails');
+
                 },
                 error: function (err) {
                     console.log(err)
@@ -137,7 +139,47 @@ function showInPopupv2(url, title, lec=0) {
         } catch (ex) {
             console.log(ex)
         }
+}
+
+
+jQueryAjaxPostIns = form => {
+
+    try {
+
+        $.ajax({
+            type: 'POST',
+            url: form.action,
+            data: new FormData(form),
+            contentType: false,
+            processData: false,
+            success: function (res) {
+                if (res.isValid) {
+                    //$('#ViewAll').html(res.html)
+                    $('#form-modal .modal-body').html('');
+                    $('#form-modal .modal-title').html('');
+                    //document.getElementById("courseForm").reset();
+                    $('#form-modal').modal('hide');
+                    //insContent
+                    $('#insContent').load(document.URL + ' #insContent');
+                    $.notify('Submitted Successfuly', { globalPosition: 'top center', className: 'success' })
+                }
+                else
+                    $('#form-modal .modal-body').html(res.html);
+
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+        //to prevent default form submit event
+
+        return false;
+    } catch (ex) {
+        console.log(ex)
     }
+
+}
+
 jQueryAjaxPostPosts = form => {
 
  try {
@@ -167,6 +209,7 @@ console.log(err)
 }
 })
 //to prevent default form submit event
+
 
  return false;
 } catch (ex) {

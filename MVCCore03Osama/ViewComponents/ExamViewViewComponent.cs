@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVCCore03Osama.Data;
 using MVCCore03Osama.Models;
@@ -16,23 +17,30 @@ namespace MVCCore03Osama.ViewComponents
         private readonly IStudent student;
         private readonly IInstructor instructor;
         private readonly ICourse course;
+        private readonly UserManager<ApplicationUser> userManager;
         public ApplicationDbContext ApplicationDbContext;
-        public ExamViewViewComponent(IStudent _student, IInstructor _instructor, ICourse _course, ApplicationDbContext _ApplicationDbContext)
+        public ExamViewViewComponent(UserManager<ApplicationUser> UserManager
+                            , ApplicationDbContext _ApplicationDbContext)
         {
-            student = _student;
-            instructor = _instructor;
-            course = _course;
+            this.userManager = UserManager;
             ApplicationDbContext = _ApplicationDbContext;
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var url = Request.GetDisplayUrl();
             var x = int.Parse(url.Split("/")[^1]);
-            
-            var CourseId = x;
+
+            var _user = await userManager.FindByNameAsync(User.Identity.Name);
+
+            ViewBag.stuId = _user.Id;
+
+            ViewBag.CourseId = x;
+
+
+
             var Choice = ApplicationDbContext.Choice.ToList();
             ViewBag.Choices = Choice;
-            return View(ApplicationDbContext.Question.Where(q => q.CourseId == CourseId).ToList());
+            return View(ApplicationDbContext.Question.Where(q => q.CourseId == x).ToList());
         }
     }
 }

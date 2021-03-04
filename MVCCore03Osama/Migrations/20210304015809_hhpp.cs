@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MVCCore03Osama.Migrations
 {
-    public partial class admincont : Migration
+    public partial class hhpp : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,9 +83,11 @@ namespace MVCCore03Osama.Migrations
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Meessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserID = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SendAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    SendAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Seen = table.Column<bool>(type: "bit", nullable: false),
+                    Response = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResponserID = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -234,6 +236,35 @@ namespace MVCCore03Osama.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "posts",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    CourseID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_posts", x => x.ID);
+                    table.ForeignKey(
+                        name: "FK_posts_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_posts_courses_CourseID",
+                        column: x => x.CourseID,
+                        principalTable: "courses",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Question",
                 columns: table => new
                 {
@@ -309,30 +340,29 @@ namespace MVCCore03Osama.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "posts",
+                name: "comments",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    LectureID = table.Column<int>(type: "int", nullable: false)
+                    PostID = table.Column<int>(type: "int", nullable: false),
+                    ApplicationUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_posts", x => x.ID);
+                    table.PrimaryKey("PK_comments", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_posts_AspNetUsers_ApplicationUserId",
+                        name: "FK_comments_AspNetUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_posts_lectures_LectureID",
-                        column: x => x.LectureID,
-                        principalTable: "lectures",
+                        name: "FK_comments_posts_PostID",
+                        column: x => x.PostID,
+                        principalTable: "posts",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -389,27 +419,6 @@ namespace MVCCore03Osama.Migrations
                         principalTable: "Question",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "comments",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Body = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    PostID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_comments", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_comments_posts_PostID",
-                        column: x => x.PostID,
-                        principalTable: "posts",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -477,6 +486,11 @@ namespace MVCCore03Osama.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_comments_ApplicationUserId",
+                table: "comments",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_comments_PostID",
                 table: "comments",
                 column: "PostID");
@@ -507,9 +521,9 @@ namespace MVCCore03Osama.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_posts_LectureID",
+                name: "IX_posts_CourseID",
                 table: "posts",
-                column: "LectureID");
+                column: "CourseID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Question_CourseId",

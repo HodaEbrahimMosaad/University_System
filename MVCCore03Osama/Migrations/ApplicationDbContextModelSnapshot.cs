@@ -201,6 +201,9 @@ namespace MVCCore03Osama.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ApplicationUserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Body")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -213,6 +216,8 @@ namespace MVCCore03Osama.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("PostID");
 
@@ -327,11 +332,11 @@ namespace MVCCore03Osama.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<int?>("CourseID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
-
-                    b.Property<int>("LectureID")
-                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -342,7 +347,7 @@ namespace MVCCore03Osama.Migrations
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("LectureID");
+                    b.HasIndex("CourseID");
 
                     b.ToTable("posts");
                 });
@@ -604,11 +609,17 @@ namespace MVCCore03Osama.Migrations
 
             modelBuilder.Entity("MVCCore03Osama.Models.Comment", b =>
                 {
+                    b.HasOne("MVCCore03Osama.Models.ApplicationUser", "commentOwner")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("MVCCore03Osama.Models.Post", "Post")
                         .WithMany("Comments")
                         .HasForeignKey("PostID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("commentOwner");
 
                     b.Navigation("Post");
                 });
@@ -658,13 +669,11 @@ namespace MVCCore03Osama.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
-                    b.HasOne("MVCCore03Osama.Models.Lecture", "Lecture")
-                        .WithMany("Posts")
-                        .HasForeignKey("LectureID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("MVCCore03Osama.Models.Course", "course")
+                        .WithMany("posts")
+                        .HasForeignKey("CourseID");
 
-                    b.Navigation("Lecture");
+                    b.Navigation("course");
 
                     b.Navigation("postOwner");
                 });
@@ -750,14 +759,14 @@ namespace MVCCore03Osama.Migrations
                 {
                     b.Navigation("Lectures");
 
+                    b.Navigation("posts");
+
                     b.Navigation("StdCrs");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Lecture", b =>
                 {
                     b.Navigation("Materials");
-
-                    b.Navigation("Posts");
                 });
 
             modelBuilder.Entity("MVCCore03Osama.Models.Post", b =>

@@ -31,6 +31,7 @@ namespace MVCCore03Osama.Controllers
         [NoDirectAccess]
         public async Task<IActionResult> AddOrEdit(int id=0)
         {
+            ViewBag.ins = new SelectList(_context.Users.Where(u => u.UserRole == Role.Instructor).ToList(), "Id", "Fname");
             var course = new Course();
             if(id!=0)
                 course = await _context.courses.FindAsync(id);

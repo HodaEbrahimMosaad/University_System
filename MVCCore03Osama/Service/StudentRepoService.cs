@@ -22,16 +22,15 @@ namespace MVCCore03Osama.Service
         }
         public async Task<List<StudentCoursesVM>>getAllActiveStudents()
         {
-
             var students= await userManager.Users.Where
                 (u => u.status == Status.Active && u.UserRole==Role.Student).ToListAsync();
             List<StudentCoursesVM> studentCourses = new List<StudentCoursesVM>();
             
             for(int i = 0; i < students?.Count(); i++)
             {
-                
-                var serializedParent = JsonConvert.SerializeObject(students[i]);
-                Student newStudent = JsonConvert.DeserializeObject<Student>(serializedParent);
+                //var serializedParent = JsonConvert.SerializeObject(students[i]);
+                //Student newStudent = JsonConvert.DeserializeObject<Student>(serializedParent);
+                var newStudent = students[i];
                 var studentC = db.studentCourses.Where(x => x.StudentId == students[i].Id).OrderByDescending(c=>c.id).ToList();
                 List<Course> AllCourses = db.courses.OrderByDescending(c => c.ID).ToList();
                 
@@ -43,7 +42,6 @@ namespace MVCCore03Osama.Service
                     student = newStudent,
                     coursesToAssign = CoursesToAssign,
                     coursesToRemove= CoursesToRemove
-
                 });
             }
             return studentCourses;
@@ -90,12 +88,12 @@ namespace MVCCore03Osama.Service
             }
         }
 
-        public  async Task< List<Student>> getAllStudents()
+        public  async Task< List<ApplicationUser>> getAllStudents()
         {
             var allStudensBeforConvert= await userManager.Users.Where(u=>u.UserRole==Role.Student).ToListAsync();
-            var allStudensInJson = JsonConvert.SerializeObject(allStudensBeforConvert);
-            List<Student> allStudents = JsonConvert.DeserializeObject<List<Student>>(allStudensInJson);
-            return allStudents;
+            //var allStudensInJson = JsonConvert.SerializeObject(allStudensBeforConvert);
+            //List<Student> allStudents = JsonConvert.DeserializeObject<List<Student>>(allStudensInJson);
+            return allStudensBeforConvert;
         }
         public  void EditStudent( Student student)
         {

@@ -14,7 +14,7 @@ namespace MVCCore03Osama.Service
         public  Task<List<StudentCoursesVM>> getAllActiveStudents();
         public bool regesterStudentInCourse(string studentId, int courseId);
         public bool removeStudentFromCourse(string studentId, int courseId);
-        public Task<List<Student>> getAllStudents();
+        public Task<List<ApplicationUser>> getAllStudents();
         public void EditStudent(Student student);
         public Student getStudent(string id);
         public bool deleteStudent(string id, Student student);

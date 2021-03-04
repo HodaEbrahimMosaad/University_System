@@ -7,7 +7,7 @@ namespace MVCCore03Osama.ViewModel
 {
     public class StudentCoursesVM
     {
-        public Student student { set; get; }
+        public ApplicationUser student { set; get; }
         public List <Course> coursesToAssign { set; get; }
         public List<Course> coursesToRemove { set; get; }
 

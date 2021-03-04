@@ -55,7 +55,7 @@
             <input class="form-control" value="" name="mark" placeholder="mark" type="number" />
         </div>
         <br />
-        <div class="col-12">
+        <div class="col-12 addch">
             <button style="margin: 5px 5px 30px; height: 36px;" class="btn btn-sm btn-success" type="button" onclick="AddChoice()" id="addCh">
                 <i class="fa fa-plus"></i>
             </button>
@@ -107,8 +107,13 @@
 
 </div>
 
-<button class="btn btn-success" style="float: right; margin-top: 20px;"> Create Exam</button>
+<a onclick="refresh()" class="btn btn-success" style="float: right; margin-top: 20px;"> Create Exam</a>
 <script>
+    function refresh() {
+        //dynamicContent
+        $('.dynamicContent').load(document.URL + ' .dynamicContent');
+
+    }
     function addAnswer() {
       
         var select = "<div class='selectConttainer'><select class='col-5 form-control ch' id='getModelAnswer' onchange='getModelAnswer()'>"
@@ -146,6 +151,11 @@
             success: function (Data) {
                 console.log(JSON.parse(Data));
                 QueIDObj.QueID = JSON.parse(Data);
+                $.notify('Question Added Successfuly', { globalPosition: 'top center', className: 'success' })
+
+                $('#forTF input').each(function () {/*********************/
+                    $(this).val("")
+                });
 
             },
             error: function (e) { console.log(e) }
@@ -177,6 +187,11 @@
             success: function (Data) {
                 console.log(JSON.parse(Data));
                 QueIDObj.QueID = JSON.parse(Data);
+                $.notify('Question Added Successfuly', { globalPosition: 'top center', className: 'success' })
+
+                $('#forEssay input').each(function () {/*********************/
+                    $(this).val("")
+                });
 
             },
             error: function (e) { console.log(e) }
@@ -247,7 +262,7 @@
                 modelAns: $('#getModelAnswer').val(),
                 QueType: "Choose",
                 CourseId: Number.parseInt($("input[name='crs']").val())
-
+            
 
                 },
             dataType: "json",
@@ -267,6 +282,8 @@
                     dataType: "json",
                     success: function (Data) {
                         console.log(JSON.parse(Data));
+                        
+                        
                     },
                     error: function (e) { console.log(e) }
                 });
@@ -276,8 +293,27 @@
             },
             error: function (e) { console.log(e) }
         });
+        setTimeout(function () {
+            $('#choice input').each(function () {
+                $(this).val("")
+            });
+            $('.addch .input-group').each(function () {
+                $(this).remove();
+            });
+            $('.selectConttainer select').each(function () {
+                $(this).remove();
+            });
+        },1000)
+        $.notify('Question Added Successfuly', { globalPosition: 'top center', className: 'success' })
 
-        alert('Q Added');
+       
+
+        
+
+        //$('#choice').children('input').each(function () {
+
+        //   $(this).val("")// "this" is the current element in the loop
+        //})
 
 
     }

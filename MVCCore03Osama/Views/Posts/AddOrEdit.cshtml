@@ -5,7 +5,7 @@
     ViewData["Title"] = "AddOrEdit";
     Layout = null;
 
-    var user = await UserManager.FindByNameAsync(User.Identity.Name);
+   var user = await UserManager.FindByNameAsync(User.Identity.Name);
    var crsid = ViewBag.crsid;
 
 }

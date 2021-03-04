@@ -22,15 +22,15 @@ namespace MVCCore03Osama.Models
 
 
         [Required(ErrorMessage = "FName name is required")]
-        [StringLength(20, MinimumLength = 5,
-        ErrorMessage = "FName should be minimum 5 characters and a maximum of 20 characters")]
+        [StringLength(20, MinimumLength = 3,
+        ErrorMessage = "FName should be minimum 3 characters and a maximum of 20 characters")]
         [DataType(DataType.Text)]
         public string Fname { get; set; }
 
 
         [Required(ErrorMessage = "LName name is required")]
-        [StringLength(20, MinimumLength = 5,
-        ErrorMessage = "LName should be minimum 5 characters and a maximum of 20 characters")]
+        [StringLength(20, MinimumLength = 3,
+        ErrorMessage = "LName should be minimum 3 characters and a maximum of 20 characters")]
         [DataType(DataType.Text)]
         public string Lname { get; set; }
 

@@ -18,14 +18,14 @@ namespace MVCCore03Osama.Models
         public int TotalGrade { get; set; }
 
         [Required(ErrorMessage = "Describtion is required")]
-        [StringLength(200, MinimumLength = 3,
-        ErrorMessage = "Describtion should be minimum 3 characters and a maximum of 200 characters")]
+        [StringLength(200, MinimumLength = 2,
+        ErrorMessage = "Describtion should be minimum 2 characters and a maximum of 200 characters")]
         [DataType(DataType.Text)]
         public string Describtion { get; set; }
 
         [Required(ErrorMessage = "Course name is required")]
-        [StringLength(50, MinimumLength = 3,
-        ErrorMessage = "Course name should be minimum 3 characters and a maximum of 5 characters")]
+        [StringLength(50, MinimumLength = 2,
+        ErrorMessage = "Course name should be minimum 2 characters and a maximum of 20 characters")]
         [DataType(DataType.Text)]
         public string Name { get; set; }
         [ForeignKey("Instructor")]

@@ -1,9 +1,16 @@
 ﻿@model MVCCore03Osama.Models.Lecture
+@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
 
 @{
     Layout = null;
 }
 
+@{
+
+    var user = await UserManager.FindByNameAsync(User.Identity.Name);
+
+}
 <div class="row">
     <div class="col-md-12">
         <form id="lectureForm" asp-action="AddOrEdit" asp-route-id="@Model.ID" onsubmit="return jQueryAjaxPostv2(this);">
@@ -19,11 +26,12 @@
                 <input asp-for="Date" class="form-control" />
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="InstructorId" class="control-label"></label>
-                <input asp-for="InstructorId" class="form-control" />
-                <span asp-validation-for="InstructorId" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+                    <label asp-for="InstructorId" class="control-label"></label>
+                    <input asp-for="InstructorId" class="form-control" />
+                    <span asp-validation-for="InstructorId" class="text-danger"></span>
+                </div>*@
+            <input type="hidden" asp-for="InstructorId" value=@user.Id />
             <input type="hidden" asp-for="CourseId" value=@ViewBag.crsID />
             <div class="form-group">
                 <input type="submit" value="Submit" class="btn btn-success" />

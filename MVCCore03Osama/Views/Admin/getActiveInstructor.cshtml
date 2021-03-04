@@ -48,6 +48,7 @@
                     }
 
                     <select onchange="assignInstructorCourse(this,'@item.instructor.Id')" asp-items=@cousrsList class="single-select form-control">
+                        <option > select course</option> 
                     </select>
                 </td>
                 <td>
@@ -57,7 +58,8 @@
                             cousrsListRemoved = new SelectList(@item.coursesToRemove, "ID", "Name");
                     }
 
-                    <select onchange="RemoveInstructorCourse(this,'@item.instructor.Id')" asp-items=@cousrsListRemoved class="single-select">
+                    <select onchange="RemoveInstructorCourse(this,'@item.instructor.Id')" asp-items=@cousrsListRemoved class="single-select form-control">
+                        <option > select course</option>
                     </select>
                 </td>
             </tr>

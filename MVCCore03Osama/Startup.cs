@@ -37,7 +37,9 @@ namespace MVCCore03Osama
             services.AddScoped<IStudent, StudentRepoService>();
             services.AddScoped<IInstructor,InstructorRepoService>();
             services.AddScoped<ICourse,CourseRepoService>();
+
             services.AddScoped<userCoursesService>();
+
             services.AddScoped<IPost, PostRepoService>();
             services.AddScoped<IComment, CommentRepoService>();
             //services.AddTransient<IEmailSender, IEmailSender>();

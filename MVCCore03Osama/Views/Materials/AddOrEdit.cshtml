@@ -1,17 +1,23 @@
 ﻿@model MVCCore03Osama.Models.Material
 
 @{
-    ViewData["Title"] = "Create";
+    Layout = null;
 }
 
-<h1>Create</h1>
+<!DOCTYPE html>
 
-<h4>Material</h4>
-<hr />
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AddOrEdit</title>
+</head>
+<body>
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+    <div class="col-md-12">
+        <form asp-action="AddOrEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
             <div class="form-group">
                 <label asp-for="Path" class="control-label"></label>
                 <input asp-for="Path" class="form-control" />
@@ -27,21 +33,22 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            @*<div class="form-group">
                 <label asp-for="LectureID" class="control-label"></label>
-                <select asp-for="LectureID" class ="form-control" asp-items="ViewBag.LectureID"></select>
-            </div>
+                <input asp-for="LectureID" class="form-control" />
+                <span asp-validation-for="LectureID" class="text-danger"></span>
+            </div>*@
+            <input type="hidden" asp-for="LectureID" value="@ViewBag.lecID" />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+</body>
+</html>

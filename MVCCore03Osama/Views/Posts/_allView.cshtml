@@ -1,0 +1,151 @@
+﻿@inject UserManager<ApplicationUser> UserManager
+@using Microsoft.AspNetCore.Identity
+@{
+    Layout = null;
+    var crsid = ViewBag.crsid;
+    var user = await UserManager.FindByNameAsync(User.Identity.Name);
+}
+<button class="btn btn-sm btn-primary"><a onclick="showInPopup('@Url.Action("AddOrEdit","Posts",new {id=0,crsid=ViewBag.crsid},Context.Request.Scheme)','Update Post')" class="text-white"><i class="fas fa-pencil-alt"></i></a>New Post</button>
+
+
+
+
+
+<div class="container bootdey col-md-12" id="mydivTopost">
+    <div class=" bootstrap snippets">
+    
+        <div class="panel">
+            <div class="panel-body">
+                <!-- Newsfeed Content -->
+                <!--===================================================-->
+                @foreach(var item in Model) {
+                <div class="media-block" style="border-radius: 2%;">
+                    <a class="media-left" href="#">
+
+                       
+                        @{
+                            string img = "def.jfif";
+                            if (item.postOwner.ImgName != "def.jfif")
+                            {
+                                img = @item.postOwner.Email + "/" + @item.postOwner.ImgName;
+
+                            }
+                            
+                        }
+
+                        <img class="img-circle img-sm" style="width:10%;" alt="Profile Picture" src="~/Images/@img"  >
+                    </a>
+                    <div class="media-body">
+                        <div class="mar-btm">
+                            <a href="#" class="btn-link text-semibold media-heading box-inline">@item.postOwner.Fname  @item.postOwner.Lname</a>
+                            <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Mobile At- @item.Date</p>
+                        </div>
+                        <p>@item.Body...</p>
+                        <div class="pad-ver">
+                            <div class="btn-group">
+
+                                @if (user.Id == item.ApplicationUserId)
+                                {
+                                    <button class="btn btn-sm btn-warning btn-hover-success"><a onclick="showInPopup('@Url.Action("AddOrEdit","Posts",new {id=item.ID ,crsid=ViewBag.crsid},Context.Request.Scheme)','Update Post')" class="text-white"><i class="fas fa-pencil-alt"></i></a></button>
+
+                                    <form asp-action="Delete" asp-route-id="@item.ID" style="display:inline-block" onsubmit="return jQueryAjaxDelete(this);">
+
+                                        <input type="submit" value="Delete" class="btn btn-sm btn-danger btn-hover-success" />
+
+                                    </form>
+                                }
+                            </div>
+                            <a class="btn btn-sm btn-default btn-hover-primary" href="#">Comment</a>
+                            
+                                <input  class="bg-darken-yellow col-lg-8 card b-none" type="text" onkeyup="writeComment(this,'@item.ID')" />
+                            
+
+
+                            @foreach (var comment in item.Comments)
+                            {
+                                <div class="bg-darken-yellow col-lg-8 card offset-1">
+
+                                    <div class="media-block">
+                                        <a class="media-left" href="#">
+
+
+                                            @{
+                                                string imgc = "def.jfif";
+                                                if (comment.commentOwner.ImgName != "def.jfif")
+                                                {
+                                                    imgc = @comment.commentOwner.Email + "/" + @comment.commentOwner.ImgName;
+
+                                                }
+
+                                            }
+                                            
+
+                                            <img class="img-circle img-sm" alt="Profile Picture" src="~/Images/@imgc">
+
+                                        </a>
+                                        <div class="media-body">
+                                            <div class="mar-btm">
+                                                <a href="#" class="btn-link text-semibold media-heading box-inline">@comment.commentOwner.Fname  @comment.commentOwner.Lname</a>
+                                                <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> - From Web At- @comment.Date</p>
+                                            </div>
+                                            <p>@comment.Body...</p>
+
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+
+
+
+
+
+                            <!-- =====================commmentt=========================================-->
+                            <!--====end comment===================================================-->
+                        </div>
+                        <hr>
+                    </div>
+                </div>
+                }
+                <!--===================================================-->
+                <!-- End Newsfeed Content -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--===================================================-->
+<script>
+        function writeComment(e,postId)
+        {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+               $.ajax({
+            type: "Post",
+            url: '@Url.Action("CreateComment", "Posts")',
+
+             data: {
+                 'postid': postId,
+                 'commnetbody': e.value
+                   },
+
+            success: function (Data) {
+                if (Data) {
+
+                    $('#ViewAll').html(Data.html);
+
+                }
+
+            },
+            error: function () {
+                alert('A error');
+                console.log(postid)
+                   }
+
+               });
+
+
+            }
+        }
+</script>

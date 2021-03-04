@@ -10,7 +10,9 @@ namespace MVCCore03Osama.Service
         public List<Post>  GetAll();
         public Post GetDetails(int? id);
         public void Insert(Post post);
-        public void UpdatePost(int id, Post post);
+
+        public void UpdatePost(int PostID, string Body, string Title);
+
         public void DeletePost(int id);
     }
 }

@@ -65,9 +65,24 @@ namespace University.Controllers
             await roleManager.CreateAsync(Instructor);
 
 
-            var adminuser = userManager.Users.FirstOrDefault(u => u.Email == "kkkhodamnb@gmail.com");
-            var Studentuser = userManager.Users.FirstOrDefault(u => u.Email == "mariam@gmail.com");
-            var Instructoruser = userManager.Users.FirstOrDefault(u => u.Email == "sondos@gmail.com");
+
+            var Adminuser = new ApplicationUser();
+            
+            Adminuser.UserName = "hoda@gmail.com";
+            Adminuser.Email = "hoda@gmail.com";
+            Adminuser.Fname = "Hoda";
+            Adminuser.Lname = "Mosaad";
+            Adminuser.Bio = "Asp Developer";
+            Adminuser.ImgName = "74c8ab04-b1aa-4b51-81f8-ed390798e98c211416638.jpg";
+            Adminuser.UserRole = Role.Admin;
+            Adminuser.status = Status.Active;
+            Adminuser.EmailConfirmed = true;
+
+
+            var result = await userManager.CreateAsync(Adminuser, "123456@aA");
+
+
+            var adminuser = userManager.Users.FirstOrDefault(u => u.Email == "hoda@gmail.com");
 
             await userManager.AddToRoleAsync(adminuser, "Admin");
             //await userManager.AddToRoleAsync(Studentuser, "Student");

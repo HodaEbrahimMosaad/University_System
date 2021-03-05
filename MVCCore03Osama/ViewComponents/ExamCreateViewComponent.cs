@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
-using MVCCore03Osama.Service;
+using University.Data;
+using University.Models;
+using University.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace MVCCore03Osama.ViewComponents
+namespace University.ViewComponents
 {
     public class ExamCreateViewComponent : ViewComponent
     {

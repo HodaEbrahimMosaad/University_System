@@ -10,7 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama
+namespace University
 {
     public class Helper
     {

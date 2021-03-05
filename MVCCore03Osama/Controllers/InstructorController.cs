@@ -1,18 +1,18 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MVCCore03Osama.Service;
+using University.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MVCCore03Osama.Models;
+using University.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Json;
 using Newtonsoft.Json;
-using MVCCore03Osama.Models;
+using University.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
     [Authorize]
     [Authorize(Roles = "Admin")]

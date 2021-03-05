@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.Models
+namespace University.Models
 {
     public class Answer
     {

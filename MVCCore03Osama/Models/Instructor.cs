@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.Models
+namespace University.Models
 {
     public class Instructor : ApplicationUser
     {

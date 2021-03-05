@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
+using University.Data;
+using University.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MVCCore03Osama.ViewModel;
+using University.ViewModel;
 using Newtonsoft.Json;
 
-namespace MVCCore03Osama.Service
+namespace University.Service
 {
     public class StudentRepoService: IStudent
     {

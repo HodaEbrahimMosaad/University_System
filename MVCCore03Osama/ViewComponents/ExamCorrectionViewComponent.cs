@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http.Extensions;
 using System.Threading.Tasks;
-using MVCCore03Osama.Data;
+using University.Data;
 using System.Linq;
 
-namespace MVCCore03Osama.ViewComponents
+namespace University.ViewComponents
 {
     public class ExamCorrectionViewComponent: ViewComponent
     {

@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
+using University.Data;
+using University.Models;
 
 
-using MVCCore03Osama.Service;
+using University.Service;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http.Extensions;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
     public class PostsController : Controller
     {

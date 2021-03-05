@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MVCCore03Osama.Models;
-namespace MVCCore03Osama.Areas.Identity.Pages.Account.Manage
+using University.Models;
+namespace University.Areas.Identity.Pages.Account.Manage
 {
     public class ChangePasswordModel : PageModel
     {

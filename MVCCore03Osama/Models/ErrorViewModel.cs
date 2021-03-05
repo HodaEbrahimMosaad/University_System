@@ -1,6 +1,6 @@
 using System;
 
-namespace MVCCore03Osama.Models
+namespace University.Models
 {
     public class ErrorViewModel
     {

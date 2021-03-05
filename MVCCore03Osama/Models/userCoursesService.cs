@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Data;
+using University.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.Models
+namespace University.Models
 {
     public class userCoursesService
     {

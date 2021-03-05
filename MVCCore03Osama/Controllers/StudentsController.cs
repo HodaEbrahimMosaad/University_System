@@ -3,11 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MVCCore03Osama.Service;
-using MVCCore03Osama.Models;
+using University.Service;
+using University.Models;
 using Microsoft.AspNetCore.Authorization;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
     [Authorize]
     [Authorize(Roles = "Admin")]

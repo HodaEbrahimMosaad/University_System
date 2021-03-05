@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace MVCCore03Osama.Migrations
+namespace University.Migrations
 {
     public partial class fits : Migration
     {

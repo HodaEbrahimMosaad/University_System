@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MVCCore03Osama.Models;
+using University.Models;
 
-namespace MVCCore03Osama.Areas.Identity.Pages.Account.Manage
+namespace University.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {

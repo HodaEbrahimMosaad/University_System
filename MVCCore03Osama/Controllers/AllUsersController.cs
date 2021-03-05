@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
+using University.Data;
+using University.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
     [Authorize]
     [Authorize(Roles = "Admin")]

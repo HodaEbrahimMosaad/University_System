@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
-using MVCCore03Osama.Service;
+using University.Data;
+using University.Models;
+using University.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
     [Authorize]
     public class AdminController : Controller

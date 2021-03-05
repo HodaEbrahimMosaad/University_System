@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MVCCore03Osama.Models;
-namespace MVCCore03Osama.ViewModel
+using University.Models;
+namespace University.ViewModel
 {
     public class InstructorCourseVM
     {

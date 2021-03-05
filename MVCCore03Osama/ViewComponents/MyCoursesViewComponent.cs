@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MVCCore03Osama.Models;
-using MVCCore03Osama.Service;
+using University.Models;
+using University.Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.ViewComponents
+namespace University.ViewComponents
 {
     public class MyCoursesViewComponent: ViewComponent
     {

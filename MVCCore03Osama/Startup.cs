@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
-using MVCCore03Osama.Service;
+using University.Data;
+using University.Models;
+using University.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace MVCCore03Osama
+namespace University
 {
     public class Startup
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MVCCore03Osama.Models;
-using MVCCore03Osama.Data;
-namespace MVCCore03Osama.Service
+using University.Models;
+using University.Data;
+namespace University.Service
 {
     public class PostRepoService:IPost
     {

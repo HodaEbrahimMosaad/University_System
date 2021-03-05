@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
-using MVCCore03Osama.ViewModel;
+using University.Data;
+using University.Models;
+using University.ViewModel;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.Service
+namespace University.Service
 {
     public class InstructorRepoService:IInstructor
     {

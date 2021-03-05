@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>aspnet-MVCCore03Osama-9476C517-713A-4A36-A729-DD71BA9DBFD6</UserSecretsId>
+    <UserSecretsId>aspnet-University-9476C517-713A-4A36-A729-DD71BA9DBFD6</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

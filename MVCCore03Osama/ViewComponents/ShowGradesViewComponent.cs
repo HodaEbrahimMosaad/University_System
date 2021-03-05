@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
+using University.Data;
+using University.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.ViewComponents
+namespace University.ViewComponents
 {
     public class ShowGradesViewComponent : ViewComponent
     {

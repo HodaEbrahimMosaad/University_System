@@ -5,11 +5,11 @@ using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
+using University.Data;
+using University.Models;
 
-[assembly: HostingStartup(typeof(MVCCore03Osama.Areas.Identity.IdentityHostingStartup))]
-namespace MVCCore03Osama.Areas.Identity
+[assembly: HostingStartup(typeof(University.Areas.Identity.IdentityHostingStartup))]
+namespace University.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

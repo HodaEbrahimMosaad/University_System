@@ -1,4 +1,4 @@
-﻿namespace MVCCore03Osama.Models
+﻿namespace University.Models
 {
     public enum Role { Admin, Student, Instructor }
 }

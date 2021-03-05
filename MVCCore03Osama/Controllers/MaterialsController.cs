@@ -7,10 +7,10 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
+using University.Data;
+using University.Models;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
     [Authorize]
     [Authorize(Roles = "Instructor")]

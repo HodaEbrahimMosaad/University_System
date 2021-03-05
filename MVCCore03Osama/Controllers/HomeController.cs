@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MVCCore03Osama.Models;
+using University.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Net;
 using System.Net.Mail;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
     //[Authorize]
     public class HomeController : Controller
@@ -65,7 +65,7 @@ namespace MVCCore03Osama.Controllers
             await roleManager.CreateAsync(Instructor);
 
 
-            var adminuser = userManager.Users.FirstOrDefault(u => u.Email == "alyaa@gmail.com");
+            var adminuser = userManager.Users.FirstOrDefault(u => u.Email == "kkkhodamnb@gmail.com");
             var Studentuser = userManager.Users.FirstOrDefault(u => u.Email == "mariam@gmail.com");
             var Instructoruser = userManager.Users.FirstOrDefault(u => u.Email == "sondos@gmail.com");
 

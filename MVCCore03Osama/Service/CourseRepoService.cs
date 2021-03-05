@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
+using University.Data;
+using University.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 
-namespace MVCCore03Osama.Service
+namespace University.Service
 {
     public class CourseRepoService : ICourse
     {

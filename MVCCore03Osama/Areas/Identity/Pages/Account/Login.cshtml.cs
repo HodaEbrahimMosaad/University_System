@@ -11,9 +11,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MVCCore03Osama.Models;
+using University.Models;
 using System.Collections.Generic;
-namespace MVCCore03Osama.Areas.Identity.Pages.Account
+namespace University.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel

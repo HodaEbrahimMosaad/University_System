@@ -1,10 +1,10 @@
-﻿using MVCCore03Osama.Models;
+﻿using University.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.Service
+namespace University.Service
 {
     public interface ICourse
     {

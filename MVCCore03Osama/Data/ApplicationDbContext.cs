@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Models;
+using University.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MVCCore03Osama.Data
+namespace University.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

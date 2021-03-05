@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MVCCore03Osama.Data;
-using MVCCore03Osama.Models;
-using MVCCore03Osama.Service;
+using University.Data;
+using University.Models;
+using University.Service;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MVCCore03Osama.Controllers
+namespace University.Controllers
 {
 
     public class StudentCoursesController : Controller

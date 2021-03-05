@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using MVCCore03Osama.Models;
+using University.Models;
 
-namespace MVCCore03Osama.Areas.Identity.Pages.Account.Manage
+namespace University.Areas.Identity.Pages.Account.Manage
 {
     public class EnableAuthenticatorModel : PageModel
     {
@@ -149,7 +149,7 @@ namespace MVCCore03Osama.Areas.Identity.Pages.Account.Manage
         {
             return string.Format(
                 AuthenticatorUriFormat,
-                _urlEncoder.Encode("MVCCore03Osama"),
+                _urlEncoder.Encode("University"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
         }
